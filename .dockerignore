@@ -1,0 +1,12 @@
+.git/
+.github/
+.next/
+.husky/
+.swc/
+node_modules/
+.dockerignore
+.gitignore
+nginx*
+docker*
+*Dockerfile
+*.log

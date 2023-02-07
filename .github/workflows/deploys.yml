@@ -1,0 +1,27 @@
+name: '📦 Deploy Artifact to Staging'
+
+on:
+  - push
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run-tests:
+    uses: ./.github/workflows/tests.yml
+
+#  heroku:
+#    name: Deploy to Heroku
+#    needs: run-tests
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: AkhileshNS/heroku-deploy@v3.12.12
+#        with:
+#          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+#          heroku_app_name: "magical-ravers" #Must be unique in Heroku
+#          heroku_email: "ciscor2001@gmail.com"
+#          usedocker: true
+#          docker_heroku_process_type: "web"
+#          healthcheck: "https://magical-ravers.herokuapp.com/api/v1/info"

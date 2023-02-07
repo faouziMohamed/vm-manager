@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+  next-app:
+    build: .
+    container_name: vm-manager
+
+  nginx:
+    build: ./nginx/docker
+    container_name: nginx
+    ports:
+      - "3000:80"

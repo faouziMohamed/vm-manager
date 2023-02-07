@@ -1,0 +1,57 @@
+name: '🧪 Code Quality Checks'
+
+on:
+  - workflow_call
+
+jobs:
+  lint:
+    name: Run ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - run: yarn
+      - run: yarn lint:strict
+
+  type-check:
+    name: Run Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - run: yarn
+      - run: yarn type-check
+
+  prettier:
+    name: Run Prettier Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - run: yarn
+      - run: yarn format:check
+
+#  test:
+#    name: Run Test
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: '16'
+#          cache: 'yarn'
+#      - run: yarn
+#      - run: |
+#          yarn dev &
+#          # Wait for the server to start
+#            sleep 10
+#          yarn test:ci
