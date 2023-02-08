@@ -11,40 +11,41 @@ import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import { MdFilterList } from 'react-icons/md';
 
+import { NextRouterWithQueries, updateQueryParams } from '@/lib/utils';
 import { powerStates, VmPowerState } from '@/lib/vmUtils';
 
 export type MenuProps = {
   onSelect?: (value: VmPowerState['value']) => void;
 };
 
-type SelectedItem = { name: string; value: string };
+type SelectedItem = Omit<VmPowerState, 'iconColor'>;
 
 export default function StatusFilterMenu({ onSelect = () => {} }: MenuProps) {
   const [selected, setSelected] = useState<SelectedItem>({
-    name: 'All',
-    value: 'all',
+    name: 'Filter',
+    value: 'default',
   });
-  const router = useRouter();
+  const router = useRouter() as NextRouterWithQueries;
+  // const {
+  //   query: { filter },
+  // } = router;
   const onSelectionChange = useCallback(
     (value: VmPowerState) => {
       if (value.value === selected.value) return;
       onSelect(value.value);
       setSelected({ name: value.name, value: value.value });
-      // add the filter param to the url, &filter=selected.value if the value is all, remove the filter param
-      let query = { ...router.query };
-      if (value.value === 'all') {
-        const { filter, ...rest } = query;
-        query = rest;
-      } else {
-        query = { ...query, filter: value.value };
-      }
-
-      void router.replace({ pathname: router.pathname, query }, undefined, {
-        shallow: true,
-      });
+      // add the filter param to the url, &filter=selected.value if the value is
+      // the default value, remove the filter param
+      updateQueryParams(router, value, 'filter');
     },
     [onSelect, router, selected.value],
   );
+
+  // if the filter param is in the url, set the selected value to the value of the filter param
+  // if (filter && filter !== selected.value && powerStateValues.includes(filter)) {
+  //   const selectedFilter = powerStates.find((item) => item.value === filter);
+  //  onSelectionChange(selectedFilter!);
+  // }
 
   return (
     <Menu>
@@ -56,13 +57,6 @@ export default function StatusFilterMenu({ onSelect = () => {} }: MenuProps) {
         borderRadius='md'
         boxShadow='sm'
         borderWidth={1}
-        // sx={{ bg: Theme.colors.primary.main }}
-        // _hover={{
-        //   bg: adjustColor(Theme.colors.primary.main, -6),
-        // }}
-        // _expanded={{
-        //   bg: adjustColor(Theme.colors.primary.main, -15),
-        // }}
         _focus={{ boxShadow: 'outline' }}
       >
         <Flex gap={2} alignItems='center'>

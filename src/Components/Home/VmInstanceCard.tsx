@@ -25,7 +25,7 @@ type VmInstanceProps = {
 export default function VmInstanceCard(props: VmInstanceProps) {
   const { dataId, hex, ipAddress, name, status } = props;
   return (
-    <Card data-id={dataId} px='1rem'>
+    <Card data-id={dataId} px='1rem' w='100%'>
       <Stack direction='row' alignItems='center' justifyContent='space-around'>
         <VmIcon
           w='5rem'

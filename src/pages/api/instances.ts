@@ -1,19 +1,9 @@
 import { NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { PowerStateValue } from '@/lib/vmUtils';
+import { VmShortDetails } from '@/lib/vmUtils';
 
-export type VmDetailsShort = {
-  id: string;
-  name: string;
-  region: string;
-  status: PowerStateValue;
-  ipAddress: string;
-  createdAt: Date | string;
-  updatedAt: Date | string;
-};
-
-const instances: VmDetailsShort[] = [
+const instances: VmShortDetails[] = [
   {
     id: 'db4ddad6-1355-4e7f-a016-268b631ba80d',
     name: 'Jailbreak Root',
@@ -126,7 +116,7 @@ const instances: VmDetailsShort[] = [
 
 const handler = nc();
 
-handler.get((req, res: NextApiResponse<VmDetailsShort[]>) => {
+handler.get((req, res: NextApiResponse<VmShortDetails[]>) => {
   res.json(instances);
 });
 

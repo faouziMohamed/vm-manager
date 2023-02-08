@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {
   Flex,
   Menu,
@@ -6,45 +7,54 @@ import {
   MenuList,
   Text,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import { VscGroupByRefType } from 'react-icons/vsc';
 
-const menuItemsNames = ['None', 'Region', 'Status'] as const;
-const values = ['none', 'region', 'status'] as const;
-export type GroupByMenuValue = (typeof values)[number];
-type MenuRowItem = {
-  // noinspection TypeScriptUnresolvedVariable
-  name: (typeof menuItemsNames)[number];
-  value: (typeof values)[number];
-};
-const menuItems: MenuRowItem[] = [
-  { name: 'None', value: 'none' },
-  { name: 'Status', value: 'status' },
-  { name: 'Region', value: 'region' },
-];
-type SelectedItem = MenuRowItem;
+import { NextRouterWithQueries, updateQueryParams } from '@/lib/utils';
+import { GroupByOption, groupByOptions, GroupByValue } from '@/lib/vmUtils';
+
+type SelectedItem = GroupByOption;
 type MenuProps = {
-  onSelect?: (value: GroupByMenuValue) => void;
+  onSelect?: (value: GroupByValue) => void;
 };
 
 export default function GroupByMenu({ onSelect = () => {} }: MenuProps) {
   const [selected, setSelected] = useState<SelectedItem>({
-    name: 'None',
-    value: 'none',
+    name: 'Group By',
+    value: 'default',
   });
+  const router = useRouter() as NextRouterWithQueries;
+  // const {
+  //   query: { group_by },
+  // } = router;
+
+  // if the group_by param is in the url, set the selected value to the value of the group_by param
+
   const onSelectionChange = useCallback(
-    (value: MenuRowItem) => {
+    (value: GroupByOption) => {
       if (value.value === selected.value) return;
       onSelect(value.value);
       setSelected({ name: value.name, value: value.value });
+      updateQueryParams(router, value, 'group_by');
     },
-    [onSelect, selected.value],
+    [onSelect, router, selected.value],
   );
+
+  // if (
+  //   group_by &&
+  //   group_by !== selected.value &&
+  //   groupByOptionsValues.includes(group_by)
+  // ) {
+  //   const selectedGroupBy = groupByOptions.find(
+  //     (item) => item.value === group_by,
+  //   );
+  //   onSelectionChange(selectedGroupBy!);
+  // }
+
   return (
     <Menu>
       <MenuButton
-        // _hover={{ bg: 'gray.400' }}
-        // _expanded={{ bg: 'blue.400' }}
         px={4}
         py={2}
         transition='all 0.2s'
@@ -55,11 +65,11 @@ export default function GroupByMenu({ onSelect = () => {} }: MenuProps) {
       >
         <Flex gap={2} alignItems='center'>
           <VscGroupByRefType />
-          <Text>Group By</Text>
+          <Text>{selected.name}</Text>
         </Flex>
       </MenuButton>
       <MenuList>
-        {menuItems.map((item) => (
+        {groupByOptions.map((item) => (
           <MenuItem key={item.name} onClick={() => onSelectionChange(item)}>
             {item.name}
           </MenuItem>

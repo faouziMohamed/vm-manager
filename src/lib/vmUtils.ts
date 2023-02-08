@@ -1,5 +1,5 @@
 export const powerStateNames = [
-  'All',
+  'Filter',
   'Running',
   'Restarting',
   'Stopped',
@@ -7,7 +7,7 @@ export const powerStateNames = [
   'Creating',
 ] as const;
 export const powerStateValues = [
-  'all',
+  'default',
   'running',
   'restarting',
   'stopped',
@@ -21,7 +21,7 @@ export type VmPowerState = {
   value: (typeof powerStateValues)[number];
 };
 export const powerStateColors: Record<PowerStateValue, string> = {
-  all: '#004D5E',
+  default: '#004D5E',
   running: '#6FABE6',
   restarting: '#B87A02',
   stopped: '#B60057',
@@ -29,7 +29,7 @@ export const powerStateColors: Record<PowerStateValue, string> = {
   creating: '#CDBFD9',
 };
 export const powerStates: VmPowerState[] = [
-  { name: 'All', iconColor: powerStateColors.all, value: 'all' },
+  { name: 'Filter', iconColor: powerStateColors.default, value: 'default' },
   { name: 'Running', iconColor: powerStateColors.running, value: 'running' },
   {
     name: 'Restarting',
@@ -48,3 +48,58 @@ export const powerStates: VmPowerState[] = [
     value: 'creating',
   },
 ];
+export const sortOptionsNames = [
+  'Sort',
+  'Name',
+  'Creation Date',
+  'Ip Address',
+] as const;
+export const sortOptionsValues = [
+  'default',
+  'name',
+  'createdAt',
+  'ipAddress',
+] as const;
+export type SortValue = (typeof sortOptionsValues)[number];
+export type SortOption = {
+  // noinspection TypeScriptUnresolvedVariable
+  name: (typeof sortOptionsNames)[number];
+  value: (typeof sortOptionsValues)[number];
+};
+export const sortOptions: SortOption[] = [
+  { name: 'Sort', value: 'default' },
+  { name: 'Name', value: 'name' },
+  { name: 'Creation Date', value: 'createdAt' },
+  { name: 'Ip Address', value: 'ipAddress' },
+];
+
+export const sortOrderNames = ['Ascending', 'Descending'] as const;
+export const sortOrderValues = ['asc', 'desc'] as const;
+export type SortOrderValue = (typeof sortOrderValues)[number];
+export type SortOrderOption = {
+  name: (typeof sortOrderNames)[number];
+  value: (typeof sortOrderValues)[number];
+};
+
+export const groupByOptionsNames = ['Group By', 'Region', 'Status'] as const;
+export const groupByOptionsValues = ['default', 'region', 'status'] as const;
+export type GroupByValue = (typeof groupByOptionsValues)[number];
+export type GroupByOption = {
+  // noinspection TypeScriptUnresolvedVariable
+  name: (typeof groupByOptionsNames)[number];
+  value: (typeof groupByOptionsValues)[number];
+};
+export const groupByOptions: GroupByOption[] = [
+  { name: 'Group By', value: 'default' },
+  { name: 'Status', value: 'status' },
+  { name: 'Region', value: 'region' },
+];
+export type VmShortDetails = {
+  id: string;
+  name: string;
+  region: string;
+  status: PowerStateValue;
+  ipAddress: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+};

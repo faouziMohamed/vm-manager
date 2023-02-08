@@ -9,6 +9,7 @@ import {
 import { MdRefresh } from 'react-icons/md';
 
 import GroupByMenu from '@/Components/Home/groupByMenu';
+import SortDirection from '@/Components/Home/SortDirection';
 import SortMenu from '@/Components/Home/sortMenu';
 import StatusFilterMenu from '@/Components/Home/statusFilterMenu';
 import UserInstances from '@/Components/Home/UserInstances';
@@ -42,6 +43,7 @@ export default function Home() {
             <StatusFilterMenu onSelect={() => {}} />
             <GroupByMenu />
             <SortMenu />
+            <SortDirection />
             <Button variant='outline' title='Refresh the view'>
               <MdRefresh />
             </Button>
