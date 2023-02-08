@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "eslint --max-warnings=2 ./src/**/*.{ts,tsx} --fix && yarn format:fix",
+    "lint:fix": "eslint --max-warnings=1 ./src/**/*.{ts,tsx} --fix && yarn format:fix",
     "lint:strict": "eslint --max-warnings=0 ./src/**/*.{ts,tsx}",
     "type-check": "tsc --noEmit --incremental false",
     "test:ci": "cypress run --config video=false,screenshotOnRunFailure=false",
