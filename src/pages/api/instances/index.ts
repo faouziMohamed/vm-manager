@@ -9,21 +9,14 @@ import { VmShortDetails } from '@/lib/vmUtils';
 let instances: VmShortDetails[] = [];
 
 const handler = nc();
+const jsonInstancesDb = path.join(process.cwd(), 'instances.json');
 
 async function getInstances() {
   // read instances from json file having the Type VmShortDetails[]
   // and return the instances
   console.log('reading instances from file...');
   try {
-    const currentDir = path.join(
-      process.cwd(),
-      'src',
-      'pages',
-      'api',
-      'instances',
-    );
-    const jsonFile = path.join(currentDir, 'instances.json');
-    const json = await readFile(jsonFile, 'utf8');
+    const json = await readFile(jsonInstancesDb, 'utf8');
     return JSON.parse(json) as VmShortDetails[];
   } catch (err) {
     const error = err as Error;

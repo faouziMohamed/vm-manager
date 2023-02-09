@@ -5,19 +5,24 @@ import nc from 'next-connect';
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
+import { checkFileExists } from '@/lib/server-only-utils';
 import { FormValues, generateIpAddress, sortData } from '@/lib/utils';
 import { VmShortDetails } from '@/lib/vmUtils';
 
 const handler = nc();
 
-const currentDir = path.join(process.cwd(), 'src', 'pages', 'api', 'instances');
-const jsonInstancesDb = path.join(currentDir, 'instances.json');
+const jsonInstancesDb = path.join(process.cwd(), 'instances.json');
 
 async function getInstances() {
   // read instances from json file having the Type VmShortDetails[]
   // and return the instances
   console.log('reading instances from file...');
   try {
+    // if file does not exist, create it
+    if (!(await checkFileExists(jsonInstancesDb))) {
+      await writeFile(jsonInstancesDb, JSON.stringify([]));
+      return [];
+    }
     const json = await readFile(jsonInstancesDb, 'utf8');
     return JSON.parse(json) as VmShortDetails[];
   } catch (err) {
@@ -36,12 +41,15 @@ async function addInstance(newInstance: VmShortDetails) {
   // and return the instances
   console.log('adding instance to file...');
   try {
-    const instances = (await getInstances()).sort((a, b) =>
+    const instances = await getInstances();
+    instances.push(newInstance);
+    const sortedInstances = instances.sort((a, b) =>
       sortData('createdAt', a, b, 'desc'),
     );
-    instances.push(newInstance);
-    await writeFile(jsonInstancesDb, JSON.stringify(instances));
-    return instances;
+
+    // const instances = (await getInstances())
+    await writeFile(jsonInstancesDb, JSON.stringify(sortedInstances));
+    return sortedInstances;
   } catch (err) {
     const error = err as Error;
     console.error('error adding instance to file', error.cause, error.message);

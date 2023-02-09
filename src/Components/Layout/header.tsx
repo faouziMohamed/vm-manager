@@ -2,6 +2,7 @@
 import {
   Box,
   Button,
+  ButtonProps,
   Flex,
   Portal,
   Text,
@@ -55,7 +56,7 @@ export default function Header() {
   );
 }
 
-function AddNewServerButton() {
+export function AddNewServerButton(props: ButtonProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -65,6 +66,7 @@ function AddNewServerButton() {
         _focus={{ boxShadow: 'outline' }}
         onClick={onOpen}
         leftIcon={<MdAddCircle />}
+        {...props}
       >
         <Text ml={2}>New Instance</Text>
       </Button>

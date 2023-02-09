@@ -53,7 +53,12 @@ function componentToHex(colorComponent: number): string {
 
 export function updateQueryParams(
   router: NextRouter,
-  value: VmPowerState | GroupByOption | SortOption | SortOrderOption,
+  value:
+    | VmPowerState
+    | GroupByOption
+    | SortOption
+    | SortOrderOption
+    | { value: 'default' },
   queryParam: string,
 ) {
   let query = { ...router.query };

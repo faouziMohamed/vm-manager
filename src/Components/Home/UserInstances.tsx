@@ -12,23 +12,28 @@ import GroupedVmInstances from '@/Components/Home/GroupedVmInstances';
 import NoInstanceFound from '@/Components/Home/NoInstanceFound';
 import NoInstanceFoundForAppliedFilter from '@/Components/Home/NoInstanceFoundForAppliedFilter';
 import UngroupedVmInstances from '@/Components/Home/UngroupedVmInstances';
+import Paragraph from '@/Components/Paragraph';
 import { useVmShortDetails } from '@/Services/hooks';
 
 export default function UserInstances() {
   const { data, error, isLoading } = useVmShortDetails();
   const router = useRouter() as NextRouterWithQueries;
-  if (isLoading) return <div>Loading instances...</div>;
-  if (!isLoading && error) return <div>Failed to load instances</div>;
-
+  if (isLoading) {
+    return <Paragraph fontSize='1.2rem'>Loading instances...</Paragraph>;
+  }
+  if (!isLoading && (error || !data)) {
+    return <Paragraph fontSize='1.2rem'>Failed to load instances</Paragraph>;
+  }
+  if (!isLoading && !error && !data?.length) {
+    return <NoInstanceFound />;
+  }
   const {
     query: { filter, group_by: groupBy, sort, sort_order: sortOrder },
   } = router;
 
-  if (!data) return <NoInstanceFound />;
-
   let filteredData: VmShortDetails[] = data ?? [];
   if (filter && filter !== 'default') {
-    filteredData = data.filter((d) => d.status === filter) ?? [];
+    filteredData = data?.filter((d) => d.status === filter) ?? [];
   }
   if (filteredData.length === 0) return <NoInstanceFoundForAppliedFilter />;
 

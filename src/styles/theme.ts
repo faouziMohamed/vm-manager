@@ -10,6 +10,26 @@ export type ThemeColor = {
   50: string;
 };
 
+const danger: ThemeColor = {
+  main: '#f50055',
+  500: '#720025',
+  400: '#a80039',
+  300: '#d5006b',
+  200: '#fc1e97',
+  100: '#ffc4e0',
+  50: '#ffeef0',
+};
+
+const warning: ThemeColor = {
+  main: '#ff9800',
+  500: '#b26a00',
+  400: '#e69100',
+  300: '#ffab00',
+  200: '#ffc400',
+  100: '#ffe0b2',
+  50: '#fff8e1',
+};
+
 const primary: ThemeColor = {
   main: '#02abbb',
   500: '#007770',
@@ -44,6 +64,8 @@ type AppColors = {
   primary: ThemeColor;
   secondary: ThemeColor;
   tertiary: ThemeColor;
+  danger: ThemeColor;
+  warning: ThemeColor;
   gradients: {
     primary: string;
   };
@@ -53,6 +75,8 @@ const colors: AppColors = {
   primary,
   secondary,
   tertiary,
+  danger,
+  warning,
   gradients: {
     primary:
       'linear-gradient(180deg, rgba(36,11,73,1) 14%, rgba(35,9,73,1) 15%, rgba(123,42,113,1) 35%, rgba(226,156,168,1) 86%);',
