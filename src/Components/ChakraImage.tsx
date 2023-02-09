@@ -6,4 +6,6 @@ const ChakraImage = chakra(NextImage, {
     ['height', 'width', 'quality', 'src', 'alt'].includes(prop),
 });
 
+ChakraImage.displayName = 'ChakraImage';
+
 export default ChakraImage;

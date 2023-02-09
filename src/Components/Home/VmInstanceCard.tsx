@@ -8,6 +8,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
+import { GoSettings } from 'react-icons/go';
 
 import { adjustColor } from '@/lib/utils';
 import { PowerStateValue } from '@/lib/vmUtils';
@@ -40,7 +41,7 @@ export default function VmInstanceCard(props: VmInstanceProps) {
             <Box w='10px' h='10px' bg={hex} borderRadius={9999} />
             <Paragraph>{status}</Paragraph>
           </Flex>
-          <Button>Manage</Button>
+          <Button leftIcon={<GoSettings />}>Manage</Button>
         </CardBody>
       </Stack>
     </Card>

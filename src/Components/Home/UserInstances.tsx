@@ -1,55 +1,21 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Heading,
-  SimpleGrid,
-  Stack,
-} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
 
 import {
-  capitalize,
-  getInstances,
   NextRouterWithQueries,
-  range,
   regroupData,
   sortData,
+  sortGroupedData,
 } from '@/lib/utils';
-import {
-  powerStateColors,
-  sortOptionsValues,
-  SortOrderValue,
-  SortValue,
-  VmShortDetails,
-} from '@/lib/vmUtils';
+import { sortOptionsValues, VmShortDetails } from '@/lib/vmUtils';
 
+import GroupedVmInstances from '@/Components/Home/GroupedVmInstances';
 import NoInstanceFound from '@/Components/Home/NoInstanceFound';
 import NoInstanceFoundForAppliedFilter from '@/Components/Home/NoInstanceFoundForAppliedFilter';
-import VmInstanceCard from '@/Components/Home/VmInstanceCard';
-import Paragraph from '@/Components/Paragraph';
-
-function sortGroupedData(
-  groupedData: Map<string, VmShortDetails[]>,
-  sort: SortValue,
-  order: SortOrderValue = 'asc',
-) {
-  groupedData.forEach((value, key) => {
-    groupedData.set(
-      key,
-      value.sort((a, b) => sortData(sort, a, b, order)),
-    );
-  });
-}
+import UngroupedVmInstances from '@/Components/Home/UngroupedVmInstances';
+import { useVmShortDetails } from '@/Services/hooks';
 
 export default function UserInstances() {
-  const { data, error, isLoading } = useSWR<VmShortDetails[], Error>(
-    '/api/instances',
-    getInstances,
-  );
+  const { data, error, isLoading } = useVmShortDetails();
   const router = useRouter() as NextRouterWithQueries;
   if (isLoading) return <div>Loading instances...</div>;
   if (!isLoading && error) return <div>Failed to load instances</div>;
@@ -69,7 +35,6 @@ export default function UserInstances() {
   let groupedData = new Map<string, VmShortDetails[]>();
   if (groupBy && groupBy !== 'default') {
     groupedData = regroupData(filteredData, groupBy);
-    // console.dir(groupedData, { depth: null });
   }
 
   if (sort && sortOptionsValues.includes(sort)) {
@@ -84,68 +49,8 @@ export default function UserInstances() {
   }
 
   return groupedData.size > 0 ? (
-    <Accordion allowMultiple defaultIndex={range(0, groupedData.size)}>
-      {Array.from(groupedData.entries()).map(([groupName, dataArray]) => (
-        <AccordionItem key={groupName} borderWidth='0 !important'>
-          <Stack
-            borderWidth='1px'
-            borderColor='transparent'
-            borderRadius='md'
-            py='0.3rem'
-            spacing={0}
-            _hover={{ borderColor: 'gray.100' }}
-          >
-            <AccordionButton _hover={{ bg: 'transparent' }}>
-              <Heading
-                as='h2'
-                size='lg'
-                display='flex'
-                alignItems='center'
-                gap='0.3rem'
-                justifyContent='space-between'
-                w='100%'
-              >
-                <Paragraph>{capitalize(groupName)}</Paragraph>
-                <AccordionIcon fontSize='sm' />
-              </Heading>
-            </AccordionButton>
-            <AccordionPanel borderWidth={0}>
-              <SimpleGrid
-                borderRadius='md'
-                spacing={4}
-                templateColumns='repeat(auto-fill, minmax(250px, 1fr))'
-              >
-                {dataArray.map(({ status, id, ipAddress, name }) => (
-                  <VmInstanceCard
-                    key={id}
-                    dataId={id}
-                    hex={powerStateColors[status]}
-                    name={name}
-                    ipAddress={ipAddress}
-                    status={status}
-                  />
-                ))}
-              </SimpleGrid>
-            </AccordionPanel>
-          </Stack>
-        </AccordionItem>
-      ))}
-    </Accordion>
+    <GroupedVmInstances groupedData={groupedData} />
   ) : (
-    <SimpleGrid
-      spacing={4}
-      templateColumns='repeat(auto-fill, minmax(250px, 1fr))'
-    >
-      {filteredData.map(({ status, id, ipAddress, name }) => (
-        <VmInstanceCard
-          key={id}
-          dataId={id}
-          hex={powerStateColors[status]}
-          name={name}
-          ipAddress={ipAddress}
-          status={status}
-        />
-      ))}
-    </SimpleGrid>
+    <UngroupedVmInstances vmShortDetails={filteredData} />
   );
 }

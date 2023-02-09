@@ -81,6 +81,67 @@ export type SortOrderOption = {
   value: (typeof sortOrderValues)[number];
 };
 
+export const availableRegions = [
+  'chinaeast2',
+  'uaenorth',
+  'usgovvirginia',
+  'australiacentral2',
+  'canadaeast',
+  'northcentralus',
+  'westindia',
+  'chinanorth',
+  'koreacentral',
+  'francecentral',
+  'germanynorth',
+  'germanycentral',
+  'australiacentral',
+  'usgoviowa',
+  'japaneast',
+  'southcentralus',
+  'usdodcentral',
+  'eastus',
+  'uaecentral',
+  'australiasoutheast',
+  'centralus',
+  'centralindia',
+  'westcentralus',
+  'germanywestcentral',
+  'usgovarizona',
+  'eastus2',
+  'usdodeast',
+  'southeastasia',
+  'francesouth',
+  'koreasouth',
+  'switzerlandnorth',
+  'norwayeast',
+  'southafricanorth',
+  'ukwest',
+  'switzerlandwest',
+  'swedencentral',
+  'chinaeast',
+  'japanwest',
+  'brazilsouth',
+  'westus3',
+  'northeurope',
+  'australiaeast',
+  'southindia',
+  'westus',
+  'norwaywest',
+  'canadacentral',
+  'westeurope',
+  'southafricawest',
+  'eastasia',
+  'germanynortheast',
+  'chinanorth2',
+  'westus2',
+  'usgovtexas',
+  'uksouth',
+] as const;
+export type Region = (typeof availableRegions)[number];
+export type AvailableRegions = {
+  regions: Region[];
+  count: number;
+};
 export const groupByOptionsNames = ['Group By', 'Region', 'Status'] as const;
 export const groupByOptionsValues = ['default', 'region', 'status'] as const;
 export type GroupByValue = (typeof groupByOptionsValues)[number];

@@ -1,11 +1,21 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+/* eslint-disable react/jsx-props-no-spreading,@typescript-eslint/ban-ts-comment */
+import {
+  Box,
+  Button,
+  Flex,
+  Portal,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { MdAddCircle } from 'react-icons/md';
 
 import ChakraImage from '@/Components/ChakraImage';
+import CreateNewVm from '@/Components/Layout/CreateNewVm';
 import Theme from '@/styles/theme';
 
 // const id: number = Math.floor(Math.random() * 1000000);
 const id = 643761;
+
 export default function Header() {
   const githubUrlAvatar = `https://avatars.githubusercontent.com/u/${id}?v=4`;
   return (
@@ -37,20 +47,32 @@ export default function Header() {
           />
         </Box>
 
-        <Flex justifyContent='space-between' w='fit-content' gap={3}>
-          <Button
-            display='flex'
-            alignItems='center'
-            justifyContent='center'
-            bg='#016F54'
-            _hover={{ bg: '#008f70' }}
-            _focus={{ boxShadow: 'outline' }}
-          >
-            <MdAddCircle />
-            <Text ml={2}>New Server</Text>
-          </Button>
+        <Flex justifyContent='space-between'>
+          <AddNewServerButton />
         </Flex>
       </Flex>
     </Box>
+  );
+}
+
+function AddNewServerButton() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <>
+      <Button
+        bg='#016F54'
+        _hover={{ bg: '#008f70' }}
+        _focus={{ boxShadow: 'outline' }}
+        onClick={onOpen}
+        leftIcon={<MdAddCircle />}
+      >
+        <Text ml={2}>New Instance</Text>
+      </Button>
+      {isOpen && (
+        <Portal>
+          <CreateNewVm isOpen={isOpen} onClose={onClose} />
+        </Portal>
+      )}
+    </>
   );
 }

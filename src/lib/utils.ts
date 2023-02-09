@@ -4,6 +4,7 @@ import {
   GroupByOption,
   GroupByValue,
   PowerStateValue,
+  Region,
   SortOption,
   SortOrderOption,
   SortOrderValue,
@@ -78,10 +79,6 @@ export type NextRouterWithQueries = NextRouter & {
     sort_order?: SortOrderValue;
   };
 };
-export const getInstances = async () => {
-  const res = await fetch('/api/instances');
-  return (await res.json()) as VmShortDetails[];
-};
 
 function compareNames(a: string, b: string, order: SortOrderValue = 'asc') {
   return order === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
@@ -151,4 +148,35 @@ export const capitalize = (s: string) => {
 
 export function range(start: number, end: number): number[] {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
+
+export function sortGroupedData(
+  groupedData: Map<string, VmShortDetails[]>,
+  sort: SortValue,
+  order: SortOrderValue = 'asc',
+) {
+  groupedData.forEach((value, key) => {
+    groupedData.set(
+      key,
+      value.sort((a, b) => sortData(sort, a, b, order)),
+    );
+  });
+}
+
+export const validPasswordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})$/;
+
+export interface FormValues {
+  serverName: string;
+  machineName: string;
+  region: Region;
+  password: string;
+}
+
+export function generateIpAddress(): string {
+  const firstOctet = Math.floor(Math.random() * 256);
+  const secondOctet = Math.floor(Math.random() * 256);
+  const thirdOctet = Math.floor(Math.random() * 256);
+  const fourthOctet = Math.floor(Math.random() * 256);
+  return `${firstOctet}.${secondOctet}.${thirdOctet}.${fourthOctet}`;
 }
