@@ -14,12 +14,17 @@ export async function checkFileExists(fileName: string): Promise<boolean> {
 }
 
 const jsonInstancesDb = path.join(process.cwd(), 'instances.json');
+const instances: VmShortDetails[] = [];
 
 export async function getInstances() {
+  console.log('jsonInstancesDb', jsonInstancesDb);
   // read instances from json file having the Type VmShortDetails[]
   // and return the instances
   console.log('reading instances from file...');
   try {
+    if (process.env.NODE_ENV !== 'development') {
+      return instances;
+    }
     // if file does not exist, create it
     if (!(await checkFileExists(jsonInstancesDb))) {
       await writeFile(jsonInstancesDb, JSON.stringify([]));
@@ -43,9 +48,13 @@ export async function addInstance(newInstance: VmShortDetails) {
   // and return the instances
   console.log('adding instance to file...');
   try {
-    const instances = await getInstances();
-    instances.push(newInstance);
-    const sortedInstances = instances.sort((a, b) =>
+    if (process.env.NODE_ENV !== 'development') {
+      instances.push(newInstance);
+      return instances;
+    }
+    const allInstances = await getInstances();
+    allInstances.push(newInstance);
+    const sortedInstances = allInstances.sort((a, b) =>
       sortData('createdAt', a, b, 'desc'),
     );
 
