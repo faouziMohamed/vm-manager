@@ -55,9 +55,9 @@ function CreatingVm({
   );
 }
 
-const VmIcon = chakra(CreatingVm, {
+const VmInstanceIcon = chakra(CreatingVm, {
   shouldForwardProp: (prop) =>
     ['fill', 'screenColor', 'linesColor'].includes(prop),
 });
 
-export default VmIcon;
+export default VmInstanceIcon;

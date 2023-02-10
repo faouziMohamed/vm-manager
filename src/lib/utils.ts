@@ -11,7 +11,7 @@ import {
   SortValue,
   VMInstance,
   VmPowerState,
-} from '@/lib/vmUtils';
+} from '@/lib/types';
 
 export function adjustColor(hex: string, percent: number): string {
   const regex = /^#[0-9A-Fa-f]{6}$/;

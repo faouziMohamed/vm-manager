@@ -1,8 +1,8 @@
 import { readFile, stat, writeFile } from 'fs/promises';
 import path from 'path';
 
+import { VMInstance } from '@/lib/types';
 import { sortData } from '@/lib/utils';
-import { VMInstance } from '@/lib/vmUtils';
 
 export async function checkFileExists(fileName: string): Promise<boolean> {
   try {
