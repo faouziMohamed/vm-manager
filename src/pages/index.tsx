@@ -7,6 +7,7 @@ import SortMenu from '@/Components/Home/sortMenu';
 import StatusFilterMenu from '@/Components/Home/statusFilterMenu';
 import UserInstances from '@/Components/Home/UserInstances';
 import Layout from '@/Components/Layout/Layout';
+import { refreshVmInstances } from '@/Services/hooks';
 
 export default function Home() {
   return (
@@ -31,7 +32,12 @@ function QueriesComponentSection() {
       <GroupByMenu />
       <SortMenu />
       <SortDirection />
-      <Button variant='outline' title='Refresh the view'>
+      <Button
+        variant='outline'
+        title='Refresh the view'
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onClick={refreshVmInstances}
+      >
         <MdRefresh />
       </Button>
     </Stack>

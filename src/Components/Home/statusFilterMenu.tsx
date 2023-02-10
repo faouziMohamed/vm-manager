@@ -11,8 +11,9 @@ import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import { MdFilterList } from 'react-icons/md';
 
+import { VmPowerState } from '@/lib/types';
 import { NextRouterWithQueries, updateQueryParams } from '@/lib/utils';
-import { powerStates, VmPowerState } from '@/lib/vmUtils';
+import { powerStates } from '@/lib/vmUtils';
 
 export type MenuProps = {
   onSelect?: (value: VmPowerState['value']) => void;

@@ -1,6 +1,7 @@
 import { SimpleGrid } from '@chakra-ui/react';
 
-import { powerStateColors, VMInstance } from '@/lib/vmUtils';
+import { VMInstance } from '@/lib/types';
+import { powerStateColors } from '@/lib/vmUtils';
 
 import VmInstanceCard from '@/Components/Home/VmInstanceCard';
 
@@ -18,7 +19,7 @@ export default function UngroupedVmInstances({
         ({ status, instanceId, publicIpAddress, serverName }) => (
           <VmInstanceCard
             key={instanceId}
-            dataId={instanceId}
+            instanceId={instanceId}
             color={powerStateColors[status]}
             serverName={serverName}
             ipAddress={publicIpAddress}

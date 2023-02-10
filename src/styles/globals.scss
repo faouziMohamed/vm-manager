@@ -11,12 +11,6 @@ body {
   font-family: 'Ubuntu', 'Roboto', 'Inter', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
 .scroll-smooth {
   scroll-behavior: smooth;
 }

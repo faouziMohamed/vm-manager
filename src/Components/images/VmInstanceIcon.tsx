@@ -1,11 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { chakra } from '@chakra-ui/react';
 
-function CreatingVm({
-  screenColor = '#D56FE6',
-  linesColor = '#E482F4',
-  ...rest
-}) {
+function VmIcon({ screenColor = '#D56FE6', linesColor = '#E482F4', ...rest }) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -55,7 +51,7 @@ function CreatingVm({
   );
 }
 
-const VmInstanceIcon = chakra(CreatingVm, {
+const VmInstanceIcon = chakra(VmIcon, {
   shouldForwardProp: (prop) =>
     ['fill', 'screenColor', 'linesColor'].includes(prop),
 });

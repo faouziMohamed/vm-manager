@@ -10,25 +10,26 @@ import {
 } from '@chakra-ui/react';
 import { GoSettings } from 'react-icons/go';
 
+import { PowerStateValue } from '@/lib/types';
 import { adjustColor } from '@/lib/utils';
-import { PowerStateValue } from '@/lib/vmUtils';
 
-import VmIcon from '@/Components/images/CreatingVm';
+import ChakraLink from '@/Components/ChakraLink';
+import VmInstanceIcon from '@/Components/images/VmInstanceIcon';
 import Paragraph from '@/Components/Paragraph';
 
 type VmInstanceProps = {
-  dataId: string;
+  instanceId: string;
   color: string;
   serverName: string;
   ipAddress: string;
   status: PowerStateValue;
 };
 export default function VmInstanceCard(props: VmInstanceProps) {
-  const { dataId, color, ipAddress, serverName, status } = props;
+  const { instanceId, color, ipAddress, serverName, status } = props;
   return (
-    <Card data-id={dataId} px='1rem' w='100%'>
+    <Card data-id={instanceId} px='1rem' w='100%'>
       <Stack direction='row' alignItems='center' justifyContent='space-around'>
-        <VmIcon
+        <VmInstanceIcon
           w='5rem'
           flexShrink={0.3}
           screenColor={adjustColor(color, -20)}
@@ -41,7 +42,13 @@ export default function VmInstanceCard(props: VmInstanceProps) {
             <Box w='10px' h='10px' bg={color} borderRadius={9999} />
             <Paragraph>{status}</Paragraph>
           </Flex>
-          <Button leftIcon={<GoSettings />}>Manage</Button>
+          <Button
+            as={ChakraLink}
+            href={`/vm/${instanceId}`}
+            leftIcon={<GoSettings />}
+          >
+            Manage
+          </Button>
         </CardBody>
       </Stack>
     </Card>

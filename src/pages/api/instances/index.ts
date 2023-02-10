@@ -3,7 +3,7 @@ import { NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { getInstances } from '@/lib/server-only-utils';
-import { VMInstance } from '@/lib/vmUtils';
+import { VMInstance } from '@/lib/types';
 
 let instances: VMInstance[] = [];
 

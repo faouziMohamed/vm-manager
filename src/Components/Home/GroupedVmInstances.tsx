@@ -9,8 +9,9 @@ import {
   Stack,
 } from '@chakra-ui/react';
 
+import { VMInstance } from '@/lib/types';
 import { capitalize, range } from '@/lib/utils';
-import { powerStateColors, VMInstance } from '@/lib/vmUtils';
+import { powerStateColors } from '@/lib/vmUtils';
 
 import VmInstanceCard from '@/Components/Home/VmInstanceCard';
 import Paragraph from '@/Components/Paragraph';
@@ -56,7 +57,7 @@ export default function GroupedVmInstances({
                   ({ status, instanceId, publicIpAddress, serverName }) => (
                     <VmInstanceCard
                       key={instanceId}
-                      dataId={instanceId}
+                      instanceId={instanceId}
                       color={powerStateColors[status]}
                       serverName={serverName}
                       ipAddress={publicIpAddress}

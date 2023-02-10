@@ -3,17 +3,17 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { getInstances } from '@/lib/server-only-utils';
-import { VMInstance } from '@/lib/vmUtils';
+import { VMInstance } from '@/lib/types';
 
 let instances: VMInstance[] = [];
 
 const handler = nc();
 
 type NextApiRequestWithParams = NextApiRequest & {
-  query: { vmId: string };
+  query: { instanceId: string };
 };
 
-type ErrorResponse = {
+export type ErrorResponse = {
   message: string;
 };
 
@@ -22,10 +22,10 @@ handler.get(
     req: NextApiRequestWithParams,
     res: NextApiResponse<VMInstance | ErrorResponse>,
   ) => {
-    const { vmId } = req.query;
-    console.log('vmId', vmId);
+    const { instanceId } = req.query;
+    console.log('instanceId', instanceId);
 
-    if (!vmId) {
+    if (!instanceId) {
       res
         .status(400)
         .json({ message: 'No Virtual Machine instance ID provided' });
@@ -33,7 +33,7 @@ handler.get(
     }
     // get all instances from
     instances = await getInstances();
-    const instance = instances.find((i) => i.instanceId === vmId);
+    const instance = instances.find((i) => i.instanceId === instanceId);
     if (!instance) {
       res.status(404).json({ message: 'Virtual Machine instance not found' });
       return;

@@ -1,22 +1,23 @@
 import { useRouter } from 'next/router';
 
+import { sortOptionsValues } from '@/lib/constants';
+import { VMInstance } from '@/lib/types';
 import {
   NextRouterWithQueries,
   regroupData,
   sortData,
   sortGroupedData,
 } from '@/lib/utils';
-import { sortOptionsValues, VMInstance } from '@/lib/vmUtils';
 
 import GroupedVmInstances from '@/Components/Home/GroupedVmInstances';
 import NoInstanceFound from '@/Components/Home/NoInstanceFound';
 import NoInstanceFoundForAppliedFilter from '@/Components/Home/NoInstanceFoundForAppliedFilter';
 import UngroupedVmInstances from '@/Components/Home/UngroupedVmInstances';
 import Paragraph from '@/Components/Paragraph';
-import { useVmShortDetails } from '@/Services/hooks';
+import { useMultipleVmInstances } from '@/Services/hooks';
 
 export default function UserInstances() {
-  const { data, error, isLoading } = useVmShortDetails();
+  const { data, error, isLoading } = useMultipleVmInstances();
   const router = useRouter() as NextRouterWithQueries;
   if (isLoading) {
     return <Paragraph fontSize='1.2rem'>Loading instances...</Paragraph>;

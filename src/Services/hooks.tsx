@@ -1,17 +1,25 @@
 import useSWR, { mutate } from 'swr';
 
+import { AvailableRegions, VMInstance } from '@/lib/types';
 import { FormValues } from '@/lib/utils';
-import { AvailableRegions, VMInstance } from '@/lib/vmUtils';
 
-import { getInstances, getRegions } from '@/Services/fetchers';
+import {
+  getMultipleVmInstances,
+  getRegions,
+  getVmInstance,
+} from '@/Services/fetchers';
 
 const fetchInstancesKey = '/api/instances';
-export function useVmShortDetails() {
+export function useMultipleVmInstances() {
   const { data, error, isLoading } = useSWR<VMInstance[], Error>(
     fetchInstancesKey,
-    getInstances,
+    getMultipleVmInstances,
   );
   return { data, error, isLoading };
+}
+
+export function refreshVmInstances() {
+  return mutate(fetchInstancesKey, getMultipleVmInstances);
 }
 
 export function useAvailableRegions() {
@@ -40,4 +48,13 @@ export async function saveNewVm(body: FormValues) {
   const url = '/api/instances/new';
   const instances = await addNewVmInstance({ url, body });
   await mutate(fetchInstancesKey, instances, false);
+}
+
+export function useVmInstance(vmId: string | undefined) {
+  const fetcher = () => getVmInstance(vmId!);
+  return useSWR<VMInstance, Error>(
+    vmId ? `/api/instances/${vmId}` : null,
+    fetcher,
+    { refreshInterval: 10000, refreshWhenHidden: false },
+  );
 }

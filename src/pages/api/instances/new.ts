@@ -4,8 +4,8 @@ import nc from 'next-connect';
 import { v4 as uuidv4 } from 'uuid';
 
 import { addInstance } from '@/lib/server-only-utils';
+import { VMInstance } from '@/lib/types';
 import { FormValues, generateIpAddress } from '@/lib/utils';
-import { VMInstance } from '@/lib/vmUtils';
 
 const handler = nc();
 
@@ -23,6 +23,7 @@ handler.post(
       adminUsername: 'admin',
       size: 'Standard_D2s_v3',
       resourceGroupName: 'rg',
+      isFavorite: false,
     };
     // validate the password
     // get all instances from

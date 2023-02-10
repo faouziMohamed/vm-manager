@@ -1,7 +1,8 @@
 import { NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { AvailableRegions, availableRegions, Region } from '@/lib/vmUtils';
+import { availableRegions } from '@/lib/constants';
+import { AvailableRegions, Region } from '@/lib/types';
 
 const handler = nc();
 const regions: Region[] = [...availableRegions];
