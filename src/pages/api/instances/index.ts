@@ -3,13 +3,13 @@ import { NextApiResponse } from 'next';
 import nc from 'next-connect';
 
 import { getInstances } from '@/lib/server-only-utils';
-import { VmShortDetails } from '@/lib/vmUtils';
+import { VMInstance } from '@/lib/vmUtils';
 
-let instances: VmShortDetails[] = [];
+let instances: VMInstance[] = [];
 
 const handler = nc();
 
-handler.get(async (req, res: NextApiResponse<VmShortDetails[]>) => {
+handler.get(async (req, res: NextApiResponse<VMInstance[]>) => {
   // get all instances from
   instances = await getInstances();
   res.json(instances);

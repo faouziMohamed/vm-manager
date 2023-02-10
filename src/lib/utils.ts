@@ -9,8 +9,8 @@ import {
   SortOrderOption,
   SortOrderValue,
   SortValue,
+  VMInstance,
   VmPowerState,
-  VmShortDetails,
 } from '@/lib/vmUtils';
 
 export function adjustColor(hex: string, percent: number): string {
@@ -89,12 +89,6 @@ function compareNames(a: string, b: string, order: SortOrderValue = 'asc') {
   return order === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
 }
 
-function compareDates(a: Date, b: Date, order: SortOrderValue = 'asc'): number {
-  const aTimestamp = a.getTime();
-  const bTimestamp = b.getTime();
-  return order === 'asc' ? aTimestamp - bTimestamp : bTimestamp - aTimestamp;
-}
-
 function compareIpAddresses(
   a: string,
   b: string,
@@ -114,28 +108,20 @@ function compareIpAddresses(
 
 export function sortData(
   sort: string,
-  a: VmShortDetails,
-  b: VmShortDetails,
+  a: VMInstance,
+  b: VMInstance,
   order: SortOrderValue = 'asc',
 ) {
-  if (sort === 'createdAt') {
-    const aDate = new Date(a.createdAt);
-    const bDate = new Date(b.createdAt);
-    return compareDates(aDate, bDate, order);
-  }
   if (sort === 'ipAddress') {
-    return compareIpAddresses(a.ipAddress, b.ipAddress, order);
+    return compareIpAddresses(a.publicIpAddress, b.publicIpAddress, order);
   }
-  //  sort === 'name' || sort === 'default'
-  return compareNames(a.name, b.name, order);
+  //  sort === 'serverName' || sort === 'default'
+  return compareNames(a.serverName, b.serverName, order);
 }
 
-export function regroupData(
-  filteredData: VmShortDetails[],
-  groupBy: GroupByValue,
-) {
-  if (groupBy === 'default') return new Map<string, VmShortDetails[]>();
-  const groupedData: Map<string, VmShortDetails[]> = new Map();
+export function regroupData(filteredData: VMInstance[], groupBy: GroupByValue) {
+  if (groupBy === 'default') return new Map<string, VMInstance[]>();
+  const groupedData: Map<string, VMInstance[]> = new Map();
   filteredData.forEach((d) => {
     const group = d[groupBy];
     if (groupedData.has(group)) {
@@ -156,7 +142,7 @@ export function range(start: number, end: number): number[] {
 }
 
 export function sortGroupedData(
-  groupedData: Map<string, VmShortDetails[]>,
+  groupedData: Map<string, VMInstance[]>,
   sort: SortValue,
   order: SortOrderValue = 'asc',
 ) {

@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 
 import { capitalize, range } from '@/lib/utils';
-import { powerStateColors, VmShortDetails } from '@/lib/vmUtils';
+import { powerStateColors, VMInstance } from '@/lib/vmUtils';
 
 import VmInstanceCard from '@/Components/Home/VmInstanceCard';
 import Paragraph from '@/Components/Paragraph';
@@ -18,7 +18,7 @@ import Paragraph from '@/Components/Paragraph';
 export default function GroupedVmInstances({
   groupedData,
 }: {
-  groupedData: Map<string, VmShortDetails[]>;
+  groupedData: Map<string, VMInstance[]>;
 }) {
   return (
     <Accordion allowMultiple defaultIndex={range(0, groupedData.size)}>
@@ -52,16 +52,18 @@ export default function GroupedVmInstances({
                 spacing={4}
                 templateColumns='repeat(auto-fill, minmax(250px, 1fr))'
               >
-                {dataArray.map(({ status, id, ipAddress, name }) => (
-                  <VmInstanceCard
-                    key={id}
-                    dataId={id}
-                    hex={powerStateColors[status]}
-                    name={name}
-                    ipAddress={ipAddress}
-                    status={status}
-                  />
-                ))}
+                {dataArray.map(
+                  ({ status, instanceId, publicIpAddress, serverName }) => (
+                    <VmInstanceCard
+                      key={instanceId}
+                      dataId={instanceId}
+                      color={powerStateColors[status]}
+                      serverName={serverName}
+                      ipAddress={publicIpAddress}
+                      status={status}
+                    />
+                  ),
+                )}
               </SimpleGrid>
             </AccordionPanel>
           </Stack>

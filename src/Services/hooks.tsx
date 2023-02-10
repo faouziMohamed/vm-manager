@@ -1,13 +1,13 @@
 import useSWR, { mutate } from 'swr';
 
 import { FormValues } from '@/lib/utils';
-import { AvailableRegions, VmShortDetails } from '@/lib/vmUtils';
+import { AvailableRegions, VMInstance } from '@/lib/vmUtils';
 
 import { getInstances, getRegions } from '@/Services/fetchers';
 
 const fetchInstancesKey = '/api/instances';
 export function useVmShortDetails() {
-  const { data, error, isLoading } = useSWR<VmShortDetails[], Error>(
+  const { data, error, isLoading } = useSWR<VMInstance[], Error>(
     fetchInstancesKey,
     getInstances,
   );
@@ -33,7 +33,7 @@ async function addNewVmInstance(props: { url: string; body: FormValues }) {
   if (!response.ok) {
     throw new Error('Something went wrong, please try again later.');
   }
-  return (await response.json()) as VmShortDetails[];
+  return (await response.json()) as VMInstance[];
 }
 
 export async function saveNewVm(body: FormValues) {

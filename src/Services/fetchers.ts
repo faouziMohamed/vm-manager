@@ -1,4 +1,4 @@
-import { AvailableRegions, VmShortDetails } from '@/lib/vmUtils';
+import { AvailableRegions, VMInstance } from '@/lib/vmUtils';
 
 export async function getRegions() {
   const res = await fetch('/api/regions');
@@ -7,5 +7,5 @@ export async function getRegions() {
 
 export async function getInstances() {
   const res = await fetch('/api/instances');
-  return (await res.json()) as VmShortDetails[];
+  return (await res.json()) as VMInstance[];
 }

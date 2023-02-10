@@ -2,7 +2,7 @@ import { readFile, stat, writeFile } from 'fs/promises';
 import path from 'path';
 
 import { sortData } from '@/lib/utils';
-import { VmShortDetails } from '@/lib/vmUtils';
+import { VMInstance } from '@/lib/vmUtils';
 
 export async function checkFileExists(fileName: string): Promise<boolean> {
   try {
@@ -14,13 +14,9 @@ export async function checkFileExists(fileName: string): Promise<boolean> {
 }
 
 const jsonInstancesDb = path.join(process.cwd(), 'instances.json');
-const instances: VmShortDetails[] = [];
+const instances: VMInstance[] = [];
 
 export async function getInstances() {
-  console.log('jsonInstancesDb', jsonInstancesDb);
-  // read instances from json file having the Type VmShortDetails[]
-  // and return the instances
-  console.log('reading instances from file...');
   try {
     if (process.env.NODE_ENV !== 'development') {
       return instances;
@@ -31,9 +27,10 @@ export async function getInstances() {
       return [];
     }
     const json = await readFile(jsonInstancesDb, 'utf8');
-    return JSON.parse(json) as VmShortDetails[];
+    return JSON.parse(json) as VMInstance[];
   } catch (err) {
     const error = err as Error;
+    // eslint-disable-next-line no-console
     console.error(
       'error reading instances from file',
       error.cause,
@@ -43,10 +40,7 @@ export async function getInstances() {
   }
 }
 
-export async function addInstance(newInstance: VmShortDetails) {
-  // add a new instance to the json file
-  // and return the instances
-  console.log('adding instance to file...');
+export async function addInstance(newInstance: VMInstance) {
   try {
     if (process.env.NODE_ENV !== 'development') {
       instances.push(newInstance);
@@ -63,6 +57,7 @@ export async function addInstance(newInstance: VmShortDetails) {
     return sortedInstances;
   } catch (err) {
     const error = err as Error;
+    // eslint-disable-next-line no-console
     console.error('error adding instance to file', error.cause, error.message);
     return [];
   }

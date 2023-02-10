@@ -6,7 +6,7 @@ import {
   sortData,
   sortGroupedData,
 } from '@/lib/utils';
-import { sortOptionsValues, VmShortDetails } from '@/lib/vmUtils';
+import { sortOptionsValues, VMInstance } from '@/lib/vmUtils';
 
 import GroupedVmInstances from '@/Components/Home/GroupedVmInstances';
 import NoInstanceFound from '@/Components/Home/NoInstanceFound';
@@ -31,13 +31,13 @@ export default function UserInstances() {
     query: { filter, group_by: groupBy, sort, sort_order: sortOrder },
   } = router;
 
-  let filteredData: VmShortDetails[] = data ?? [];
+  let filteredData: VMInstance[] = data ?? [];
   if (filter && filter !== 'default') {
     filteredData = data?.filter((d) => d.status === filter) ?? [];
   }
   if (filteredData.length === 0) return <NoInstanceFoundForAppliedFilter />;
 
-  let groupedData = new Map<string, VmShortDetails[]>();
+  let groupedData = new Map<string, VMInstance[]>();
   if (groupBy && groupBy !== 'default') {
     groupedData = regroupData(filteredData, groupBy);
   }

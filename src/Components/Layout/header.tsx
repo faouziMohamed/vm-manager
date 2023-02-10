@@ -11,6 +11,7 @@ import {
 import { MdAddCircle } from 'react-icons/md';
 
 import ChakraImage from '@/Components/ChakraImage';
+import ChakraLink from '@/Components/ChakraLink';
 import CreateNewVm from '@/Components/Layout/CreateNewVm';
 import Theme from '@/styles/theme';
 
@@ -31,9 +32,9 @@ export default function Header() {
         color='white'
         gap='0.7rem'
       >
-        <Text as='h1' fontSize={['0.9rem', '1.2rem']}>
+        <ChakraLink href='/' fontSize={['0.9rem', '1.2rem']}>
           Manage Servers
-        </Text>
+        </ChakraLink>
         <Box pos='relative' flexShrink={0}>
           {/*  Avatar */}
           <ChakraImage

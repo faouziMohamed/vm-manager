@@ -5,25 +5,24 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { addInstance } from '@/lib/server-only-utils';
 import { FormValues, generateIpAddress } from '@/lib/utils';
-import { VmShortDetails } from '@/lib/vmUtils';
+import { VMInstance } from '@/lib/vmUtils';
 
 const handler = nc();
 
 type NextAPiRequestWithBody = NextApiResponse & { body: FormValues };
 handler.post(
-  async (
-    req: NextAPiRequestWithBody,
-    res: NextApiResponse<VmShortDetails[]>,
-  ) => {
-    const { serverName, region } = req.body;
-    const newInstance: VmShortDetails = {
-      id: uuidv4(),
-      name: serverName,
-      ipAddress: generateIpAddress(),
+  async (req: NextAPiRequestWithBody, res: NextApiResponse<VMInstance[]>) => {
+    const { serverName, region, machineName } = req.body;
+    const newInstance: VMInstance = {
+      instanceId: uuidv4(),
+      serverName,
+      computerName: machineName,
+      publicIpAddress: generateIpAddress(),
       status: 'creating',
       region,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      adminUsername: 'admin',
+      size: 'Standard_D2s_v3',
+      resourceGroupName: 'rg',
     };
     // validate the password
     // get all instances from

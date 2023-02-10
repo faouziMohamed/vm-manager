@@ -155,12 +155,24 @@ export const groupByOptions: GroupByOption[] = [
   { name: 'Status', value: 'status' },
   { name: 'Region', value: 'region' },
 ];
-export type VmShortDetails = {
-  id: string;
-  name: string;
-  region: string;
+// export type VMInstance = {
+//   instanceId: string;
+//   name: string;
+//   region: string;
+//   status: PowerStateValue;
+//   publicIpAddress: string;
+//   createdAt: Date | string;
+//   updatedAt: Date | string;
+// };
+
+export interface VMInstance {
+  instanceId: string;
+  serverName: string;
+  computerName: string;
+  resourceGroupName: string;
+  size: string;
+  adminUsername: string;
+  publicIpAddress: string;
   status: PowerStateValue;
-  ipAddress: string;
-  createdAt: Date | string;
-  updatedAt: Date | string;
-};
+  region: Region;
+}
