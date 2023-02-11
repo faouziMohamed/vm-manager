@@ -48,3 +48,4 @@ sitemap.xml
 /.idea/.gitignore
 /.idea/watcherTasks.xml
 sitemap*
+/instances.json
