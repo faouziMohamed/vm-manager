@@ -26,7 +26,8 @@ function QueriesComponentSection() {
       alignItems='center'
       flexWrap='wrap'
       justifyContent='center'
-      pb='1rem'
+      pt={{ sm: '0.5rem' }}
+      pb='1.5rem'
     >
       <StatusFilterMenu />
       <GroupByMenu />

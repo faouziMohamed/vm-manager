@@ -22,6 +22,17 @@ export function refreshVmInstances() {
   return mutate(fetchInstancesKey, getMultipleVmInstances);
 }
 
+export function refreshVmInstance(vmId: string) {
+  return mutate(`/api/instances/${vmId}`, getVmInstance(vmId));
+}
+
+export function mutateVmInstance(
+  vmId: string,
+  data: VMInstance | undefined = undefined,
+) {
+  return mutate(`/api/instances/${vmId}`, data);
+}
+
 export function useAvailableRegions() {
   const { data, error, isLoading } = useSWR<AvailableRegions, Error>(
     '/api/regions',

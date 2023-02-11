@@ -171,3 +171,70 @@ export function generateIpAddress(): string {
   const fourthOctet = Math.floor(Math.random() * 256);
   return `${firstOctet}.${secondOctet}.${thirdOctet}.${fourthOctet}`;
 }
+
+export type VmDetails = {
+  name: string;
+  title?: string;
+  value: string;
+};
+
+export async function copyToClipboard(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error copying to clipboard: ', error);
+    return false;
+  }
+}
+
+export function mapInstanceToVmDetails(instance: VMInstance) {
+  // #region details
+  const details: VmDetails[] = [
+    {
+      name: 'Computer Name',
+      title:
+        '(Machine Name/Host Name) Name assigned to the computer when it was created.',
+      value: instance.computerName,
+    },
+    {
+      name: 'Instance ID',
+      title: 'Unique identifier for the instance.',
+      value: instance.instanceId,
+    },
+    {
+      name: 'Server Name',
+      title:
+        'Name of the server where the instance is running. This is the displayed name in this portal.',
+      value: instance.serverName,
+    },
+    {
+      name: 'Region',
+      title: 'Region where the instance is running.',
+      value: instance.region,
+    },
+    {
+      name: 'Machine Status',
+      title: 'Current status of the instance (running, stopped, etc.).',
+      value: instance.status,
+    },
+    {
+      name: 'User Name',
+      title: 'Username assigned to the instance when it was created.',
+      value: instance.adminUsername,
+    },
+    {
+      name: 'vCPUs',
+      title: 'Number of virtual CPUs assigned to the instance.',
+      value: '2',
+    },
+    {
+      name: 'RAM',
+      title: 'Amount of RAM assigned to the instance.',
+      value: '8 GiB',
+    },
+  ];
+  // #endregion
+  return details;
+}

@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       pos='absolute'
     >
       <Header />
-      <Main as='main' py='1.5rem' px='1rem' w='100%' overflowX='auto'>
+      <Main as='main' py='1rem' px='1rem' w='100%' overflowX='auto'>
         <Box marginX='auto' maxW='5xl' w='100'>
           {children}
         </Box>
