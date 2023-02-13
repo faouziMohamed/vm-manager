@@ -1,18 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 
-// export interface ISeoProps {
-//   title?: string;
-//   siteName?: string;
-//   description?: string;
-//   url?: string;
-//   type?: string;
-//   robots?: string;
-//   image?: string;
-//   keywords?: string;
-//   tags?: string;
-//   date?: string;
-// }
-
 export const keywords = [
   'Android x86',
   'Virtual Machine',

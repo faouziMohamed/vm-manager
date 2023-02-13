@@ -14,8 +14,8 @@ export default function NoInstanceFound() {
           leftIcon={undefined}
           textAlign='center'
           variant='ghost'
-          color={Theme.colors.secondary['50']}
-          bg={Theme.colors.primary.main}
+          color={Theme.colors.primary['50']}
+          bg={Theme.colors.tertiary.main}
           borderWidth='1px'
         />
       </Flex>

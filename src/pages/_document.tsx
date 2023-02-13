@@ -54,7 +54,7 @@ export default function Document() {
         {/* <meta name='twitter:image' content={image} key='twitter:image' /> */}
         <meta
           name='msapplication-TileColor'
-          content={Theme.colors.primary.main}
+          content={Theme.colors.tertiary.main}
           key='msapplication-TileColor'
         />
         <meta
@@ -68,14 +68,14 @@ export default function Document() {
 
         <meta
           name='msapplication-TileColor'
-          content={Theme.primary.main}
+          content={Theme.colors.primary.main}
           key='msapplication-TileColor'
         />
-        <meta name='theme-color' content={Theme.primary.main} />
+        <meta name='theme-color' content={Theme.colors.primary.main} />
 
         <meta
           name='apple-mobile-web-app-status-bar-style'
-          content={Theme.primary.main}
+          content={Theme.colors.primary.main}
         />
         <meta name='apple-mobile-web-app-capable' content='yes' />
         <meta name='apple-touch-fullscreen' content='yes' />

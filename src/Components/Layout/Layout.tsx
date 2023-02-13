@@ -1,11 +1,10 @@
-import { Box, Box as Main, Flex, SimpleGrid } from '@chakra-ui/react';
-import { ReactNode } from 'react';
+import { Box, Box as Main, BoxProps, Flex, SimpleGrid } from '@chakra-ui/react';
 
 import Header from '@/Components/Layout/header';
 import Paragraph from '@/Components/Paragraph';
 import Theme from '@/styles/theme';
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({ children, ...others }: BoxProps) {
   return (
     <SimpleGrid
       w='100%'
@@ -18,7 +17,8 @@ export default function Layout({ children }: { children: ReactNode }) {
       pos='absolute'
     >
       <Header />
-      <Main as='main' py='1rem' px='1rem' w='100%' overflowX='auto'>
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      <Main as='main' py='1rem' px='1rem' {...others} w='100%' overflowX='auto'>
         <Box marginX='auto' maxW='5xl' w='100'>
           {children}
         </Box>
@@ -27,7 +27,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         direction='column'
         justifyContent='space-between'
         alignItems='center'
-        bg={Theme.colors.tertiary.main}
+        bg={Theme.colors.secondary.main}
         px='0.5rem'
         py='0.4rem'
         color='white'

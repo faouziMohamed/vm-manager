@@ -13,8 +13,8 @@ import { GoSettings } from 'react-icons/go';
 import { PowerStateValue } from '@/lib/types';
 import { adjustColor } from '@/lib/utils';
 
-import ChakraLink from '@/Components/ChakraLink';
 import VmInstanceIcon from '@/Components/images/VmInstanceIcon';
+import UnStyledLink from '@/Components/Links/UnStyledLink';
 import Paragraph from '@/Components/Paragraph';
 
 type VmInstanceProps = {
@@ -43,7 +43,7 @@ export default function VmInstanceCard(props: VmInstanceProps) {
             <Paragraph>{status}</Paragraph>
           </Flex>
           <Button
-            as={ChakraLink}
+            as={UnStyledLink}
             href={`/vm/${instanceId}`}
             leftIcon={<GoSettings />}
           >

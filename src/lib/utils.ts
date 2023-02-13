@@ -1,3 +1,4 @@
+import clsx, { ClassValue } from 'clsx';
 import { NextRouter } from 'next/router';
 
 import {
@@ -237,4 +238,17 @@ export function mapInstanceToVmDetails(instance: VMInstance) {
   ];
   // #endregion
   return details;
+}
+
+export default function clsxm(...classes: ClassValue[]) {
+  return clsx(...classes);
+}
+
+/**
+ * A function that does nothing. Useful for faking callback, pass eslint, etc.
+ * @param args - Arguments to be ignored
+ */
+export function blackHole(...args: unknown[]) {
+  // do nothing
+  void args;
 }

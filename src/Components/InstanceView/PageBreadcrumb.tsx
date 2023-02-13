@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react';
 import { IoChevronForward } from 'react-icons/io5';
 
-import ChakraLink from '@/Components/ChakraLink';
+import UnStyledLink from '@/Components/Links/UnStyledLink';
 
 type PageBreadcrumbProps = {
   shouldRenderName: boolean;
@@ -19,14 +19,14 @@ export default function PageBreadcrumb(props: PageBreadcrumbProps) {
     <>
       <Breadcrumb separator={<IoChevronForward />}>
         <BreadcrumbItem>
-          <BreadcrumbLink as={ChakraLink} href='/'>
+          <BreadcrumbLink as={UnStyledLink} href='/'>
             Home
           </BreadcrumbLink>
         </BreadcrumbItem>
         {shouldRenderName && (
           <BreadcrumbItem>
             <BreadcrumbLink
-              as={ChakraLink}
+              as={UnStyledLink}
               href={currentPageLink}
               fontWeight='500'
               fontSize='0.94rem'

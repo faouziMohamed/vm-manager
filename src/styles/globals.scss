@@ -8,9 +8,55 @@ html,
 body {
   width: 100%;
   height: 100%;
-  font-family: 'Ubuntu', 'Roboto', 'Inter', sans-serif;
+  font-family: var(--font-secondary, 'Ubuntu', 'Roboto', 'Inter', sans-serif);
 }
 
 .scroll-smooth {
   scroll-behavior: smooth;
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .animated-underline {
+    transition: 0.3s ease;
+    transition-property: background-size, color, background-color,
+    border-color;
+  }
+}
+
+.avatar-shadow {
+  filter: drop-shadow(0px 4.1801px 4.1801px rgba(2, 77, 19, 0.25));
+}
+
+.avatar-border {
+  @apply border-[0.522513px] border-solid border-[#96C19A];
+}
+
+.animated-underline {
+  background-image: linear-gradient(transparent, transparent), linear-gradient(to right, #016F54, #01c4a4);
+  background-size: 100% 2px, 0 2px;
+  background-position: 115% 115%, 0 115%;
+  background-repeat: no-repeat;
+
+  &:hover, &:focus-visible {
+    background-size: 0 2px, 100% 4px;
+  }
+
+  &:active {
+    background-image: linear-gradient(transparent, transparent), linear-gradient(to right, #01c4a4, #016F54);
+  }
+}
+
+.underlined-link {
+  outline: none;
+  font-weight: 600;
+  border-bottom: 1px dotted;
+  align-items: center;
+  display: inline-flex;
+  padding-inline: 2px;
+
+
+  &:hover {
+    border-color: rgba(0, 0, 0, 0);
+  }
 }

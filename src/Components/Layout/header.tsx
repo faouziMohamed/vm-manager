@@ -11,8 +11,8 @@ import {
 import { MdAddCircle } from 'react-icons/md';
 
 import ChakraImage from '@/Components/ChakraImage';
-import ChakraLink from '@/Components/ChakraLink';
 import CreateNewVm from '@/Components/Layout/CreateNewVm';
+import UnStyledLink from '@/Components/Links/UnStyledLink';
 import Theme from '@/styles/theme';
 
 // const id: number = Math.floor(Math.random() * 1000000);
@@ -26,15 +26,15 @@ export default function Header() {
         as='header'
         justifyContent='space-between'
         alignItems='center'
-        bg={Theme.colors.tertiary.main}
+        bg={Theme.colors.secondary.main}
         px='0.5rem'
         py='0.4rem'
         color='white'
         gap='0.7rem'
       >
-        <ChakraLink href='/' fontSize={['0.9rem', '1.2rem']}>
+        <UnStyledLink href='/' fontSize={['0.9rem', '1.2rem']}>
           Manage Servers
-        </ChakraLink>
+        </UnStyledLink>
         <Box pos='relative' flexShrink={0}>
           {/*  Avatar */}
           <ChakraImage

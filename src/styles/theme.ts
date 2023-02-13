@@ -31,16 +31,6 @@ const warning: ThemeColor = {
 };
 
 const primary: ThemeColor = {
-  main: '#02abbb',
-  500: '#007770',
-  400: '#00938a',
-  300: '#00b0a4',
-  200: '#00ccce',
-  100: '#a5e8e4',
-  50: '#e5f8f7',
-};
-
-const secondary: ThemeColor = {
   main: '#016F54',
   500: '#016F54',
   400: '#018E6F',
@@ -51,6 +41,16 @@ const secondary: ThemeColor = {
 };
 
 const tertiary: ThemeColor = {
+  main: '#02abbb',
+  500: '#007770',
+  400: '#00938a',
+  300: '#00b0a4',
+  200: '#00ccce',
+  100: '#a5e8e4',
+  50: '#e5f8f7',
+};
+
+const secondary: ThemeColor = {
   main: '#004D5E',
   500: '#004D5E',
   400: '#006A7A',
@@ -61,9 +61,9 @@ const tertiary: ThemeColor = {
 };
 
 type AppColors = {
+  tertiary: ThemeColor;
   primary: ThemeColor;
   secondary: ThemeColor;
-  tertiary: ThemeColor;
   danger: ThemeColor;
   warning: ThemeColor;
   gradients: {
@@ -110,7 +110,6 @@ const roboto = Roboto({
 
 const Theme = {
   colors,
-  primary,
   breakpoints,
   fonts: {
     inter,
