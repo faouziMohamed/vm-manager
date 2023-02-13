@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id                      String           @id @default(cuid())
+  name                    String
+  username                String           @unique
+  email                   String           @unique
+  passwordHash            Bytes
+  passwordSalt            Bytes
+  accountConfirmed        Boolean          @default(false)
+  refreshToken            String           @default("")
+  refreshTokenCreatedDate DateTime         @default(now())
+  refreshTokenExpiryTime  DateTime
+  VmSubscription          VmSubscription[]
+
+  @@index([username], name: "username")
+  @@index([email], name: "email")
+}
+
+model VmSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  country   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId], name: "userId")
+}
