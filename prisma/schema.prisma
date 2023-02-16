@@ -12,30 +12,45 @@ datasource db {
 }
 
 model User {
-  id                      String           @id @default(cuid())
-  name                    String
-  username                String           @unique
-  email                   String           @unique
-  passwordHash            Bytes
-  passwordSalt            Bytes
-  accountConfirmed        Boolean          @default(false)
-  refreshToken            String           @default("")
-  refreshTokenCreatedDate DateTime         @default(now())
-  refreshTokenExpiryTime  DateTime
-  VmSubscription          VmSubscription[]
+  userId            String              @id @default(cuid())
+  email             String              @unique
+  firstname         String
+  lastname          String
+  password          String
+  emailVerified     DateTime?
+  image             String?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  VmSubscription    VmSubscription[]
+  VerificationToken VerificationToken[]
 
-  @@index([username], name: "username")
   @@index([email], name: "email")
+  @@map("users")
+}
+
+model VerificationToken {
+  userId     String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  userUserId String?
+  user       User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([userId, token])
+  @@map("verification_tokens")
 }
 
 model VmSubscription {
-  id        String   @id @default(cuid())
-  userId    String
-  name      String
-  country   String
-  user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  instanceId String   @unique
+  userId     String
+  serverName String
+  country    String
+  user       User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([userId], name: "userId")
+  @@index([instanceId], name: "instanceId")
+  @@map("vm_subscriptions")
 }

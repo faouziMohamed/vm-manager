@@ -49,3 +49,4 @@ sitemap.xml
 /.idea/watcherTasks.xml
 sitemap*
 /instances.json
+/.env
