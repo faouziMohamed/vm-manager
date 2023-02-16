@@ -6,7 +6,7 @@ import InstanceHeadline from '@/Components/InstanceView/InstanceHeadline';
 import PageBreadcrumb from '@/Components/InstanceView/PageBreadcrumb';
 import VmInstanceControlButtons from '@/Components/InstanceView/VmInstanceControlButtons';
 import Layout from '@/Components/Layout/Layout';
-import { useVmInstance } from '@/Services/client/vmInstances.service';
+import { useVmInstance } from '@/Services/client/vm.service';
 
 export default function VmPage() {
   const router = useRouter();

@@ -15,7 +15,7 @@ import { MdAddTask } from 'react-icons/md';
 import { FormValues } from '@/lib/utils';
 
 import AppFormControl from '@/Components/form/AppFormControl';
-import { useAvailableRegions } from '@/Services/client/vmInstances.service';
+import { useAvailableRegions } from '@/Services/client/vm.service';
 import Theme from '@/styles/theme';
 
 export function FormControlButton(props: {

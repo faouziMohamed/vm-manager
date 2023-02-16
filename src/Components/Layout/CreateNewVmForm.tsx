@@ -13,7 +13,7 @@ import {
   RegionFormControl,
   ServerNameFormControl,
 } from '@/Components/form/NewVmFormUtils';
-import { saveNewVm } from '@/Services/client/vmInstances.service';
+import { saveNewVm } from '@/Services/client/vm.service';
 
 // async function onSubmit(values: FormValues) {
 //   // arriving here means that the form is valid

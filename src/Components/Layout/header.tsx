@@ -8,15 +8,73 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { signOut, useSession } from 'next-auth/react';
+import { BiLogInCircle } from 'react-icons/bi';
 import { MdAddCircle } from 'react-icons/md';
+
+import { adjustColor } from '@/lib/utils';
 
 import ChakraImage from '@/Components/ChakraImage';
 import CreateNewVm from '@/Components/Layout/CreateNewVm';
+import ButtonLink from '@/Components/Links/ButtonLink';
 import UnStyledLink from '@/Components/Links/UnStyledLink';
 import Theme from '@/styles/theme';
 
 // const id: number = Math.floor(Math.random() * 1000000);
 const id = 643761;
+const pagesToShowLogOutButton = ['/verify-email'];
+function ActionButton() {
+  const { status } = useSession();
+  const router = useRouter();
+
+  const actionLink = {
+    signIn: {
+      text: 'Sign In',
+      link: '/signin',
+    },
+    signUp: {
+      text: 'Sign Up',
+      link: '/register',
+    },
+  };
+  const isSignInPage = router.asPath === actionLink.signIn.link;
+  if (status === 'authenticated') {
+    return pagesToShowLogOutButton.includes(router.asPath) ? (
+      <Button
+        bg='#016F54'
+        _hover={{ bg: '#008f70' }}
+        _focus={{ boxShadow: 'outline' }}
+        leftIcon={<BiLogInCircle />}
+        onClick={() => void signOut({ callbackUrl: '/signin' })}
+      >
+        <Text>Log Out</Text>
+      </Button>
+    ) : (
+      <Flex justifyContent='space-between'>
+        <AddNewServerButton />
+      </Flex>
+    );
+  }
+
+  return (
+    <Button
+      as={ButtonLink}
+      href={isSignInPage ? actionLink.signUp.link : actionLink.signIn.link}
+      color='#00404E'
+      bg='#CDF6FF'
+      _hover={{
+        bg: adjustColor('#CDF6FF', 15),
+        color: adjustColor('#00404E', -70),
+      }}
+      _focus={{ boxShadow: 'outline' }}
+    >
+      <Text>
+        {isSignInPage ? actionLink.signUp.text : actionLink.signIn.text}
+      </Text>
+    </Button>
+  );
+}
 
 export default function Header() {
   const githubUrlAvatar = `https://avatars.githubusercontent.com/u/${id}?v=4`;
@@ -48,10 +106,10 @@ export default function Header() {
             bg='gray.400'
           />
         </Box>
-
-        <Flex justifyContent='space-between'>
-          <AddNewServerButton />
-        </Flex>
+        {/* { */}
+        {/*  status!=='authenticated' */}
+        {/* } */}
+        <ActionButton />
       </Flex>
     </Box>
   );
