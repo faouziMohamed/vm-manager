@@ -15,12 +15,10 @@ body {
   scroll-behavior: smooth;
 }
 
-
 @media (prefers-reduced-motion: no-preference) {
   .animated-underline {
     transition: 0.3s ease;
-    transition-property: background-size, color, background-color,
-    border-color;
+    transition-property: background-size, color, background-color, border-color;
   }
 }
 
@@ -33,17 +31,20 @@ body {
 }
 
 .animated-underline {
-  background-image: linear-gradient(transparent, transparent), linear-gradient(to right, #016F54, #01c4a4);
+  background-image: linear-gradient(transparent, transparent),
+    linear-gradient(to right, #016f54, #01c4a4);
   background-size: 100% 2px, 0 2px;
   background-position: 115% 115%, 0 115%;
   background-repeat: no-repeat;
 
-  &:hover, &:focus-visible {
+  &:hover,
+  &:focus-visible {
     background-size: 0 2px, 100% 4px;
   }
 
   &:active {
-    background-image: linear-gradient(transparent, transparent), linear-gradient(to right, #01c4a4, #016F54);
+    background-image: linear-gradient(transparent, transparent),
+      linear-gradient(to right, #01c4a4, #016f54);
   }
 }
 
@@ -54,9 +55,21 @@ body {
   align-items: center;
   display: inline-flex;
   padding-inline: 2px;
-
+  font-size: initial !important;
 
   &:hover {
     border-color: rgba(0, 0, 0, 0);
+  }
+}
+
+.auth-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  .auth-icon {
+    font-size: 1.6rem;
   }
 }

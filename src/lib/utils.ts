@@ -1,7 +1,10 @@
 import clsx, { ClassValue } from 'clsx';
 import { NextRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 
 import {
+  AppAuthAction,
+  AppAuthSignInUser,
   GroupByOption,
   GroupByValue,
   PowerStateValue,
@@ -251,4 +254,50 @@ export default function clsxm(...classes: ClassValue[]) {
 export function blackHole(...args: unknown[]) {
   // do nothing
   void args;
+}
+
+// export const authOptions = { };
+export class AuthError extends Error {
+  constructor(message: string | string[]) {
+    super(AuthError.messageToString(message));
+  }
+
+  private static messageToString(message: string | string[]) {
+    if (typeof message === 'string') {
+      return JSON.stringify([message]);
+    }
+    return JSON.stringify(message);
+  }
+}
+
+export async function handleFormSubmit({
+  setIsSubmitting,
+  values,
+  setAnyErrors,
+  router,
+  callbackUrl,
+}: {
+  setIsSubmitting: (value: boolean) => void;
+  values: AppAuthSignInUser & { action: AppAuthAction };
+  setAnyErrors: (v: string[]) => void;
+  router: NextRouter;
+  callbackUrl?: string;
+}) {
+  setIsSubmitting(true);
+  const resSubmission = await signIn('credentials', {
+    redirect: false,
+    ...values,
+    callbackUrl: callbackUrl || '/',
+  });
+  setIsSubmitting(false);
+  if (resSubmission?.error) {
+    const { error: e } = resSubmission;
+    const errorsParsed = JSON.parse(e) as string[];
+    setAnyErrors([...errorsParsed]);
+    return;
+  }
+  const { query } = router;
+  const { next } = query;
+  const redirectUrl = next ? (next as string) : resSubmission?.url || '/';
+  await router.push(redirectUrl);
 }

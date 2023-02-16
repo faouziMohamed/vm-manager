@@ -12,8 +12,8 @@ import {
   PasswordFormControl,
   RegionFormControl,
   ServerNameFormControl,
-} from '@/Components/Layout/form/NewVmFormUtils';
-import { saveNewVm } from '@/Services/hooks';
+} from '@/Components/form/NewVmFormUtils';
+import { saveNewVm } from '@/Services/client/vmInstances.service';
 
 // async function onSubmit(values: FormValues) {
 //   // arriving here means that the form is valid
@@ -26,7 +26,7 @@ export default function CreateNewVmForm({ onClose }: { onClose: () => void }) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({ mode: 'all' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const onSubmit = useCallback(
     async (values: FormValues) => {

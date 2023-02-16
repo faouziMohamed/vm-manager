@@ -2,7 +2,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { getInstances } from '@/lib/server-only-utils';
+import { getInstances } from '@/lib/server/server-utils';
 import { VMInstance } from '@/lib/types';
 
 let instances: VMInstance[] = [];
@@ -23,8 +23,6 @@ handler.get(
     res: NextApiResponse<VMInstance | ErrorResponse>,
   ) => {
     const { instanceId } = req.query;
-    console.log('instanceId', instanceId);
-
     if (!instanceId) {
       res
         .status(400)

@@ -20,7 +20,7 @@ import { RiDeleteBin5Line } from 'react-icons/ri';
 
 import { VMInstance } from '@/lib/types';
 
-import { mutateVmInstance } from '@/Services/hooks';
+import { mutateVmInstance } from '@/Services/client/vmInstances.service';
 
 type ControlItem = {
   icon: IconType;

@@ -4,8 +4,12 @@ import {
   Flex,
   FlexProps,
   Heading,
+  List,
+  ListIcon,
+  ListItem,
   Stack,
 } from '@chakra-ui/react';
+import { MdOutlineErrorOutline } from 'react-icons/md';
 
 import { adjustColor } from '@/lib/utils';
 
@@ -15,25 +19,30 @@ import Paragraph from '@/Components/Paragraph';
 import Theme from '@/styles/theme';
 
 type AuthLayoutParams = FlexProps & {
-  onSubmit: () => void;
+  onSubmit?: () => void;
   formTitle: string;
   submitButtonTitle: string;
+  isSubmitting?: boolean;
+  errors?: string[] | undefined;
   formAltAction?: {
     text?: string;
     link: string;
     linkText: string;
   };
+  hasForm?: boolean;
 };
 export default function AuthLayout(props: AuthLayoutParams) {
   const {
     children,
+    errors = [] as string[],
     formTitle,
     submitButtonTitle,
-    onSubmit,
+    isSubmitting = false,
+    onSubmit = () => {},
     formAltAction,
+    hasForm = true,
     ...others
   } = props;
-
   return (
     <Layout px={0} bg='#F4F5F7'>
       <Flex
@@ -55,34 +64,55 @@ export default function AuthLayout(props: AuthLayoutParams) {
           bg='#fff'
           spacing={5}
         >
-          <Heading as='h2' fontSize='1.3rem'>
+          <Heading as='h2' textAlign='center' fontSize='1.3rem'>
             {formTitle}
           </Heading>
           <Divider />
-          <Stack as='form' spacing={4} onSubmit={onSubmit} w='100%'>
+          <Stack
+            as={hasForm ? 'form' : 'section'}
+            spacing={4}
+            onSubmit={onSubmit}
+            w='100%'
+          >
+            {!!errors.length && (
+              <List spacing={3} color={Theme.colors.danger.main}>
+                {errors.map((error) => (
+                  <ListItem key={error}>
+                    <ListIcon as={MdOutlineErrorOutline} />
+                    {error}
+                  </ListItem>
+                ))}
+              </List>
+            )}
             {children}
-            <Button
-              type='submit'
-              bg={Theme.colors.primary.main}
-              color={Theme.colors.primary['50']}
-              _hover={{ bg: adjustColor(Theme.colors.primary.main, 10) }}
-              _active={{ bg: adjustColor(Theme.colors.primary.main, 20) }}
-            >
-              {submitButtonTitle}
-            </Button>
+            {hasForm && (
+              <Button
+                type='submit'
+                isLoading={isSubmitting}
+                bg={Theme.colors.primary.main}
+                color={Theme.colors.primary['50']}
+                _hover={{ bg: adjustColor(Theme.colors.primary.main, 10) }}
+                _active={{ bg: adjustColor(Theme.colors.primary.main, 20) }}
+              >
+                {submitButtonTitle}
+              </Button>
+            )}
           </Stack>
-          <Divider />
+
           {!!formAltAction && (
-            <Paragraph
-              fontFamily='var(--font-secondary)'
-              fontSize='0.87rem'
-              textAlign='end'
-            >
-              {formAltAction?.text}
-              <UnderlineLink href={formAltAction.link}>
-                {formAltAction.linkText}
-              </UnderlineLink>
-            </Paragraph>
+            <>
+              <Divider />
+              <Paragraph
+                fontFamily='var(--font-secondary)'
+                fontSize='0.87rem'
+                textAlign='end'
+              >
+                {formAltAction?.text}
+                <UnderlineLink href={formAltAction.link}>
+                  {formAltAction.linkText}
+                </UnderlineLink>
+              </Paragraph>
+            </>
           )}
         </Stack>
       </Flex>

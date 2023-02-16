@@ -14,7 +14,7 @@ import NoInstanceFound from '@/Components/Home/NoInstanceFound';
 import NoInstanceFoundForAppliedFilter from '@/Components/Home/NoInstanceFoundForAppliedFilter';
 import UngroupedVmInstances from '@/Components/Home/UngroupedVmInstances';
 import Paragraph from '@/Components/Paragraph';
-import { useMultipleVmInstances } from '@/Services/hooks';
+import { useMultipleVmInstances } from '@/Services/client/vmInstances.service';
 
 export default function UserInstances() {
   const { data, error, isLoading } = useMultipleVmInstances();

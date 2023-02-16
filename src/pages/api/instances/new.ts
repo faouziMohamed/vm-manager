@@ -3,7 +3,7 @@ import { NextApiResponse } from 'next';
 import nc from 'next-connect';
 import { v4 as uuidv4 } from 'uuid';
 
-import { addInstance } from '@/lib/server-only-utils';
+import { addInstance } from '@/lib/server/server-utils';
 import { VMInstance } from '@/lib/types';
 import { FormValues, generateIpAddress } from '@/lib/utils';
 

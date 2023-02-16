@@ -17,7 +17,6 @@ const LinkUnderlined = forwardRef<HTMLAnchorElement, UnStyledLinkProps>(
         className='underlined-link animated-underline '
         color={Theme.colors.primary['400']}
         _hover={{ color: Theme.colors.primary['500'] }}
-        // use chakra-ui props instead of className
       >
         {children}
       </UnStyledLink>

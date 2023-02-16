@@ -13,7 +13,7 @@ import { powerStateColors } from '@/lib/vmUtils';
 
 import VmMonitorIcon from '@/Components/images/VmMonitorIcon';
 import Paragraph from '@/Components/Paragraph';
-import { refreshVmInstance } from '@/Services/hooks';
+import { refreshVmInstance } from '@/Services/client/vmInstances.service';
 
 export default function InstanceHeadline(props: {
   instance: VMInstance;
