@@ -1,58 +1,59 @@
 /* eslint-disable react/jsx-props-no-spreading,@typescript-eslint/no-misused-promises */
+import { useRouter } from 'next/router';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { blackHole } from '@/lib/utils';
+import { AppAuthSignInUser } from '@/lib/types';
+import { handleFormSubmit } from '@/lib/utils';
 
+import AppFormControl from '@/Components/form/AppFormControl';
 import AuthLayout from '@/Components/Layout/AuthLayout';
-import AppFormControl from '@/Components/Layout/form/AppFormControl';
 
-type SignInFormValues = {
-  username: string;
-  password: string;
-};
-
-// TODO: Add a function to handle the form submission
-function onsubmit(values: SignInFormValues) {
-  // arriving here means that the form is valid
-  blackHole(values);
-}
 export default function SignIn() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignInFormValues>();
-
+  } = useForm<AppAuthSignInUser>({ mode: 'all' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [anyErrors, setAnyErrors] = useState<string[] | undefined>(undefined);
+  const router = useRouter();
+  const onSubmit = useCallback(
+    async (values: AppAuthSignInUser) => {
+      // arriving here means that the form is valid
+      await handleFormSubmit({
+        setIsSubmitting,
+        values: { ...values, action: 'signin' },
+        setAnyErrors,
+        router,
+      });
+    },
+    [router],
+  );
   return (
     <AuthLayout
-      onSubmit={handleSubmit(onsubmit)}
+      onSubmit={handleSubmit(onSubmit)}
       submitButtonTitle='Log In'
+      isSubmitting={isSubmitting}
       formTitle='Sign In'
       formAltAction={{
         text: "Don't have an account?",
         link: '/register',
         linkText: 'Sign Up',
       }}
+      errors={anyErrors}
     >
       <AppFormControl
         isRequired
-        label='Username'
-        placeholder='your username'
-        error={errors.username}
-        register={register('username', {
+        label='Email Address'
+        placeholder='your email address'
+        error={errors.email}
+        type='email'
+        register={register('email', {
           required: true,
-          pattern: /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/,
+          pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
         })}
-        displayError={{
-          heading: 'The username must follow the following rules:',
-          rules: [
-            'Usernames must start with a letter or a number.',
-            'Usernames must be at least 4 characters long.',
-            'Usernames must not be longer than 20 characters.',
-            'Usernames may contain letters (uppercase or lowercase), numbers, or hyphens.',
-            'Usernames may not contain spaces or other special characters.',
-          ],
-        }}
+        displayError={{ heading: 'The email address is invalid.' }}
       />
 
       <AppFormControl

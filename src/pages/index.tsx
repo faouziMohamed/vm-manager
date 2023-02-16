@@ -7,7 +7,7 @@ import SortMenu from '@/Components/Home/sortMenu';
 import StatusFilterMenu from '@/Components/Home/statusFilterMenu';
 import UserInstances from '@/Components/Home/UserInstances';
 import Layout from '@/Components/Layout/Layout';
-import { refreshVmInstances } from '@/Services/hooks';
+import { refreshVmInstances } from '@/Services/client/vmInstances.service';
 
 export default function Home() {
   return (
@@ -52,3 +52,7 @@ function UserVmInstancesSection() {
     </Box>
   );
 }
+
+// Home.auth = {
+//   redirectTo: '/',
+// };

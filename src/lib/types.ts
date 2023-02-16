@@ -51,3 +51,27 @@ export type VMInstance = {
   region: Region;
   isFavorite?: boolean;
 };
+
+export type AppAuthRegisterUser = {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+};
+export type AppAuthSignInUser = Omit<
+  AppAuthRegisterUser,
+  'lastname' | 'firstname'
+>;
+export type AppAuthAction = 'register' | 'signin';
+export type AppAuthorize = Partial<
+  Omit<AppAuthRegisterUser, 'email' | 'password'>
+> &
+  Pick<AppAuthRegisterUser, 'email' | 'password'> & { action: AppAuthAction };
+
+export type AppUser = Omit<AppAuthRegisterUser, 'password'> & {
+  id: string;
+  emailVerified?: false;
+};
+export type AppUserWithEmailVerification = Omit<AppUser, 'emailVerified'> & {
+  emailVerified: Date | string | null;
+};

@@ -1,51 +1,49 @@
 /* eslint-disable react/jsx-props-no-spreading,@typescript-eslint/no-misused-promises */
+import { useRouter } from 'next/router';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { blackHole } from '@/lib/utils';
+import { AppAuthRegisterUser, AppAuthSignInUser } from '@/lib/types';
+import { handleFormSubmit } from '@/lib/utils';
 
+import AppFormControl from '@/Components/form/AppFormControl';
 import AuthLayout from '@/Components/Layout/AuthLayout';
-import AppFormControl from '@/Components/Layout/form/AppFormControl';
-
-type RegisterFormValues = {
-  name: string;
-  email: string;
-  username: string;
-  password: string;
-};
-
-// TODO: Add a function to handle the form submission
-function onsubmit(values: RegisterFormValues) {
-  // arriving here means that the form is valid
-  blackHole(values);
-}
 
 export default function Register() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormValues>();
-
+  } = useForm<AppAuthRegisterUser>({ mode: 'all' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [anyErrors, setAnyErrors] = useState<string[] | undefined>(undefined);
+  const router = useRouter();
+  const onSubmit = useCallback(
+    async (values: AppAuthSignInUser) => {
+      // arriving here means that the form is valid
+      await handleFormSubmit({
+        setIsSubmitting,
+        values: { ...values, action: 'register' },
+        callbackUrl: '/verify-email',
+        setAnyErrors,
+        router,
+      });
+    },
+    [router],
+  );
   return (
     <AuthLayout
-      onSubmit={handleSubmit(onsubmit)}
+      onSubmit={handleSubmit(onSubmit)}
       submitButtonTitle='Register'
       formTitle='Create an account'
+      isSubmitting={isSubmitting}
+      errors={anyErrors}
       formAltAction={{
         text: 'having an account?',
         link: '/signin',
         linkText: 'Log In',
       }}
     >
-      {/* // The expression checks for a valid username */}
-      <AppFormControl
-        isRequired
-        label='Name'
-        placeholder='your name'
-        error={errors.name}
-        register={register('name', { required: true })}
-        displayError={{ heading: 'The name field is required.' }}
-      />
       <AppFormControl
         isRequired
         label='Email Address'
@@ -58,27 +56,6 @@ export default function Register() {
         })}
         displayError={{ heading: 'The email address is invalid.' }}
       />
-      <AppFormControl
-        isRequired
-        label='Username'
-        placeholder='your username'
-        error={errors.username}
-        register={register('username', {
-          required: true,
-          pattern: /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/,
-        })}
-        displayError={{
-          heading: 'The username must follow the following rules:',
-          rules: [
-            'Usernames must start with a letter or a number.',
-            'Usernames must be at least 4 characters long.',
-            'Usernames must not be longer than 20 characters.',
-            'Usernames may contain letters (uppercase or lowercase), numbers, or hyphens.',
-            'Usernames may not contain spaces or other special characters.',
-          ],
-        }}
-      />
-
       <AppFormControl
         isRequired
         label='Password'
@@ -100,14 +77,23 @@ export default function Register() {
           ],
         }}
       />
+      <AppFormControl
+        isRequired
+        label='First Name'
+        placeholder='your first name'
+        error={errors.firstname}
+        register={register('firstname', { required: true })}
+        displayError={{ heading: 'The First Name field is required.' }}
+      />
 
-      {/* <HStack> */}
-      {/*  <Checkbox colorScheme='green' /> */}
-      {/*  <Paragraph textAlign='end' fontSize='0.8rem'> */}
-      {/*    I have read and agree to the{' '} */}
-      {/*    <UnderlineLink href='/terms'>Terms and Conditions</UnderlineLink> */}
-      {/*  </Paragraph> */}
-      {/* </HStack> */}
+      <AppFormControl
+        isRequired
+        label='Last Name'
+        placeholder='your last name'
+        error={errors.lastname}
+        register={register('lastname', { required: true })}
+        displayError={{ heading: 'The Last Name field is required.' }}
+      />
     </AuthLayout>
   );
 }

@@ -4,11 +4,11 @@ import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 
 import CustomFormControlErrorMessage, {
   CustomErrorMessageProps,
-} from '@/Components/Layout/form/CustomFormControlErrorMessage';
-import PasswordInput from '@/Components/Layout/form/PasswordInput';
+} from '@/Components/form/CustomFormControlErrorMessage';
+import PasswordInput from '@/Components/form/PasswordInput';
 import Theme from '@/styles/theme';
 
-export default function AppFormControl(props: {
+type AppFormControlProps = {
   error?: FieldError;
   register?: UseFormRegisterReturn;
   label?: string;
@@ -18,7 +18,8 @@ export default function AppFormControl(props: {
   type?: string;
   disabled?: boolean;
   value?: string;
-}) {
+};
+export default function AppFormControl(props: AppFormControlProps) {
   const { error, label, placeholder, displayError } = props;
   const { register = {} as UseFormRegisterReturn } = props;
   const { isRequired = false, type: typ = 'text', disabled } = props;
@@ -48,6 +49,13 @@ export default function AppFormControl(props: {
           placeholder={placeholder}
           value={value}
           {...register}
+          sx={{
+            '&:disabled': {
+              backgroundColor: 'gray.100',
+              borderColor: 'gray.400',
+              opacity: '0.6',
+            },
+          }}
         />
       )}
       {!!displayError && <CustomFormControlErrorMessage {...displayError} />}

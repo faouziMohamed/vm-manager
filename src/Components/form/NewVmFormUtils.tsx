@@ -6,7 +6,6 @@ import {
   FormHelperText,
   FormLabel,
   HStack,
-  Input,
   Select,
 } from '@chakra-ui/react';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
@@ -15,8 +14,8 @@ import { MdAddTask } from 'react-icons/md';
 
 import { FormValues } from '@/lib/utils';
 
-import CustomFormControlErrorMessage from '@/Components/Layout/form/CustomFormControlErrorMessage';
-import { useAvailableRegions } from '@/Services/hooks';
+import AppFormControl from '@/Components/form/AppFormControl';
+import { useAvailableRegions } from '@/Services/client/vmInstances.service';
 import Theme from '@/styles/theme';
 
 export function FormControlButton(props: {
@@ -50,29 +49,29 @@ type FormControlFieldProps = {
 export function PasswordFormControl(props: FormControlFieldProps) {
   const { errors, register } = props;
   return (
-    <FormControl isRequired isInvalid={!!errors.password}>
-      <FormLabel>Server Password</FormLabel>
-      <Input
-        type='password'
-        {...register('password', {
+    <AppFormControl
+      placeholder='Type a Password'
+      type='password'
+      label='Server Password'
+      error={errors.password}
+      register={{
+        ...register('password', {
           required: true,
           pattern:
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[\w\W\s]{6,}$/,
-        })}
-      />
-
-      <FormErrorMessage flexDirection='column' alignItems='flex-start'>
-        <CustomFormControlErrorMessage
-          heading='Password must contain at least 6 characters including:'
-          rules={[
-            '1 uppercase letter',
-            '1 lowercase letter',
-            '1 number',
-            '1 special character (@$!%*?&)',
-          ]}
-        />
-      </FormErrorMessage>
-    </FormControl>
+        }),
+      }}
+      displayError={{
+        heading: 'Password must contain at least 6 characters including:',
+        rules: [
+          '1 uppercase letter',
+          '1 lowercase letter',
+          '1 number',
+          '1 special character (@$!%*?&)',
+        ],
+      }}
+      isRequired
+    />
   );
 }
 
@@ -109,28 +108,28 @@ export function RegionFormControl(props: FormControlFieldProps) {
 export function MachineNameFormControl(props: FormControlFieldProps) {
   const { errors, register } = props;
   return (
-    <FormControl isRequired isInvalid={!!errors.machineName}>
-      <FormLabel>Machine Name</FormLabel>
-      <Input
-        placeholder='test-app-server'
-        {...register('machineName', {
+    <AppFormControl
+      placeholder='test-app-server'
+      label='Machine Name'
+      isRequired
+      error={errors.machineName}
+      register={{
+        ...register('machineName', {
           required: true,
           // The expression checks for invalid characters that are not allowed in a Windows computer name
           pattern: /^[a-zA-Z0-9][a-zA-Z0-9-]{0,62}[a-zA-Z0-9]$/,
-        })}
-      />
-      <FormErrorMessage flexDirection='column' alignItems='flex-start'>
-        <CustomFormControlErrorMessage
-          heading='The machine name (hostname) must follow the following rules:'
-          rules={[
-            'Start with a lowercase letter or a digit',
-            'Can contain lowercase letters, digits, or hyphens',
-            'Is no longer than 63 characters',
-            'Can have an optional suffix of a single lowercase letter or digit',
-          ]}
-        />
-      </FormErrorMessage>
-    </FormControl>
+        }),
+      }}
+      displayError={{
+        heading: 'The machine name (hostname) must follow the following rules:',
+        rules: [
+          'Start with a lowercase letter or a digit',
+          'Can contain lowercase letters, digits, or hyphens',
+          'Is no longer than 63 characters',
+          'Can have an optional suffix of a single lowercase letter or digit',
+        ],
+      }}
+    />
   );
 }
 
@@ -140,15 +139,13 @@ export function ServerNameFormControl(props: {
 }) {
   const { register, errors } = props;
   return (
-    <FormControl isRequired>
-      <FormLabel>Server Name</FormLabel>
-      <Input
-        placeholder='Test - Uploaded new App'
-        {...register('serverName', { required: true })}
-      />
-      {errors.serverName && (
-        <FormErrorMessage>{errors.serverName.message}</FormErrorMessage>
-      )}
-    </FormControl>
+    <AppFormControl
+      placeholder='Test - Uploaded new App'
+      label='Server Name'
+      isRequired
+      error={errors.serverName}
+      register={{ ...register('serverName', { required: true }) }}
+      displayError={{ heading: 'Server name is required' }}
+    />
   );
 }

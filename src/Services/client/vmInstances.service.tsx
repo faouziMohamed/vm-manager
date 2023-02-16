@@ -7,7 +7,7 @@ import {
   getMultipleVmInstances,
   getRegions,
   getVmInstance,
-} from '@/Services/fetchers';
+} from '@/Services/client/fetchers';
 
 const fetchInstancesKey = '/api/instances';
 export function useMultipleVmInstances() {
