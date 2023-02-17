@@ -296,8 +296,34 @@ export async function handleFormSubmit({
     setAnyErrors([...errorsParsed]);
     return;
   }
+
   const { query } = router;
   const { next } = query;
   const redirectUrl = next ? (next as string) : resSubmission?.url || '/';
   await router.push(redirectUrl);
+}
+
+export function titleCase(str: string) {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+export function formatName(firstName: string, lastName?: string): string {
+  if (!firstName) {
+    throw new Error('First name cannot be empty');
+  }
+  if (!lastName) {
+    return titleCase(firstName);
+  }
+  if (
+    (firstName.length <= 2 && lastName.length <= 7) ||
+    (firstName.length <= 7 && lastName.length <= 2)
+  ) {
+    return titleCase(`${firstName} ${lastName}`);
+  }
+  const lastInitial = ` ${lastName.charAt(0)}.`;
+  return titleCase(`${firstName}${lastInitial}`.trim());
 }

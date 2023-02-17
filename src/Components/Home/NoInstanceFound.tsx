@@ -1,6 +1,6 @@
 import { Flex, Stack } from '@chakra-ui/react';
 
-import { AddNewServerButton } from '@/Components/Layout/header';
+import { AddNewServerButton } from '@/Components/Layout/HeaderUtils';
 import Paragraph from '@/Components/Paragraph';
 import Theme from '@/styles/theme';
 

@@ -3,7 +3,11 @@ import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import prisma from '@/lib/db/prisma';
-import { AppAuthorize, AppUserWithEmailVerification } from '@/lib/types';
+import {
+  AppAuthorize,
+  AppUser,
+  AppUserWithEmailVerification,
+} from '@/lib/types';
 import { AuthError } from '@/lib/utils';
 
 import { addNewUser, trySignInUser } from '@/Services/server/auth.service';
@@ -39,7 +43,12 @@ export default NextAuth({
     // eslint-disable-next-line @typescript-eslint/require-await
     async session({ session, token }) {
       const tk: PayloadToken = token as PayloadToken; // data from jwt callback when user is signed in, see below
-      session.user = { ...session.user, ...tk.user };
+      const id = Math.floor(Math.random() * 1000000);
+      session.user = {
+        ...session.user,
+        ...tk.user,
+        avatar: `https://avatars.githubusercontent.com/u/${id}?v=4`,
+      } as AppUser;
       return session;
     },
     // eslint-disable-next-line @typescript-eslint/require-await
@@ -52,7 +61,8 @@ export default NextAuth({
           ...token,
           user: {
             id: appUser.id,
-            emailVerified: true, // TODO: use this snippet when email verification is implemented !!appUser.emailVerified,
+            emailVerified: true, // TODO: use this snippet when email verification is implemented !!appUser.emailVerified,*
+            avatar: 'https://avatars.githubusercontent.com/u/649761?v=4',
           },
         };
         // TODO: add this if back in when email verification is implemented

@@ -9,6 +9,7 @@ import {
   ListItem,
   Stack,
 } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { MdOutlineErrorOutline } from 'react-icons/md';
 
 import { adjustColor } from '@/lib/utils';
@@ -31,6 +32,7 @@ type AuthLayoutParams = FlexProps & {
   };
   hasForm?: boolean;
 };
+
 export default function AuthLayout(props: AuthLayoutParams) {
   const {
     children,
@@ -64,9 +66,7 @@ export default function AuthLayout(props: AuthLayoutParams) {
           bg='#fff'
           spacing={5}
         >
-          <Heading as='h2' textAlign='center' fontSize='1.3rem'>
-            {formTitle}
-          </Heading>
+          <FormTitle formTitle={formTitle} />
           <Divider />
           <Stack
             as={hasForm ? 'form' : 'section'}
@@ -117,5 +117,16 @@ export default function AuthLayout(props: AuthLayoutParams) {
         </Stack>
       </Flex>
     </Layout>
+  );
+}
+
+function FormTitle({ formTitle }: { formTitle: string }) {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => setIsMounted(true), []);
+  if (!isMounted) return <div />;
+  return (
+    <Heading as='h2' textAlign='center' fontSize='1.3rem'>
+      {formTitle}
+    </Heading>
   );
 }

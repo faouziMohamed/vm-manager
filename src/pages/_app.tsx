@@ -32,8 +32,12 @@ export default function App({
 }: AppProps) {
   const CustomComponent = Component as typeof Component & { auth?: object };
   return (
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    <SessionProvider session={session} refetchInterval={2 * 60}>
+    <SessionProvider
+      refetchInterval={60}
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      session={session}
+      refetchOnWindowFocus
+    >
       <ChakraProvider theme={theme}>
         <Head>
           <meta
