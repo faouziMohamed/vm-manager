@@ -1,7 +1,9 @@
 import prisma from '@/lib/db/prisma';
-import { hashPassword } from '@/lib/server/server-utils';
+import { hashPassword } from '@/lib/server.utils';
 import { AppAuthorize, AppUser } from '@/lib/types';
 import { AuthError } from '@/lib/utils';
+
+import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
 export async function createVerificationToken(userId: string, token: string) {
   return prisma!.verificationToken.create({
@@ -59,9 +61,55 @@ export async function removeUnverifiedUsers(thresholdDate: Date) {
 export async function removeExpiredVerificationTokens() {
   const now = new Date();
   const { count } = await prisma!.verificationToken.deleteMany({
-    where: {
-      expires: { lte: now },
-    },
+    where: { expires: { lte: now } },
   });
   return count;
+}
+
+export async function saveNewVirtualMachine(
+  userId: string,
+  instance: CreateVmResult,
+  serverName: string,
+) {
+  await prisma!.vmInstances.create({
+    data: {
+      userId,
+      instanceId: instance.instanceId,
+      serverName,
+      computerName: instance.computerName,
+      publicIpName: instance.publicIpName,
+      resourceGroupName: instance.resourceGroupName,
+      region: instance.region,
+      isFavorite: false,
+    },
+  });
+}
+
+export async function getUserSavedVirtualMachines(userId: string) {
+  return prisma!.vmInstances.findMany({
+    where: { userId },
+    select: {
+      instanceId: true,
+      serverName: true,
+      computerName: true,
+      publicIpName: true,
+      resourceGroupName: true,
+    },
+  });
+}
+
+export async function getOneUserSavedVirtualMachine(
+  userId: string,
+  instanceId: string,
+) {
+  return prisma!.vmInstances.findFirst({
+    where: { userId, instanceId },
+    select: {
+      instanceId: true,
+      serverName: true,
+      computerName: true,
+      publicIpName: true,
+      resourceGroupName: true,
+    },
+  });
 }

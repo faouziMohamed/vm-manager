@@ -9,17 +9,17 @@ import {
   Stack,
 } from '@chakra-ui/react';
 
-import { VMInstance } from '@/lib/types';
 import { capitalize, range } from '@/lib/utils';
 import { powerStateColors } from '@/lib/vmUtils';
 
 import VmInstanceCard from '@/Components/Home/VmInstanceCard';
 import Paragraph from '@/Components/Paragraph';
+import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
 export default function GroupedVmInstances({
   groupedData,
 }: {
-  groupedData: Map<string, VMInstance[]>;
+  groupedData: Map<string, CreateVmResult[]>;
 }) {
   return (
     <Accordion allowMultiple defaultIndex={range(0, groupedData.size)}>
@@ -54,14 +54,14 @@ export default function GroupedVmInstances({
                 templateColumns='repeat(auto-fill, minmax(250px, 1fr))'
               >
                 {dataArray.map(
-                  ({ status, instanceId, publicIpAddress, serverName }) => (
+                  ({ powerState, instanceId, publicIpAddress, serverName }) => (
                     <VmInstanceCard
                       key={instanceId}
                       instanceId={instanceId}
-                      color={powerStateColors[status]}
+                      color={powerStateColors[powerState]}
                       serverName={serverName}
                       ipAddress={publicIpAddress}
-                      status={status}
+                      status={powerState}
                     />
                   ),
                 )}

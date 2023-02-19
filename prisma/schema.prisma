@@ -21,7 +21,7 @@ model User {
   image             String?
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
-  VmSubscription    VmSubscription[]
+  VmSubscription    VmInstances[]
   VerificationToken VerificationToken[]
 
   @@index([email], name: "email")
@@ -40,17 +40,21 @@ model VerificationToken {
   @@map("verification_tokens")
 }
 
-model VmSubscription {
-  id         String   @id @default(cuid())
-  instanceId String   @unique
-  userId     String
-  serverName String
-  country    String
-  user       User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model VmInstances {
+  id                String   @id @default(cuid())
+  userId            String
+  instanceId        String   @unique
+  resourceGroupName String
+  computerName      String
+  serverName        String
+  publicIpName      String
+  region            String
+  isFavorite        Boolean  @default(false)
+  user              User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   @@index([userId], name: "userId")
   @@index([instanceId], name: "instanceId")
-  @@map("vm_subscriptions")
+  @@map("vm_instances")
 }

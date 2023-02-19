@@ -3,7 +3,7 @@
 import { createTransport } from 'nodemailer';
 
 import { createVerificationToken } from '@/lib/db/queries';
-import { jwtSignData } from '@/lib/server/server-utils';
+import { jwtSignData } from '@/lib/server.utils';
 import { AppUser } from '@/lib/types';
 
 const transporter = createTransport(process.env.EMAIL_SERVER);

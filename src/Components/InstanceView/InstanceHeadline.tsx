@@ -22,7 +22,7 @@ export default function InstanceHeadline(props: {
   const { instance, mutate } = props;
   const router = useRouter();
   const screenColor =
-    instance.status === 'running'
+    instance.powerState === 'running'
       ? powerStateColors.running
       : powerStateColors.default;
   return (

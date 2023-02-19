@@ -41,13 +41,13 @@ export type GroupByOption = {
 
 export type VMInstance = {
   instanceId: string;
-  serverName: string;
   computerName: string;
+  serverName: string;
   resourceGroupName: string;
   size: string;
-  adminUsername: string;
+  vmUsername: string;
   publicIpAddress: string;
-  status: PowerStateValue;
+  powerState: PowerStateValue;
   region: Region;
   isFavorite?: boolean;
 };
@@ -75,4 +75,7 @@ export type AppUser = Omit<AppAuthRegisterUser, 'password'> & {
 };
 export type AppUserWithEmailVerification = Omit<AppUser, 'emailVerified'> & {
   emailVerified: Date | string | null;
+};
+export type ErrorResponse = {
+  message: string;
 };

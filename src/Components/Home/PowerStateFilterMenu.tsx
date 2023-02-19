@@ -21,7 +21,9 @@ export type MenuProps = {
 
 type SelectedItem = Omit<VmPowerState, 'iconColor'>;
 
-export default function StatusFilterMenu({ onSelect = () => {} }: MenuProps) {
+export default function PowerStateFilterMenu({
+  onSelect = () => {},
+}: MenuProps) {
   const [selected, setSelected] = useState<SelectedItem>({
     name: 'Filter',
     value: 'default',
@@ -51,7 +53,7 @@ export default function StatusFilterMenu({ onSelect = () => {} }: MenuProps) {
   return (
     <Menu>
       <MenuButton
-        title='Filter machines by status'
+        title='Filter machines by power state'
         px={4}
         py={2}
         transition='all 0.2s'

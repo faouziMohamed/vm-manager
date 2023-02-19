@@ -75,8 +75,9 @@ export function HeaderActionButton() {
   );
 }
 
-export function AddNewServerButton(props: ButtonProps) {
+export function AddNewServerButton(props: ButtonProps & { noMl?: boolean }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { noMl = false, ...others } = props;
   return (
     <>
       <Button
@@ -85,9 +86,9 @@ export function AddNewServerButton(props: ButtonProps) {
         _focus={{ boxShadow: 'outline' }}
         onClick={onOpen}
         leftIcon={<MdAddCircle />}
-        {...props}
+        {...others}
       >
-        <Text ml={2}>New Instance</Text>
+        <Text ml={noMl ? 0 : 2}>New Instance</Text>
       </Button>
       {isOpen && (
         <Portal>

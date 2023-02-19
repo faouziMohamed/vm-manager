@@ -86,7 +86,7 @@ export default function VmInstanceControlButtons(props: {
           ari-label='Click to start the instance'
           title='Click to start the instance'
           onClick={() => {
-            instance.status = 'running';
+            instance.powerState = 'running';
             void mutateVmInstance(instance.instanceId, instance);
           }}
         >

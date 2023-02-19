@@ -12,6 +12,7 @@ export const powerStateColors: Record<PowerStateValue, string> = {
   stopped: '#B60057',
   starting: '#B2B600',
   creating: '#CDBFD9',
+  Succeeded: '#6FABE6',
 };
 export const powerStates: VmPowerState[] = [
   { name: 'Filter', iconColor: powerStateColors.default, value: 'default' },
@@ -41,6 +42,6 @@ export const sortOptions: SortOption[] = [
 
 export const groupByOptions: GroupByOption[] = [
   { name: 'Group By', value: 'default' },
-  { name: 'Status', value: 'status' },
+  { name: 'Status', value: 'powerState' },
   { name: 'Region', value: 'region' },
 ];

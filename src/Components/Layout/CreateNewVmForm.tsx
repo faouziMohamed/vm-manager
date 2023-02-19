@@ -4,21 +4,18 @@ import { Box } from '@chakra-ui/react';
 import { useCallback, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { FormValues } from '@/lib/utils';
+import { NewVmValues } from '@/lib/utils';
 
 import {
   FormControlButton,
   MachineNameFormControl,
+  MachineUsernameFormControl,
   PasswordFormControl,
   RegionFormControl,
   ServerNameFormControl,
 } from '@/Components/form/NewVmFormUtils';
+import FuturaSpinner from '@/Components/Loaders/FuturaSpinner';
 import { saveNewVm } from '@/Services/client/vm.service';
-
-// async function onSubmit(values: FormValues) {
-//   // arriving here means that the form is valid
-//   await saveNewVm(values);
-// }
 
 export default function CreateNewVmForm({ onClose }: { onClose: () => void }) {
   const formRef = useRef<HTMLDivElement>(null);
@@ -26,10 +23,10 @@ export default function CreateNewVmForm({ onClose }: { onClose: () => void }) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({ mode: 'all' });
+  } = useForm<NewVmValues>({ mode: 'all' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const onSubmit = useCallback(
-    async (values: FormValues) => {
+    async (values: NewVmValues) => {
       // arriving here means that the form is valid
       setIsSubmitting(true);
       await saveNewVm(values);
@@ -49,8 +46,10 @@ export default function CreateNewVmForm({ onClose }: { onClose: () => void }) {
       // @ts-ignore: Unreachable code error
       ref={formRef}
     >
+      {isSubmitting && <FuturaSpinner semiTransparent />}
       <ServerNameFormControl register={register} errors={errors} />
       <MachineNameFormControl errors={errors} register={register} />
+      <MachineUsernameFormControl errors={errors} register={register} />
       <RegionFormControl errors={errors} register={register} />
       <PasswordFormControl errors={errors} register={register} />
       <FormControlButton isSubmitting={isSubmitting} onClick={onClose} />

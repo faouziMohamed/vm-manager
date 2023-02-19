@@ -1,11 +1,11 @@
 import { Heading, SimpleGrid, Stack } from '@chakra-ui/react';
 
-import { VMInstance } from '@/lib/types';
 import { mapInstanceToVmDetails } from '@/lib/utils';
 
 import Paragraph from '@/Components/Paragraph';
+import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
-export default function InstanceDetails(props: { instance: VMInstance }) {
+export default function InstanceDetails(props: { instance: CreateVmResult }) {
   const { instance } = props;
   const details = mapInstanceToVmDetails(instance);
   return (

@@ -6,7 +6,7 @@ import {
   removeExpiredVerificationTokens,
   removeUnverifiedUsers,
 } from '@/lib/db/queries';
-import { verifyPassword } from '@/lib/server/server-utils';
+import { verifyPassword } from '@/lib/server.utils';
 import { AppAuthorize, AppUserWithEmailVerification } from '@/lib/types';
 import { AuthError } from '@/lib/utils';
 

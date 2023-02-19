@@ -12,7 +12,7 @@ import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { BiLoaderCircle } from 'react-icons/bi';
 import { MdAddTask } from 'react-icons/md';
 
-import { FormValues } from '@/lib/utils';
+import { NewVmValues } from '@/lib/utils';
 
 import AppFormControl from '@/Components/form/AppFormControl';
 import { useAvailableRegions } from '@/Services/client/vm.service';
@@ -42,8 +42,8 @@ export function FormControlButton(props: {
 }
 
 type FormControlFieldProps = {
-  errors: FieldErrors<FormValues>;
-  register: UseFormRegister<FormValues>;
+  errors: FieldErrors<NewVmValues>;
+  register: UseFormRegister<NewVmValues>;
 };
 
 export function PasswordFormControl(props: FormControlFieldProps) {
@@ -110,7 +110,7 @@ export function MachineNameFormControl(props: FormControlFieldProps) {
   return (
     <AppFormControl
       placeholder='test-app-server'
-      label='Machine Name'
+      label='VM hostname'
       isRequired
       error={errors.machineName}
       register={{
@@ -133,9 +133,38 @@ export function MachineNameFormControl(props: FormControlFieldProps) {
   );
 }
 
+export function MachineUsernameFormControl(props: FormControlFieldProps) {
+  const { errors, register } = props;
+  return (
+    <AppFormControl
+      placeholder='dave'
+      label='VM Username'
+      isRequired
+      error={errors.vmUsername}
+      register={{
+        ...register('vmUsername', {
+          required: true,
+          // The expression checks for invalid characters that are not allowed in a Windows computer name
+          pattern: /^[a-zA-Z][a-zA-Z0-9-]{0,11}[a-zA-Z0-9]$/,
+        }),
+      }}
+      displayError={{
+        heading:
+          'The Virtual Machine username must follow the following rules:',
+        rules: [
+          'Start with letter',
+          'Can contain lowercase letters, digits, or hyphens',
+          'Is no longer than 12 characters',
+          'Can have an optional suffix of a single lowercase letter or digit',
+        ],
+      }}
+    />
+  );
+}
+
 export function ServerNameFormControl(props: {
-  register: UseFormRegister<FormValues>;
-  errors: FieldErrors<FormValues>;
+  register: UseFormRegister<NewVmValues>;
+  errors: FieldErrors<NewVmValues>;
 }) {
   const { register, errors } = props;
   return (

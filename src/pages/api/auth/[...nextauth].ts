@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth';
+import NextAuth, { AuthOptions } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
@@ -18,7 +18,8 @@ type PayloadToken = Partial<JWT> & {
     id: string;
   };
 };
-export default NextAuth({
+
+export const nextAuthOptions: AuthOptions = {
   // Configure one or more authentication providers
   session: { strategy: 'jwt' },
   pages: {
@@ -76,7 +77,8 @@ export default NextAuth({
       return token;
     },
   },
-});
+};
+export default NextAuth(nextAuthOptions);
 
 async function authorize<C>(credentials: Record<keyof C, string> | undefined) {
   const cred = credentials as AppAuthorize;

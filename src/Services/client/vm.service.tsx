@@ -1,17 +1,18 @@
 import useSWR, { mutate } from 'swr';
 
 import { AvailableRegions, VMInstance } from '@/lib/types';
-import { FormValues } from '@/lib/utils';
+import { NewVmValues } from '@/lib/utils';
 
 import {
   getMultipleVmInstances,
   getRegions,
   getVmInstance,
 } from '@/Services/client/fetchers';
+import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
-const fetchInstancesKey = '/api/instances';
-export function useMultipleVmInstances() {
-  const { data, error, isLoading } = useSWR<VMInstance[], Error>(
+const fetchInstancesKey = '/api/v1/instances';
+export function useCurrentUserVmInstances() {
+  const { data, error, isLoading } = useSWR<CreateVmResult[], Error>(
     fetchInstancesKey,
     getMultipleVmInstances,
   );
@@ -23,25 +24,25 @@ export function refreshVmInstances() {
 }
 
 export function refreshVmInstance(vmId: string) {
-  return mutate(`/api/instances/${vmId}`, getVmInstance(vmId));
+  return mutate(`/api/v1/instances/${vmId}`, getVmInstance(vmId));
 }
 
 export function mutateVmInstance(
   vmId: string,
   data: VMInstance | undefined = undefined,
 ) {
-  return mutate(`/api/instances/${vmId}`, data);
+  return mutate(`/api/v1/instances/${vmId}`, data);
 }
 
 export function useAvailableRegions() {
   const { data, error, isLoading } = useSWR<AvailableRegions, Error>(
-    '/api/regions',
+    '/api/v1/regions',
     getRegions,
   );
   return { data, error, isLoading };
 }
 
-async function addNewVmInstance(props: { url: string; body: FormValues }) {
+async function addNewVmInstance(props: { url: string; body: NewVmValues }) {
   const { url, body } = props;
   const response = await fetch(url, {
     method: 'POST',
@@ -55,8 +56,8 @@ async function addNewVmInstance(props: { url: string; body: FormValues }) {
   return (await response.json()) as VMInstance[];
 }
 
-export async function saveNewVm(body: FormValues) {
-  const url = '/api/instances/new';
+export async function saveNewVm(body: NewVmValues) {
+  const url = '/api/v1/instances/new';
   const instances = await addNewVmInstance({ url, body });
   await mutate(fetchInstancesKey, instances, false);
 }
@@ -64,7 +65,7 @@ export async function saveNewVm(body: FormValues) {
 export function useVmInstance(vmId: string | undefined) {
   const fetcher = () => getVmInstance(vmId!);
   return useSWR<VMInstance, Error>(
-    vmId ? `/api/instances/${vmId}` : null,
+    vmId ? `/api/v1/instances/${vmId}` : null,
     fetcher,
     { refreshInterval: 10000, refreshWhenHidden: false },
   );

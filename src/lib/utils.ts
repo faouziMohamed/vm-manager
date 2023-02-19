@@ -13,9 +13,10 @@ import {
   SortOrderOption,
   SortOrderValue,
   SortValue,
-  VMInstance,
   VmPowerState,
 } from '@/lib/types';
+
+import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
 export function adjustColor(hex: string, percent: number): string {
   const regex = /^#[0-9A-Fa-f]{6}$/;
@@ -112,8 +113,8 @@ function compareIpAddresses(
 
 export function sortData(
   sort: string,
-  a: VMInstance,
-  b: VMInstance,
+  a: CreateVmResult,
+  b: CreateVmResult,
   order: SortOrderValue = 'asc',
 ) {
   if (sort === 'ipAddress') {
@@ -123,9 +124,12 @@ export function sortData(
   return compareNames(a.serverName, b.serverName, order);
 }
 
-export function regroupData(filteredData: VMInstance[], groupBy: GroupByValue) {
-  if (groupBy === 'default') return new Map<string, VMInstance[]>();
-  const groupedData: Map<string, VMInstance[]> = new Map();
+export function regroupData(
+  filteredData: CreateVmResult[],
+  groupBy: GroupByValue,
+) {
+  if (groupBy === 'default') return new Map<string, CreateVmResult[]>();
+  const groupedData: Map<string, CreateVmResult[]> = new Map();
   filteredData.forEach((d) => {
     const group = d[groupBy];
     if (groupedData.has(group)) {
@@ -146,7 +150,7 @@ export function range(start: number, end: number): number[] {
 }
 
 export function sortGroupedData(
-  groupedData: Map<string, VMInstance[]>,
+  groupedData: Map<string, CreateVmResult[]>,
   sort: SortValue,
   order: SortOrderValue = 'asc',
 ) {
@@ -161,11 +165,12 @@ export function sortGroupedData(
 export const validPasswordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})$/;
 
-export interface FormValues {
+export interface NewVmValues {
   serverName: string;
   machineName: string;
   region: Region;
   password: string;
+  vmUsername: string;
 }
 
 export function generateIpAddress(): string {
@@ -193,7 +198,7 @@ export async function copyToClipboard(text: string): Promise<boolean> {
   }
 }
 
-export function mapInstanceToVmDetails(instance: VMInstance) {
+export function mapInstanceToVmDetails(instance: CreateVmResult) {
   // #region details
   const details: VmDetails[] = [
     {
@@ -201,6 +206,11 @@ export function mapInstanceToVmDetails(instance: VMInstance) {
       title:
         '(Machine Name/Host Name) Name assigned to the computer when it was created.',
       value: instance.computerName,
+    },
+    {
+      name: 'IP Address',
+      title: 'Public IP address assigned to the instance.',
+      value: instance.publicIpAddress,
     },
     {
       name: 'Instance ID',
@@ -221,22 +231,27 @@ export function mapInstanceToVmDetails(instance: VMInstance) {
     {
       name: 'Machine Status',
       title: 'Current status of the instance (running, stopped, etc.).',
-      value: instance.status,
+      value: instance.powerState,
     },
     {
       name: 'User Name',
       title: 'Username assigned to the instance when it was created.',
-      value: instance.adminUsername,
+      value: instance.vmUsername,
     },
     {
       name: 'vCPUs',
       title: 'Number of virtual CPUs assigned to the instance.',
-      value: '2',
+      value: instance.size.vCpus,
     },
     {
       name: 'RAM',
       title: 'Amount of RAM assigned to the instance.',
-      value: '8 GiB',
+      value: instance.size.memory,
+    },
+    {
+      name: 'Temp disk size',
+      title: 'Size of the temporary disk assigned to the instance.',
+      value: instance.size.tempStorage,
     },
   ];
   // #endregion
@@ -276,12 +291,14 @@ export async function handleFormSubmit({
   setAnyErrors,
   router,
   callbackUrl,
+  onRedirecting,
 }: {
   setIsSubmitting: (value: boolean) => void;
   values: AppAuthSignInUser & { action: AppAuthAction };
   setAnyErrors: (v: string[]) => void;
   router: NextRouter;
   callbackUrl?: string;
+  onRedirecting?: () => void;
 }) {
   setIsSubmitting(true);
   const resSubmission = await signIn('credentials', {
@@ -300,6 +317,7 @@ export async function handleFormSubmit({
   const { query } = router;
   const { next } = query;
   const redirectUrl = next ? (next as string) : resSubmission?.url || '/';
+  onRedirecting?.();
   await router.push(redirectUrl);
 }
 
