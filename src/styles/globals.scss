@@ -73,3 +73,92 @@ body {
     font-size: 1.6rem;
   }
 }
+
+//Load spinner
+
+.spinner-preloader {
+  --load-spinner-size: 2.3rem;
+  --load-spinner-line-width: 0.16rem;
+  --spinner-box-shaddow-color: rgba(212, 255, 255, 0.672);
+  --inner-spinner-color: rgb(8, 155, 175);
+  --middle-spinner-color1: rgb(181, 0, 127);
+  --middle-spinner-color2: rgb(163, 181, 0);
+  --outer-spinner-color: rgb(0, 159, 181);
+}
+
+@keyframes spinner-keyframe {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.preloader-parent {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.spinner-preloader {
+  background-color: rgb(255, 255, 255);
+  @extend .preloader-parent;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+
+.spinner-semi-transparent {
+  background-color: #cacaca0b;
+  border-radius: 0.3rem;
+  backdrop-filter: blur(3px);
+}
+
+.spinner-transparent {
+  background-color: transparent;
+}
+
+.load-spinner {
+  position: relative;
+  width: var(--load-spinner-size);
+  height: var(--load-spinner-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-width: 2.5px;
+    border-color: transparent var(--outer-spinner-color)
+      var(--outer-spinner-color);
+    animation: spinner-keyframe 1s linear 0s infinite reverse;
+    width: 175%;
+    height: 175%;
+  }
+
+  &::before,
+  &::after,
+  & {
+    border-radius: 50%;
+    border-color: transparent var(--inner-spinner-color)
+      var(--inner-spinner-color) transparent;
+    border-width: var(--load-spinner-line-width);
+    border-style: solid;
+    box-shadow: 0 0 0.5rem 0.1rem var(--spinner-box-shaddow-color);
+  }
+
+  &::before {
+    animation: spinner-keyframe 1.2s linear 0s infinite reverse;
+    border-color: transparent var(--middle-spinner-color1)
+      var(--middle-spinner-color2);
+    width: 140%;
+    height: 140%;
+  }
+}

@@ -8,6 +8,7 @@ import { handleFormSubmit } from '@/lib/utils';
 
 import AppFormControl from '@/Components/form/AppFormControl';
 import AuthLayout from '@/Components/Layout/AuthLayout';
+import FuturaSpinner from '@/Components/Loaders/FuturaSpinner';
 
 export default function SignIn() {
   const {
@@ -17,15 +18,23 @@ export default function SignIn() {
   } = useForm<AppAuthSignInUser>({ mode: 'all' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [anyErrors, setAnyErrors] = useState<string[] | undefined>(undefined);
+  const [redirecting, setRedirecting] = useState(false);
   const router = useRouter();
   const onSubmit = useCallback(
     async (values: AppAuthSignInUser) => {
+      let callbackUrl = '/';
+      const { query } = router;
+      if (query?.next) {
+        callbackUrl = query.next as string;
+      }
       // arriving here means that the form is valid
       await handleFormSubmit({
         setIsSubmitting,
+        onRedirecting: () => setRedirecting(true),
         values: { ...values, action: 'signin' },
         setAnyErrors,
         router,
+        callbackUrl,
       });
     },
     [router],
@@ -43,6 +52,7 @@ export default function SignIn() {
       }}
       errors={anyErrors}
     >
+      {redirecting && <FuturaSpinner semiTransparent />}
       <AppFormControl
         isRequired
         label='Email Address'

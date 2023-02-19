@@ -1,10 +1,10 @@
 import { Box, Button, Stack } from '@chakra-ui/react';
 import { MdRefresh } from 'react-icons/md';
 
-import GroupByMenu from '@/Components/Home/groupByMenu';
+import GroupByMenu from '@/Components/Home/GroupByMenu';
+import PowerStateFilterMenu from '@/Components/Home/PowerStateFilterMenu';
 import SortDirection from '@/Components/Home/SortDirection';
 import SortMenu from '@/Components/Home/sortMenu';
-import StatusFilterMenu from '@/Components/Home/statusFilterMenu';
 import UserInstances from '@/Components/Home/UserInstances';
 import Layout from '@/Components/Layout/Layout';
 import { refreshVmInstances } from '@/Services/client/vm.service';
@@ -29,7 +29,7 @@ function QueriesComponentSection() {
       pt={{ sm: '0.5rem' }}
       pb='1.5rem'
     >
-      <StatusFilterMenu />
+      <PowerStateFilterMenu />
       <GroupByMenu />
       <SortMenu />
       <SortDirection />
@@ -53,6 +53,6 @@ function UserVmInstancesSection() {
   );
 }
 
-// Home.auth = {
-//   redirectTo: '/',
-// };
+Home.auth = {
+  redirectTo: '/signin',
+};

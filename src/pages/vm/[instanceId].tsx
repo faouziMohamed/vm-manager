@@ -31,5 +31,5 @@ export default function VmPage() {
 }
 
 VmPage.auth = {
-  redirectTo: '/',
+  redirectTo: '/signin',
 };
