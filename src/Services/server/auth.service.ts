@@ -6,9 +6,9 @@ import {
   removeExpiredVerificationTokens,
   removeUnverifiedUsers,
 } from '@/lib/db/queries';
+import { AuthError } from '@/lib/Exceptions/auth.exceptions';
 import { verifyPassword } from '@/lib/server.utils';
 import { AppAuthorize, AppUserWithEmailVerification } from '@/lib/types';
-import { AuthError } from '@/lib/utils';
 
 import {
   sendAccountDeletedEmail,
@@ -27,12 +27,12 @@ export async function trySignInUser(
   maybeUser: User,
   credentials: AppAuthorize,
 ) {
-  const doesPasswordMatches = await verifyPassword(
+  const arePasswordMatching = await verifyPassword(
     credentials.password,
     maybeUser.password,
   );
-  if (!doesPasswordMatches) {
-    throw new AuthError('Invalid password');
+  if (!arePasswordMatching) {
+    throw new AuthError('Email or password is incorrect, verify and try again');
   }
   const user: AppUserWithEmailVerification = {
     id: maybeUser.userId,

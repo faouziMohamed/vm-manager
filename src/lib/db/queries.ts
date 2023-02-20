@@ -1,7 +1,9 @@
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+
 import prisma from '@/lib/db/prisma';
+import { AuthError } from '@/lib/Exceptions/auth.exceptions';
 import { hashPassword } from '@/lib/server.utils';
 import { AppAuthorize, AppUser } from '@/lib/types';
-import { AuthError } from '@/lib/utils';
 
 import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
@@ -19,28 +21,37 @@ export async function createNewUser(credentials: AppAuthorize) {
   if (!credentials.firstname || !credentials.lastname) {
     throw new AuthError('First and last name are required');
   }
-  const newUser = await prisma!.user.create({
-    data: {
-      email: credentials.email,
-      password: await hashPassword(credentials.password),
-      firstname: credentials.firstname,
-      lastname: credentials.lastname,
-    },
-    select: {
-      userId: true,
-      firstname: true,
-      lastname: true,
-      email: true,
-    },
-  });
+  try {
+    const newUser = await prisma!.user.create({
+      data: {
+        email: credentials.email,
+        password: await hashPassword(credentials.password),
+        firstname: credentials.firstname,
+        lastname: credentials.lastname,
+      },
+      select: {
+        userId: true,
+        firstname: true,
+        lastname: true,
+        email: true,
+      },
+    });
 
-  const user: AppUser = {
-    id: newUser.userId,
-    firstname: newUser.firstname,
-    lastname: newUser.lastname,
-    email: newUser.email,
-  };
-  return user;
+    const user: AppUser = {
+      id: newUser.userId,
+      firstname: newUser.firstname,
+      lastname: newUser.lastname,
+      email: newUser.email,
+    };
+    return user;
+  } catch (error) {
+    const e = error as PrismaClientKnownRequestError;
+    if (e.code === 'P2002') {
+      throw new AuthError('Email already exists');
+    } else {
+      throw new AuthError('An error occurred while creating a new user');
+    }
+  }
 }
 
 export async function removeUnverifiedUsers(thresholdDate: Date) {

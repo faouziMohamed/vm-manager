@@ -3,12 +3,12 @@ import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import prisma from '@/lib/db/prisma';
+import { AuthError } from '@/lib/Exceptions/auth.exceptions';
 import {
   AppAuthorize,
   AppUser,
   AppUserWithEmailVerification,
 } from '@/lib/types';
-import { AuthError } from '@/lib/utils';
 
 import { addNewUser, trySignInUser } from '@/Services/server/auth.service';
 
