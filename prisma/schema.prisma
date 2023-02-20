@@ -33,10 +33,10 @@ model VerificationToken {
   token      String   @unique
   expires    DateTime
   createdAt  DateTime @default(now())
-  userUserId String?
   user       User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
-
-  @@unique([userId, token])
+  
+  @@unique([userId, token]) 
+  @@index([token])
   @@map("verification_tokens")
 }
 
