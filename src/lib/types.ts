@@ -34,7 +34,6 @@ export type AvailableRegions = {
 };
 export type GroupByValue = (typeof groupByOptionsValues)[number];
 export type GroupByOption = {
-  // noinspection TypeScriptUnresolvedVariable
   name: (typeof groupByOptionsNames)[number];
   value: (typeof groupByOptionsValues)[number];
 };

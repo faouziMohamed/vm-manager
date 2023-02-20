@@ -23,6 +23,9 @@ export default function AppBlurredModal(props: {
         isOpen={isOpen}
         closeOnOverlayClick={false}
         onClose={onClose}
+        motionPreset='slideInRight'
+        blockScrollOnMount
+        scrollBehavior='inside'
       >
         <BlurredModalOverlay />
         <ModalContent>

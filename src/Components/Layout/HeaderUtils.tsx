@@ -46,6 +46,7 @@ export function HeaderActionButton() {
         _focus={{ boxShadow: 'outline' }}
         leftIcon={<BiLogInCircle />}
         onClick={() => void signOut({ callbackUrl: '/signin' })}
+        flexShrink={1}
       >
         <Text>Log Out</Text>
       </Button>
@@ -77,7 +78,7 @@ export function HeaderActionButton() {
 
 export function AddNewServerButton(props: ButtonProps & { noMl?: boolean }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { noMl = false, ...others } = props;
+  const { ...others } = props;
   return (
     <>
       <Button
@@ -86,9 +87,11 @@ export function AddNewServerButton(props: ButtonProps & { noMl?: boolean }) {
         _focus={{ boxShadow: 'outline' }}
         onClick={onOpen}
         leftIcon={<MdAddCircle />}
+        flexShrink={1}
+        title='Create a New Virtual machine Instance'
         {...others}
       >
-        <Text ml={noMl ? 0 : 2}>New Instance</Text>
+        <Text>New Instance</Text>
       </Button>
       {isOpen && (
         <Portal>

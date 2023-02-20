@@ -22,8 +22,8 @@ export default function VmPage() {
           currentPageLink={router.asPath}
           serverName={instance.serverName}
         />
-        <InstanceHeadline instance={instance} mutate={mutate} />
-        <VmInstanceControlButtons instance={instance} />
+        <InstanceHeadline instance={instance} />
+        <VmInstanceControlButtons instance={instance} mutate={mutate} />
         <InstanceDetails instance={instance} />
       </Stack>
     </Layout>

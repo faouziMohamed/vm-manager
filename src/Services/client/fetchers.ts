@@ -1,4 +1,4 @@
-import { AvailableRegions, ErrorResponse, VMInstance } from '@/lib/types';
+import { AvailableRegions, ErrorResponse } from '@/lib/types';
 
 import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
@@ -18,5 +18,5 @@ export async function getVmInstance(vmId: string) {
     const error = (await response.json()) as ErrorResponse;
     throw new Error(error.message);
   }
-  return (await response.json()) as VMInstance;
+  return (await response.json()) as CreateVmResult;
 }

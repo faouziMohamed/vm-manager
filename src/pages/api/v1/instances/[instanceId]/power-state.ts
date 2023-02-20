@@ -8,8 +8,7 @@ import { authMiddleware } from '@/lib/middleware';
 import { ErrorResponse } from '@/lib/types';
 
 import { nextAuthOptions } from '@/pages/api/auth/[...nextauth]';
-import { getVirtualMachine } from '@/Services/server/azureService/azure.service';
-import { CreateVmResult } from '@/Services/server/azureService/azure.types';
+import { getVmPowerState } from '@/Services/server/azureService/azure.service';
 
 const handler = nc().use(authMiddleware);
 
@@ -20,7 +19,7 @@ type NextApiRequestWithParams = NextApiRequest & {
 handler.get(
   async (
     req: NextApiRequestWithParams,
-    res: NextApiResponse<CreateVmResult | ErrorResponse>,
+    res: NextApiResponse<ErrorResponse | { powerState: string }>,
   ) => {
     const { instanceId } = req.query;
     if (!instanceId) {
@@ -31,21 +30,21 @@ handler.get(
     }
     const session = await getServerSession(req, res, nextAuthOptions);
     const userId = session!.user!.id;
+
     try {
       const instance = await getOneUserSavedVirtualMachine(userId, instanceId);
       if (!instance) {
-        const message =
-          'Virtual Machine instance not found, or not owned by the user';
+        const message = `Virtual Machine instance not found, or not owned by the user`;
         res.status(404).json({ message });
         return;
       }
-      const azureInstance = await getVirtualMachine(
-        instance.resourceGroupName,
-        instance.computerName,
-        instance.publicIpName,
-        instance.serverName,
-      );
-      res.json(azureInstance);
+      const { resourceGroupName, computerName } = instance;
+      const state = await getVmPowerState(resourceGroupName, computerName);
+      if (!state) {
+        res.status(404).json({ message: 'Virtual Machine instance not found' });
+        return;
+      }
+      res.status(200).json({ powerState: state });
     } catch (error) {
       const e = error as Error;
       console.log(error);

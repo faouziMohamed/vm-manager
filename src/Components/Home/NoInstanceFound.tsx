@@ -16,7 +16,6 @@ export default function NoInstanceFound() {
           leftIcon={undefined}
           textAlign='center'
           variant='ghost'
-          noMl
           color={Theme.colors.primary['50']}
           bg={Theme.colors.tertiary.main}
           _active={{ bg: adjustColor(Theme.colors.tertiary.main, -20) }}

@@ -17,39 +17,103 @@ import { BsFillPlayFill, BsStopFill } from 'react-icons/bs';
 import { GrConnect } from 'react-icons/gr';
 import { MdRestartAlt } from 'react-icons/md';
 import { RiDeleteBin5Line } from 'react-icons/ri';
+import { KeyedMutator } from 'swr';
 
-import { VMInstance } from '@/lib/types';
+import { PowerStateValue } from '@/lib/types';
 
-import { mutateVmInstance } from '@/Services/client/vm.service';
+import { manageVmInstance } from '@/Services/client/vm.service';
+import {
+  CreateVmResult,
+  ManageVmAction,
+} from '@/Services/server/azureService/azure.types';
 
 type ControlItem = {
   icon: IconType;
   text: string;
-  q: QueryType;
+  q?: QueryType;
   title: string;
+  action: ManageVmAction;
+  actioning: PowerStateValue | 'deleting' | 'restarting';
+  disabled?: boolean;
 };
 type QueryType = 'xs' | 'sm' | 'md';
 
-const controlItems: ControlItem[] = [
-  {
-    icon: MdRestartAlt,
-    text: 'Restart',
-    q: 'xs',
-    title: 'Restart the VM instance',
-  },
-  { icon: BsStopFill, text: 'Stop', q: 'sm', title: 'Stop the VM instance' },
-  {
-    icon: RiDeleteBin5Line,
-    text: 'Delete',
-    q: 'md',
-    title: 'Delete the VM instance',
-  },
-];
+function getControlItems(instance: CreateVmResult) {
+  const controlItems: ControlItem[] = [
+    {
+      icon: MdRestartAlt,
+      text: 'Restart',
+      q: 'xs',
+      title: 'Restart the VM instance',
+      action: 'restart',
+      actioning: 'restarting',
+      disabled: ['starting', 'stopping', 'stopped'].includes(
+        instance.powerState,
+      ),
+    },
+    {
+      icon: BsStopFill,
+      text: 'Stop',
+      q: 'sm',
+      title: 'Stop the VM instance',
+      action: 'stop',
+      actioning: 'stopping',
+      disabled: ['stopped', 'stopping', 'starting'].includes(
+        instance.powerState,
+      ),
+    },
+    {
+      icon: RiDeleteBin5Line,
+      text: 'Delete',
+      q: 'md',
+      title: 'Delete the VM instance',
+      action: 'delete',
+      actioning: 'deleting',
+    },
+  ];
+  return controlItems;
+}
+
+function onClick(
+  instance: CreateVmResult,
+  item: ControlItem,
+  mutate: KeyedMutator<CreateVmResult>,
+) {
+  return () => {
+    instance.powerState = item.actioning as PowerStateValue;
+    void mutate(instance);
+    void manageVmInstance(instance, item.action);
+  };
+}
+
+function HeadlineControlButton(props: {
+  item: ControlItem;
+  instance: CreateVmResult;
+  mutate: KeyedMutator<CreateVmResult>;
+}) {
+  const { item, instance, mutate } = props;
+  const handleClick = onClick(instance, item, mutate);
+  return (
+    <Button
+      fontSize='0.8rem'
+      px='0.6rem'
+      h='2.2rem'
+      aria-label={item.text}
+      leftIcon={<item.icon />}
+      title={item.title}
+      onClick={handleClick}
+      isDisabled={item.disabled}
+    >
+      {item.text}
+    </Button>
+  );
+}
 
 export default function VmInstanceControlButtons(props: {
-  instance: VMInstance;
+  instance: CreateVmResult;
+  mutate: KeyedMutator<CreateVmResult>;
 }) {
-  const { instance } = props;
+  const { instance, mutate } = props;
   const [isXs, isSm, isMd] = useMediaQuery(
     ['(min-width: 332px)', '(min-width: 406px)', '(min-width: 475px)'],
     { ssr: true, fallback: false },
@@ -59,6 +123,16 @@ export default function VmInstanceControlButtons(props: {
     setMounted(true);
   }, [mounted]);
   if (!mounted) return null;
+  const controlItems = getControlItems(instance);
+  const startItem: ControlItem = {
+    icon: BsFillPlayFill,
+    text: 'Start',
+    title: 'Click to start the instance',
+    action: 'start',
+    actioning: 'starting',
+    disabled: ['starting', 'running', 'stopping'].includes(instance.powerState),
+  };
+
   return (
     <HStack
       spacing={2}
@@ -78,74 +152,58 @@ export default function VmInstanceControlButtons(props: {
         >
           Connect
         </Button>
-        <Button
-          fontSize='0.8rem'
-          px='0.6rem'
-          h='2.2rem'
-          leftIcon={<BsFillPlayFill />}
-          ari-label='Click to start the instance'
-          title='Click to start the instance'
-          onClick={() => {
-            instance.powerState = 'running';
-            void mutateVmInstance(instance.instanceId, instance);
-          }}
-        >
-          Start
-        </Button>
+        <HeadlineControlButton
+          item={startItem}
+          instance={instance}
+          mutate={mutate}
+        />
 
         {isXs &&
           controlItems.map(
             (item) =>
               item.q === 'xs' && (
-                <Button
+                <HeadlineControlButton
                   key={item.text}
-                  fontSize='0.8rem'
-                  px='0.6rem'
-                  h='2.2rem'
-                  aria-label={item.text}
-                  leftIcon={<item.icon />}
-                  title={item.title}
-                >
-                  {item.text}
-                </Button>
+                  item={item}
+                  instance={instance}
+                  mutate={mutate}
+                />
               ),
           )}
         {isSm &&
           controlItems.map(
             (item) =>
               item.q === 'sm' && (
-                <Button
+                <HeadlineControlButton
                   key={item.text}
-                  fontSize='0.8rem'
-                  px='0.6rem'
-                  h='2.2rem'
-                  aria-label={item.text}
-                  leftIcon={<item.icon />}
-                  title={item.title}
-                >
-                  {item.text}
-                </Button>
+                  item={item}
+                  instance={instance}
+                  mutate={mutate}
+                />
               ),
           )}
         {isMd &&
           controlItems.map(
             (item) =>
               item.q === 'md' && (
-                <Button
+                <HeadlineControlButton
                   key={item.text}
-                  fontSize='0.8rem'
-                  px='0.6rem'
-                  h='2.2rem'
-                  aria-label={item.text}
-                  title={item.title}
-                  leftIcon={<item.icon />}
-                >
-                  {item.text}
-                </Button>
+                  item={item}
+                  instance={instance}
+                  mutate={mutate}
+                />
               ),
           )}
 
-        {!isMd && <ShowDynamicMenu isXs={isXs} isSm={isSm} isMd={isMd} />}
+        {!isMd && (
+          <ShowDynamicMenu
+            instance={instance}
+            isXs={isXs}
+            isSm={isSm}
+            isMd={isMd}
+            mutate={mutate}
+          />
+        )}
       </ButtonGroup>
     </HStack>
   );
@@ -154,8 +212,11 @@ function ShowDynamicMenu(props: {
   isXs: boolean;
   isSm: boolean;
   isMd: boolean;
+  instance: CreateVmResult;
+  mutate: KeyedMutator<CreateVmResult>;
 }) {
-  const { isXs, isSm, isMd } = props;
+  const { isXs, isSm, isMd, instance, mutate } = props;
+  const controlItems = getControlItems(instance);
   return (
     <Menu>
       <MenuButton
@@ -176,6 +237,8 @@ function ShowDynamicMenu(props: {
                 icon={<item.icon />}
                 aria-label={item.title}
                 title={item.title}
+                onClick={onClick(instance, item, mutate)}
+                isDisabled={item.disabled}
               >
                 {item.text}
               </MenuItem>
@@ -192,6 +255,8 @@ function ShowDynamicMenu(props: {
                   icon={<item.icon />}
                   aria-label={item.title}
                   title={item.title}
+                  onClick={onClick(instance, item, mutate)}
+                  isDisabled={item.disabled}
                 >
                   {item.text}
                 </MenuItem>
@@ -207,6 +272,8 @@ function ShowDynamicMenu(props: {
                   icon={<item.icon />}
                   aria-label={item.title}
                   title={item.title}
+                  onClick={onClick(instance, item, mutate)}
+                  isDisabled={item.disabled}
                 >
                   {item.text}
                 </MenuItem>

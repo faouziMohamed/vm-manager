@@ -1,6 +1,6 @@
 import useSWR, { mutate } from 'swr';
 
-import { AvailableRegions, VMInstance } from '@/lib/types';
+import { AvailableRegions } from '@/lib/types';
 import { NewVmValues } from '@/lib/utils';
 
 import {
@@ -8,7 +8,10 @@ import {
   getRegions,
   getVmInstance,
 } from '@/Services/client/fetchers';
-import { CreateVmResult } from '@/Services/server/azureService/azure.types';
+import {
+  CreateVmResult,
+  ManageVmAction,
+} from '@/Services/server/azureService/azure.types';
 
 const fetchInstancesKey = '/api/v1/instances';
 export function useCurrentUserVmInstances() {
@@ -29,7 +32,7 @@ export function refreshVmInstance(vmId: string) {
 
 export function mutateVmInstance(
   vmId: string,
-  data: VMInstance | undefined = undefined,
+  data: CreateVmResult | undefined = undefined,
 ) {
   return mutate(`/api/v1/instances/${vmId}`, data);
 }
@@ -53,7 +56,7 @@ async function addNewVmInstance(props: { url: string; body: NewVmValues }) {
   if (!response.ok) {
     throw new Error('Something went wrong, please try again later.');
   }
-  return (await response.json()) as VMInstance[];
+  return (await response.json()) as CreateVmResult[];
 }
 
 export async function saveNewVm(body: NewVmValues) {
@@ -64,9 +67,37 @@ export async function saveNewVm(body: NewVmValues) {
 
 export function useVmInstance(vmId: string | undefined) {
   const fetcher = () => getVmInstance(vmId!);
-  return useSWR<VMInstance, Error>(
+  return useSWR<CreateVmResult, Error>(
     vmId ? `/api/v1/instances/${vmId}` : null,
     fetcher,
     { refreshInterval: 10000, refreshWhenHidden: false },
   );
+}
+
+export async function manageVmInstance(
+  instance: CreateVmResult,
+  action: ManageVmAction,
+) {
+  const url = `/api/v1/instances/${instance.instanceId}/${action}`;
+  const response = await fetch(url, { method: 'PUT' });
+
+  if (!response.ok) {
+    throw new Error('Something went wrong, please try again later.');
+  }
+  void mutateVmInstance(instance.instanceId, instance);
+  return instance;
+}
+
+export async function updateInstanceFavoriteStatus(
+  vmId: string,
+  instance: CreateVmResult,
+) {
+  const url = `/api/v1/instances/${vmId}/favorite`;
+  const response = await fetch(url, { method: 'PUT' });
+
+  if (!response.ok) {
+    throw new Error('Something went wrong, please try again later.');
+  }
+  void mutateVmInstance(vmId, instance);
+  return instance;
 }

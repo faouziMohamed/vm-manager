@@ -10,6 +10,7 @@ import '@/styles/globals.scss';
 import { AppUser } from '@/lib/types';
 
 import WithAuth from '@/Components/Layout/auth/WithAuth';
+import FuturaSpinner from '@/Components/Loaders/FuturaSpinner';
 import Theme from '@/styles/theme';
 
 const theme = extendTheme(Theme);
@@ -25,6 +26,22 @@ function RenderComponents({ children }: { children: JSX.Element }) {
   }, [router, session?.user]);
   return children;
 }
+
+// function HandleAppAccess() {
+//   const [isOpen, setIsOpen] = useState(true);
+//   return (
+//     <AppBlurredModal
+//       isOpen={isOpen}
+//       onClose={() => setIsOpen(true)}
+//       title='Early Access'
+//     >
+//       <Paragraph fontSize='1rem'>
+//         This app is currently in early access. It&apos;s not open to the public
+//         yet.
+//       </Paragraph>
+//     </AppBlurredModal>
+//   );
+// }
 
 export default function App({
   Component,
@@ -46,6 +63,8 @@ export default function App({
           />
           <title>Android Server Manager</title>
         </Head>
+        <FuturaSpinner display='none' semiTransparent />
+        {/* <HandleAppAccess /> */}
         <Box
           className={Theme.fonts.variables.join(' ')}
           fontFamily={`var(${Theme.fonts.ubuntu.variable})`}

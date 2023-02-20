@@ -26,25 +26,28 @@ export const availableRegions = [
 export const powerStateNames = [
   'Filter',
   'Running',
-  'Restarting',
-  'Stopped',
   'Starting',
-  'Creating',
+  'Stopping',
+  'Stopped',
+  'Unknown',
 ] as const;
 export const powerStateValues = [
   'default',
   'running',
-  'restarting',
-  'stopped',
   'starting',
-  'creating',
-  'Succeeded',
+  'stopping',
+  'stopped',
+  'unknown',
 ] as const;
 export const sortOptionsNames = ['Sort', 'Name', 'Ip Address'] as const;
 export const sortOptionsValues = ['default', 'name', 'ipAddress'] as const;
 export const sortOrderNames = ['Ascending', 'Descending'] as const;
 export const sortOrderValues = ['asc', 'desc'] as const;
-export const groupByOptionsNames = ['Group By', 'Region', 'Status'] as const;
+export const groupByOptionsNames = [
+  'Group By',
+  'Region',
+  'Power State',
+] as const;
 export const groupByOptionsValues = [
   'default',
   'region',

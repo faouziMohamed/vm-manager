@@ -110,6 +110,28 @@ export async function getOneUserSavedVirtualMachine(
       computerName: true,
       publicIpName: true,
       resourceGroupName: true,
+      isFavorite: true,
     },
   });
+}
+
+export async function updateVmInstanceFavoriteStatus(
+  instanceId: string,
+  isFavorite: boolean,
+) {
+  return prisma!.vmInstances.update({
+    where: { instanceId },
+    data: { isFavorite },
+  });
+}
+
+export async function existsVm(instanceId: string) {
+  const instance = await prisma!.vmInstances.findFirst({
+    where: { instanceId },
+  });
+  return !!instance;
+}
+
+export async function deleteVirtualMachine(instanceId: string) {
+  await prisma!.vmInstances.delete({ where: { instanceId } });
 }

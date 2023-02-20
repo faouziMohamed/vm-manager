@@ -92,13 +92,14 @@ export function createVmParameter(
   return vmParameters;
 }
 
-export function getVmDetails(
+export async function getVmDetails(
   vm: VirtualMachine,
   resourceGroupName: string,
   vmName: string,
   publicIpInfo: PublicIPAddress,
   pipName: string,
 ) {
+  const powerState = (await getPowerState(resourceGroupName, vmName))!;
   const vmInstanceDetails: CreateVmResult = {
     instanceId: vm.vmId!,
     resourceGroupName,
@@ -110,13 +111,13 @@ export function getVmDetails(
       name: 'Standard_D2s_v3',
       vCpus: '2',
       memory: '8 GiB',
-      tempStorage: '32 GiB',
+      tempStorage: '16 GiB',
     },
     os: 'Windows',
     publicIpAddress: publicIpInfo.ipAddress!,
     publicIpName: pipName,
     licenseType: vm.licenseType!,
-    powerState: vm.provisioningState as PowerStateValue,
+    powerState,
     timeCreated: vm.timeCreated!,
     resourceType: vm.type || 'Microsoft.Compute/virtualMachines',
   };
@@ -155,4 +156,25 @@ export async function deleteVm(resourceGroupName: string, vmName: string) {
     resourceGroupName,
     vmName,
   );
+}
+
+export async function getPowerState(resourceGroupName: string, vmName: string) {
+  const instanceView = await computeClient.virtualMachines.instanceView(
+    resourceGroupName,
+    vmName,
+  );
+  if (!instanceView.statuses) {
+    return null;
+  }
+  const powerState = instanceView.statuses.find((status) =>
+    status.code!.startsWith('PowerState'),
+  );
+  const status = powerState!.code!.split('/')[1];
+  if (status === 'deallocated') {
+    return 'stopped';
+  }
+  if (status === 'deallocating') {
+    return 'stopping';
+  }
+  return status as PowerStateValue;
 }

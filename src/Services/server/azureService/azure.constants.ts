@@ -3,3 +3,9 @@ export const publisher = 'microsoftwindowsdesktop';
 export const offer = 'windows-11';
 export const sku = 'win11-21h2-pro';
 export const subscriptionId = process.env.AZURE_SUBSCRIPTION_ID!;
+export const MANAGE_VM_ACTIONS = [
+  'start',
+  'stop',
+  'restart',
+  'delete',
+] as const;

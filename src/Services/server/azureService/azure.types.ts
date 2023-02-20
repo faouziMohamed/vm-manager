@@ -1,5 +1,7 @@
 import { PowerStateValue, Region } from '@/lib/types';
 
+import { MANAGE_VM_ACTIONS } from '@/Services/server/azureService/azure.constants';
+
 export type CreateVmResult = {
   instanceId: string;
   computerName: string;
@@ -22,3 +24,4 @@ export type CreateVmResult = {
   publicIpName: string;
   isFavorite?: boolean;
 };
+export type ManageVmAction = (typeof MANAGE_VM_ACTIONS)[number];

@@ -11,11 +11,13 @@ import { v4 as uuid } from 'uuid';
 import { ManageVmError } from '@/lib/Exceptions/azure.exceptions';
 import { Region } from '@/lib/types';
 
+import { ManageVmAction } from '@/Services/server/azureService/azure.types';
 import {
   createVmParameter,
   deallocateVm,
   deleteVm,
   getAzureClients,
+  getPowerState,
   getVmDetails,
   restartVm,
   startVm,
@@ -24,12 +26,7 @@ import {
 // Acquire credentials
 const { networkClient, computeClient, resourceClient } = getAzureClients();
 
-export async function getVmRuntimeState(
-  resourceGroupName: string,
-  vmName: string,
-) {
-  return computeClient.virtualMachines.instanceView(resourceGroupName, vmName);
-}
+// export async function get
 
 export async function createVirtualNetwork(
   virtualNetworkName: string,
@@ -183,12 +180,16 @@ export async function getVirtualMachine(
 ) {
   const vm = await computeClient.virtualMachines.get(resourceGroupName, vmName);
   const pip = await getPublicIpAddress(resourceGroupName, pipName);
-  const details = getVmDetails(vm, resourceGroupName, vmName, pip, pipName);
+  const details = await getVmDetails(
+    vm,
+    resourceGroupName,
+    vmName,
+    pip,
+    pipName,
+  );
   details.serverName = serverName;
   return details;
 }
-
-export type ManageVmAction = 'start' | 'stop' | 'restart' | 'delete';
 
 export async function manageVirtualMachine(
   resourceGroupName: string,
@@ -221,4 +222,11 @@ export async function manageVirtualMachine(
       throw new ManageVmError(`Invalid action '${action as string}' provided`);
     }
   }
+}
+
+export async function getVmPowerState(
+  resourceGroupName: string,
+  vmName: string,
+) {
+  return getPowerState(resourceGroupName, vmName);
 }

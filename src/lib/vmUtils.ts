@@ -8,31 +8,22 @@ import {
 export const powerStateColors: Record<PowerStateValue, string> = {
   default: '#0c323b',
   running: '#6FABE6',
-  restarting: '#B87A02',
-  stopped: '#B60057',
   starting: '#B2B600',
-  creating: '#CDBFD9',
-  Succeeded: '#6FABE6',
+  stopping: '#CDBFD9',
+  stopped: '#B60057',
+  unknown: '#B87A02',
 };
 export const powerStates: VmPowerState[] = [
   { name: 'Filter', iconColor: powerStateColors.default, value: 'default' },
   { name: 'Running', iconColor: powerStateColors.running, value: 'running' },
   {
-    name: 'Restarting',
-    iconColor: powerStateColors.restarting,
-    value: 'restarting',
-  },
-  { name: 'Stopped', iconColor: powerStateColors.stopped, value: 'stopped' },
-  {
     name: 'Starting',
     iconColor: powerStateColors.starting,
     value: 'starting',
   },
-  {
-    name: 'Creating',
-    iconColor: powerStateColors.creating,
-    value: 'creating',
-  },
+  { name: 'Stopping', iconColor: powerStateColors.stopping, value: 'stopping' },
+  { name: 'Stopped', iconColor: powerStateColors.stopped, value: 'stopped' },
+  { name: 'Unknown', iconColor: powerStateColors.unknown, value: 'unknown' },
 ];
 export const sortOptions: SortOption[] = [
   { name: 'Sort', value: 'default' },
@@ -42,6 +33,6 @@ export const sortOptions: SortOption[] = [
 
 export const groupByOptions: GroupByOption[] = [
   { name: 'Group By', value: 'default' },
-  { name: 'Status', value: 'powerState' },
+  { name: 'Power State', value: 'powerState' },
   { name: 'Region', value: 'region' },
 ];

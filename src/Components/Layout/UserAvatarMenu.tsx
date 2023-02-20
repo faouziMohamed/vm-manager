@@ -27,7 +27,7 @@ export default function UserOptionsAvatar() {
   const user = session?.user as AppUser;
   return (
     <Menu>
-      <MenuButton aria-label='Options' pos='relative'>
+      <MenuButton flexShrink={0.1} aria-label='Options' pos='relative'>
         <ChakraImage
           src={githubUrlAvatar}
           alt='User Avatar'
