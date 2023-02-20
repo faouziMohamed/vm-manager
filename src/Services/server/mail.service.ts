@@ -9,6 +9,8 @@ import { AppUser } from '@/lib/types';
 const transporter = createTransport(process.env.EMAIL_SERVER);
 
 async function sendVerificationLink(user: AppUser, token: string) {
+  // eslint-disable-next-line no-console
+  console.log('Sending email to', user.email);
   const link = `${process.env.NEXTAUTH_URL}/api/auth/verify-email?token=${token}`;
   return transporter.sendMail({
     from: process.env.EMAIL_FROM,

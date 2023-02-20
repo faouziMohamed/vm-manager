@@ -17,6 +17,8 @@ import {
 
 export async function addNewUser(credentials: AppAuthorize) {
   const user = await createNewUser(credentials);
+  // eslint-disable-next-line no-console
+  console.log(user);
   await sendVerificationEmail(user);
   return user;
 }
