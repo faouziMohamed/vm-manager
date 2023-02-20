@@ -28,19 +28,6 @@ handler.post(
       res.status(400).json({ message: 'Missing required fields' });
       return;
     }
-    //
-    // const newInstance: VMInstance = {
-    //   instanceId: uuid(),
-    //   serverName,
-    //   computerName: machineName,
-    //   publicIpAddress: generateIpAddress(),
-    //   status: 'creating',
-    //   region,
-    //   adminUsername,
-    //   size: 'Standard_D2s_v3',
-    //   resourceGroupName: 'rg',
-    //   isFavorite: false,
-    // };
     const tempReq = req as unknown as NextApiRequest;
     try {
       // arriving here means the user is authenticated see authMiddleware

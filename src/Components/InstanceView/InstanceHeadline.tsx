@@ -6,6 +6,7 @@ import { GrClose } from 'react-icons/gr';
 import { IoIosRefresh } from 'react-icons/io';
 import { MdContentCopy } from 'react-icons/md';
 
+import { PowerStateValue } from '@/lib/types';
 import { adjustColor, copyToClipboard } from '@/lib/utils';
 import { powerStateColors } from '@/lib/vmUtils';
 
@@ -17,13 +18,16 @@ import {
 } from '@/Services/client/vm.service';
 import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
+const powerStates: PowerStateValue[] = ['starting', 'stopping'];
 export default function InstanceHeadline(props: { instance: CreateVmResult }) {
   const { instance } = props;
   const router = useRouter();
-  const screenColor =
-    instance.powerState === 'running'
-      ? powerStateColors.running
-      : powerStateColors.default;
+  let screenColor = powerStateColors.default;
+  if (instance.powerState === 'running') {
+    screenColor = powerStateColors.running;
+  } else if (powerStates.includes(instance.powerState)) {
+    screenColor = powerStateColors.starting;
+  }
   return (
     <HStack alignItems='flex-start' spacing={2} justifyContent='space-between'>
       <HStack alignItems='flex-start' spacing={2}>

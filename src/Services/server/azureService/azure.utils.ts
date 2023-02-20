@@ -4,6 +4,7 @@ import { ResourceManagementClient } from '@azure/arm-resources';
 import { DefaultAzureCredential } from '@azure/identity';
 import { v4 as uuid } from 'uuid';
 
+import { ResourceNotFoundError } from '@/lib/Exceptions/azure.exceptions';
 import { PowerStateValue } from '@/lib/types';
 
 import {
@@ -152,11 +153,6 @@ export async function deallocateVm(resourceGroupName: string, vmName: string) {
 
 // virtualMachines.delete
 export async function deleteVm(resourceGroupName: string) {
-  // await computeClient.virtualMachines.beginDeleteAndWait(
-  //   resourceGroupName,
-  //   vmName,
-  // );
-  // delete the resource group instead
   await resourceClient.resourceGroups.beginDeleteAndWait(resourceGroupName);
 }
 
@@ -166,7 +162,9 @@ export async function getPowerState(resourceGroupName: string, vmName: string) {
     vmName,
   );
   if (!instanceView.statuses) {
-    return null;
+    throw new ResourceNotFoundError(
+      "Couldn't get the Virtual Machine, it may have been deleted or doesn't exist",
+    );
   }
   const powerState = instanceView.statuses.find((status) =>
     status.code!.startsWith('PowerState'),

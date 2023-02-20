@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth';
 import nc from 'next-connect';
 
 import { getOneUserSavedVirtualMachine } from '@/lib/db/queries';
+import { ResourceNotFoundError } from '@/lib/Exceptions/azure.exceptions';
 import { authMiddleware } from '@/lib/middleware';
 import { ErrorResponse } from '@/lib/types';
 
@@ -49,6 +50,11 @@ handler.get(
       res.json(azureInstance);
     } catch (error) {
       const e = error as Error;
+      if (e instanceof ResourceNotFoundError) {
+        res.status(404).json({ message: e.message });
+        return;
+      }
+
       console.log(error);
       res.status(500).json({ message: e.message });
     }

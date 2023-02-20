@@ -8,7 +8,11 @@ import {
 import { ResourceGroup } from '@azure/arm-resources';
 import { v4 as uuid } from 'uuid';
 
-import { ManageVmError } from '@/lib/Exceptions/azure.exceptions';
+import {
+  CreatingResourceError,
+  ManageVmError,
+  ResourceNotFoundError,
+} from '@/lib/Exceptions/azure.exceptions';
 import { Region } from '@/lib/types';
 
 import { ManageVmAction } from '@/Services/server/azureService/azure.types';
@@ -111,14 +115,9 @@ export async function createResourceGroup(
   location: Region,
 ) {
   console.log(`Creating resource group ${resourceGroupName}...`);
-  const resourceGroupParameters: ResourceGroup = {
-    location,
-    tags: { 'keystone-vm': 'true' },
-  };
-  return resourceClient.resourceGroups.createOrUpdate(
-    resourceGroupName,
-    resourceGroupParameters,
-  );
+  const rgName = resourceGroupName;
+  const rgParams: ResourceGroup = { location, tags: { 'keystone-vm': 'true' } };
+  return resourceClient.resourceGroups.createOrUpdate(rgName, rgParams);
 }
 
 export async function createVirtualMachine(
@@ -128,41 +127,65 @@ export async function createVirtualMachine(
   adminPassword: string,
 ) {
   const vmName = virtualMachineName;
-  const vnName = `${vmName}-vn-${uuid().substring(0, 4)}`;
+  const vNetName = `${vmName}-vn-${uuid().substring(0, 4)}`;
   const subnetName = `${vmName}-subnet-${uuid().substring(0, 4)}`;
   const resourceGroupName = `${vmName}-rg-${uuid().substring(0, 4)}`;
   const nicName = `${vmName}-nic-${uuid().substring(0, 4)}`;
   const pipName = `${vmName}-pip-${uuid().substring(0, 4)}`;
+  try {
+    const rgName = resourceGroupName;
+    await createResourceGroup(rgName, location);
+    await createVirtualNetwork(vNetName, location, rgName);
+    const subnetInfo = await createSubnet(subnetName, rgName, vNetName);
+    const publicIpInfo = await createPublicIpAddress(rgName, pipName, location);
+    const netInterfaceParams: Parameters<typeof createNetworkInterface> = [
+      rgName,
+      nicName,
+      publicIpInfo,
+      subnetInfo,
+      location,
+    ];
+    await createNetworkInterface(...netInterfaceParams);
+    const vmParameters = createVmParameter(
+      location,
+      vmName,
+      adminUsername,
+      adminPassword,
+      rgName,
+      nicName,
+    );
+    console.log(`Creating Virtual Machine ${vmName}...`);
+    const vm = await computeClient.virtualMachines.beginCreateOrUpdateAndWait(
+      rgName,
+      virtualMachineName,
+      vmParameters,
+    );
+    console.log('Virtual Machine created\n');
+    return await getVmDetails(
+      vm,
+      rgName,
+      virtualMachineName,
+      publicIpInfo,
+      pipName,
+    );
+  } catch (error) {
+    const e = error as Error;
+    console.log(
+      'Error while creating VM: ',
+      e.message,
+      'Attempting to clean up...',
+    );
 
-  const rgName = resourceGroupName;
-  await createResourceGroup(rgName, location);
-  await createVirtualNetwork(vnName, location, rgName);
-  const subnetInfo = await createSubnet(subnetName, rgName, vnName);
-  const publicIpInfo = await createPublicIpAddress(rgName, pipName, location);
-  const netInterfaceParams: Parameters<typeof createNetworkInterface> = [
-    rgName,
-    nicName,
-    publicIpInfo,
-    subnetInfo,
-    location,
-  ];
-  await createNetworkInterface(...netInterfaceParams);
-  const vmParameters = createVmParameter(
-    location,
-    vmName,
-    adminUsername,
-    adminPassword,
-    rgName,
-    nicName,
-  );
-  console.log(`Creating Virtual Machine ${vmName}...`);
-  const vm = await computeClient.virtualMachines.beginCreateOrUpdateAndWait(
-    rgName,
-    virtualMachineName,
-    vmParameters,
-  );
-  console.log('Virtual Machine created\n');
-  return getVmDetails(vm, rgName, virtualMachineName, publicIpInfo, pipName);
+    try {
+      await manageVirtualMachine(resourceGroupName, vmName, 'delete');
+    } catch (err) {
+      const err2 = err as Error;
+      console.log('Error while cleaning up VM: ', err2.message);
+    }
+    throw new CreatingResourceError(
+      "Couldn't create the Virtual Machine with it associated resources",
+    );
+  }
 }
 
 export async function getPublicIpAddress(
@@ -178,17 +201,28 @@ export async function getVirtualMachine(
   pipName: string,
   serverName: string,
 ) {
-  const vm = await computeClient.virtualMachines.get(resourceGroupName, vmName);
-  const pip = await getPublicIpAddress(resourceGroupName, pipName);
-  const details = await getVmDetails(
-    vm,
-    resourceGroupName,
-    vmName,
-    pip,
-    pipName,
-  );
-  details.serverName = serverName;
-  return details;
+  try {
+    const vm = await computeClient.virtualMachines.get(
+      resourceGroupName,
+      vmName,
+    );
+    const pip = await getPublicIpAddress(resourceGroupName, pipName);
+    const details = await getVmDetails(
+      vm,
+      resourceGroupName,
+      vmName,
+      pip,
+      pipName,
+    );
+    details.serverName = serverName;
+    return details;
+  } catch (error) {
+    const e = error as Error;
+    console.log('Error while getting VM: ', e.message);
+    throw new ResourceNotFoundError(
+      "Couldn't get the Virtual Machine, it may have been deleted or doesn't exist",
+    );
+  }
 }
 
 export async function manageVirtualMachine(
@@ -196,31 +230,27 @@ export async function manageVirtualMachine(
   vmName: string,
   action: ManageVmAction,
 ) {
-  console.log(`\n${action}ing virtual machine ${vmName}...`);
-  await computeClient.virtualMachines.beginStartAndWait(
-    resourceGroupName,
-    vmName,
-  );
-  switch (action) {
-    case 'start': {
-      await startVm(resourceGroupName, vmName);
-      break;
-    }
-    case 'stop': {
-      await deallocateVm(resourceGroupName, vmName);
-      break;
-    }
-    case 'restart': {
-      await restartVm(resourceGroupName, vmName);
-      break;
-    }
-    case 'delete': {
-      await deleteVm(resourceGroupName);
-      break;
-    }
-    default: {
-      throw new ManageVmError(`Invalid action '${action as string}' provided`);
-    }
+  const mapping: {
+    [key in ManageVmAction]: (rgName: string, vmName: string) => Promise<void>;
+  } = {
+    start: startVm,
+    stop: deallocateVm,
+    restart: restartVm,
+    delete: deleteVm,
+  };
+  if (!(action in mapping)) {
+    const message = `Invalid action '${action as string}' provided`;
+    console.log(message);
+    throw new ManageVmError(message);
+  }
+  try {
+    await mapping[action](resourceGroupName, vmName);
+  } catch (error) {
+    const e = error as Error;
+    console.log('Error while managing VM: ', e.message);
+    throw new ManageVmError(
+      "Couldn't manage the Virtual Machine, it may have been deleted or doesn't exist",
+    );
   }
 }
 
