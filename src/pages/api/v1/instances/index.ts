@@ -11,8 +11,6 @@ import { nextAuthOptions } from '@/pages/api/auth/[...nextauth]';
 import { getVirtualMachine } from '@/Services/server/azureService/azure.service';
 import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
-// let instances: CreateVmResult[] = [];
-
 const handler = nc().use(authMiddleware);
 
 handler.get(
@@ -36,8 +34,6 @@ handler.get(
       });
       // wait for all instances to be fetched
       const azureInstancesResults = await Promise.all(azureInstances);
-      // get all instances from
-      // instances = (await getInstances()) as unknown as CreateVmResult[];
       res.json(azureInstancesResults);
     } catch (error) {
       const e = error as Error;

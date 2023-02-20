@@ -215,7 +215,7 @@ export async function manageVirtualMachine(
       break;
     }
     case 'delete': {
-      await deleteVm(resourceGroupName, vmName);
+      await deleteVm(resourceGroupName);
       break;
     }
     default: {

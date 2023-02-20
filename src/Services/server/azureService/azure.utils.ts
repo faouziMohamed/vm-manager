@@ -151,11 +151,13 @@ export async function deallocateVm(resourceGroupName: string, vmName: string) {
 }
 
 // virtualMachines.delete
-export async function deleteVm(resourceGroupName: string, vmName: string) {
-  await computeClient.virtualMachines.beginDeleteAndWait(
-    resourceGroupName,
-    vmName,
-  );
+export async function deleteVm(resourceGroupName: string) {
+  // await computeClient.virtualMachines.beginDeleteAndWait(
+  //   resourceGroupName,
+  //   vmName,
+  // );
+  // delete the resource group instead
+  await resourceClient.resourceGroups.beginDeleteAndWait(resourceGroupName);
 }
 
 export async function getPowerState(resourceGroupName: string, vmName: string) {
