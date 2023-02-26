@@ -18,7 +18,7 @@ export default function Document() {
         <meta content={metadata.description} name='description' key='desc' />
         <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
         <meta name='classification' content='business' key='classification' />
-        <meta name='copyright' content='Magical Ravers' key='copyright' />
+        <meta name='copyright' content='CSentinel' key='copyright' />
         <meta name='url' content={metadata.siteUrl} key='url' />
         <meta
           name='site_map'
