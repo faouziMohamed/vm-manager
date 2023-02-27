@@ -11,8 +11,8 @@ on **wsl2 (Ubuntu 20.04)** on a **Windows server 22**.
 
 - You need obviously to have a linux server (with **Ubuntu** installed).
 - You need to have a **domain name** (or a **subdomain**),
-  like `magical-ravers.com`
-  , `www.magical-ravers.com`, `api.magical-ravers.com`, etc.
+  like `vm-manager.com`
+  , `www.vm-manager.com`, `api.vm-manager.com`, etc.
 - For the **SSL certificate**, you need to have a **public IP** address for your
   server (or a **static IP** address if you have one).
 - If you are using a vm from the cloud (like **Azure**), you need to **open the
@@ -77,25 +77,35 @@ on **wsl2 (Ubuntu 20.04)** on a **Windows server 22**.
 - [ ] Clone the **NextJs app** on the server:
 
   ```bash
-  git clone https://github.com/Keystone-International/nftDesktop.git
+  # git clone https://github.com/faouziMohamed/vm-manager.git
+  ##or
+  git clone git@github.com:faouziMohamed/vm-manager.git
   ```
 
-- [ ] 😻 I like to clone the app in the `/var/www` folder, but you can clone it
-  in any folder you want (here I'm using the `/var/www/magical-ravers` folder):
+[//]: # ()
 
-  ```bash
-  sudo mv nftDesktop /var/www/magical-ravers
-  sudo chown -R <username>:<username> /var/www/magical-ravers
-  ```
+[//]: # (- [ ] 😻 I like to clone the app in the `/var/www` folder, but you can clone it)
+
+[//]: # (  in any folder you want &#40;here I'm using the `/var/www/vm-manager` folder&#41;:)
+
+[//]: # ()
+
+[//]: # (  ```bash)
+
+[//]: # (  sudo mv vm-manager /var/www/vm-manager)
+
+[//]: # (  sudo chown -R <username>:<username> /var/www/vm-manager)
+
+[//]: # (  ```)
 
 - The path to the app will be used later
 - Avoid using a path with spaces in it, it may cause some problems
 
 - [ ] Copy the **nginx configuration file** from the app
-  folder `nftDesktop/nginx/vm/deploy.conf` to the nginx
+  folder `vm-manager/nginx/vm/deploy.conf` to the nginx
   folder `/etc/nginx/sites-available`:
   ```bash
-  sudo cp nftDesktop/nginx/deploy.conf /etc/nginx/sites-available/
+  sudo cp vm-manager/nginx/deploy.conf /etc/nginx/sites-available/
   ```
 - [ ] Create a **symbolic link** from the nginx configuration file to the nginx
   folder `/etc/nginx/sites-enabled`:
@@ -109,21 +119,22 @@ on **wsl2 (Ubuntu 20.04)** on a **Windows server 22**.
   sudo rm /etc/nginx/sites-enabled/default
   ```
 
-- [ ] **Edit the nginx configuration
-  file** `/etc/nginx/sites-available/mfaouzi.conf` to change the `server_name`
-  to your domain name (or subdomain). _‼ You have to make sure the domain name
-  is pointing to the public IP address of your server (or the static IP address
-  if you have one)_.
-  Here replace `magical-ravers` with your domains name (or subdomains):
+  - [ ] **Edit the nginx configuration
+    file** `/etc/nginx/sites-available/deploy.conf` to change the `server_name`
+    to your domain name (or subdomain). Initially it is set to underscore ( _ ).  
+    You may want to change it and use a domain or subdomain. _Make sure the domain name
+    is pointing to the public IP address of your server or the static IP address
+    if you have one_.
 
-  ```nginx
-  server {
-    listen 80;
-    listen [::]:80;
-    server_name magical-ravers.com www.magical-ravers.com;
-    ...
-  }
-  ```
+   ```diff
+    server {
+      listen 80;
+      listen [::]:80;
+   -  server_name _;
+   +  server_name your-domain.com;
+      ...
+    }
+   ```
 
 - [ ] **Restart nginx** to apply the changes:
   ```bash
@@ -153,7 +164,7 @@ on **wsl2 (Ubuntu 20.04)** on a **Windows server 22**.
   ```
 - [ ] **Install the dependencies** of the app:
   ```bash
-  cd /var/www/magical-ravers
+  cd /var/www/vm-manager
   yarn install
   ```
 - [ ] **Build the app**:
@@ -162,7 +173,7 @@ on **wsl2 (Ubuntu 20.04)** on a **Windows server 22**.
   ```
 - [ ] **Start the app using pm2**:
   ```bash
-  pm2 start yarn --name "magical-ravers" -- start
+  pm2 start yarn --name "vm-manager" -- start
   ```
 - [ ] **Save the pm2 processes** to be able to start them automatically when the
   server starts:
@@ -173,7 +184,7 @@ on **wsl2 (Ubuntu 20.04)** on a **Windows server 22**.
 
 - [ ] **Check if the app is running**:
   Open your browser and go to the url of your domain name (or
-  subdomain) `http://magical-ravers.com` 🎉.
+  subdomain) `http://your-domain.com` 🎉.
 
 ### Configure the SSL certificate
 
@@ -183,10 +194,10 @@ on **wsl2 (Ubuntu 20.04)** on a **Windows server 22**.
     redirect the `http` traffic to `https`.
   - It won't work if you don't have a domain name pointing to the public IP
     address of your server (or the static IP address if you have one).
-  - Here replace `magical-ravers` with your domains name (or subdomains):
+  - Here replace `vm-manager` with your domains name (or subdomains):
 
   ```bash
-  sudo certbot --nginx -d magical-ravers.com -d www.magical-ravers.com
+  sudo certbot --nginx -d your-domain.com
   ```
 
 - [ ] **Check if the SSL certificate is working**:

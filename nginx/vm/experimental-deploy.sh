@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-# This script is used to deploy the magical ravers project in a web server using nginx on a virtual machine running Ubuntu (22.04 LTS)
+# This script is used to deploy the vm-manager project in a web server using nginx on a virtual machine running Ubuntu (22.04 LTS)
 
 ###################################################
 DOMAIN_NAME=
 EMAIL=
-GIT_REPO="https://github.com/Keystone-International/nftDesktop.git"
-PROJECT_PATH_NAME="${HOME}/magical-ravers"
-DAEMON_NAME="magical-ravers"
+GIT_REPO="https://github.com/faouziMohamed/vm-manager.git"
+PROJECT_PATH_NAME="${HOME}/vm-manager"
+DAEMON_NAME="vm-manager"
 NGINX_CONFIG_FILE_PATH="${PROJECT_PATH_NAME}/nginx/vm/deploy.conf"
 RECONFIGURE_SERVER="true"
 VERBOSE="true"
@@ -25,7 +25,7 @@ trap "ctrl_c" SIGINT
 # Function to show the help message and exit the script
 function show_help_message() {
   cat << EOF
-Deploy the magical ravers project in a web server using nginx on a virtual machine running Ubuntu (22.04 LTS) (version ${VERSION})
+Deploy the ${DAEMON_NAME} project in a web server using nginx on a virtual machine running Ubuntu (22.04 LTS) (version ${VERSION})
 
 Usage: $0 [options] [arguments] [options] [arguments] [-q|--quiet]...
        $0  -h | --help | -v | --version
