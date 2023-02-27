@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { verifySignature } from '@upstash/qstash/nextjs';
 import { NextApiResponse } from 'next';
 import nc from 'next-connect';
 
@@ -26,6 +27,7 @@ handler.post(async (req, res: NextApiResponse) => {
     );
     res.status(500).json({ message: e.message });
   }
+
   try {
     await deleteExpiredVerificationTokens();
   } catch (error) {
@@ -39,4 +41,8 @@ handler.post(async (req, res: NextApiResponse) => {
   res.status(200).json({ message: 'Tasks completed' });
 });
 
-export default handler;
+export default verifySignature(handler, {
+  currentSigningKey: process.env.UPSTASH_SIGNING_KEY!,
+  nextSigningKey: process.env.UPSTASH_SIGNING_KEY!,
+  url: process.env.NEXT_PUBLIC_SITE_URL!,
+});
