@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  mariadb:
+    image: mariadb:10.9
+    container_name: vm-manager-mariadb
+    restart: always
+    environment:
+      MARIADB_USER: vm-manager
+      MARIADB_PASSWORD: a-C0mp13xPp5sw0rd
+      MARIADB_DATABASE: vm-manager
+      MARIADB_ROOT_PASSWORD: C0mp13xP@5sw0rd-for-root
+    ports:
+      - "3306:3306"
+    volumes:
+      - maria-data:/var/lib/mysql
+    networks:
+      - db-network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - db-network
+
+networks:
+  db-network:
+
+volumes:
+  maria-data:
