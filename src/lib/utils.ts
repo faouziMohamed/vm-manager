@@ -7,12 +7,11 @@ import {
   AppAuthSignInUser,
   GroupByOption,
   GroupByValue,
-  PowerStateValue,
-  Region,
   SortOption,
   SortOrderOption,
   SortOrderValue,
   SortValue,
+  VmDetails,
   VmPowerState,
 } from '@/lib/types';
 
@@ -43,12 +42,15 @@ export function adjustColor(hex: string, percent: number): string {
   return (hasHash ? '#' : '') + newHexWithoutHash;
 }
 
-function adjustComponent(colorComponent: number, percent: number): number {
+export function adjustComponent(
+  colorComponent: number,
+  percent: number,
+): number {
   const adjustedColor = colorComponent + Math.round((255 * percent) / 100);
   return Math.max(0, Math.min(255, adjustedColor));
 }
 
-function componentToHex(colorComponent: number): string {
+export function componentToHex(colorComponent: number): string {
   let hex = colorComponent.toString(16).toUpperCase();
   if (hex.length === 1) {
     hex = `0${hex}`;
@@ -81,20 +83,15 @@ export function updateQueryParams(
   return query;
 }
 
-export type NextRouterWithQueries = NextRouter & {
-  query: {
-    filter?: PowerStateValue;
-    group_by?: GroupByValue;
-    sort: SortValue;
-    sort_order?: SortOrderValue;
-  };
-};
-
-function compareNames(a: string, b: string, order: SortOrderValue = 'asc') {
+export function compareNames(
+  a: string,
+  b: string,
+  order: SortOrderValue = 'asc',
+) {
   return order === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
 }
 
-function compareIpAddresses(
+export function compareIpAddresses(
   a: string,
   b: string,
   order: SortOrderValue = 'asc',
@@ -112,7 +109,7 @@ function compareIpAddresses(
 }
 
 export function sortData(
-  sort: string,
+  sort: SortValue,
   a: CreateVmResult,
   b: CreateVmResult,
   order: SortOrderValue = 'asc',
@@ -120,7 +117,7 @@ export function sortData(
   if (sort === 'ipAddress') {
     return compareIpAddresses(a.publicIpAddress, b.publicIpAddress, order);
   }
-  //  sort === 'serverName' || sort === 'default'
+  //  sort === 'name' || sort === 'default'
   return compareNames(a.serverName, b.serverName, order);
 }
 
@@ -141,10 +138,6 @@ export function regroupData(
   return groupedData;
 }
 
-export const capitalize = (s: string) => {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-};
-
 export function range(start: number, end: number): number[] {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
@@ -161,31 +154,6 @@ export function sortGroupedData(
     );
   });
 }
-
-export const validPasswordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})$/;
-
-export interface NewVmValues {
-  serverName: string;
-  machineName: string;
-  region: Region;
-  password: string;
-  vmUsername: string;
-}
-
-export function generateIpAddress(): string {
-  const firstOctet = Math.floor(Math.random() * 256);
-  const secondOctet = Math.floor(Math.random() * 256);
-  const thirdOctet = Math.floor(Math.random() * 256);
-  const fourthOctet = Math.floor(Math.random() * 256);
-  return `${firstOctet}.${secondOctet}.${thirdOctet}.${fourthOctet}`;
-}
-
-export type VmDetails = {
-  name: string;
-  title?: string;
-  value: string;
-};
 
 export async function copyToClipboard(text: string): Promise<boolean> {
   try {
@@ -307,12 +275,12 @@ export async function handleFormSubmit({
   await router.push(redirectUrl);
 }
 
+export const capitalize = (s: string) => {
+  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+};
+
 export function titleCase(str: string) {
-  return str
-    .toLowerCase()
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+  return str.toLowerCase().split(' ').map(capitalize).join(' ');
 }
 
 export function formatName(firstName: string, lastName?: string): string {

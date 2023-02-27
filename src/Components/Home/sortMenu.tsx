@@ -10,8 +10,8 @@ import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import { MdSort } from 'react-icons/md';
 
-import { SortOption, SortValue } from '@/lib/types';
-import { NextRouterWithQueries, updateQueryParams } from '@/lib/utils';
+import { NextRouterWithQueries, SortOption, SortValue } from '@/lib/types';
+import { updateQueryParams } from '@/lib/utils';
 import { sortOptions } from '@/lib/vmUtils';
 
 type SelectedItem = SortOption;

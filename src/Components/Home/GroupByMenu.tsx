@@ -11,8 +11,12 @@ import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import { VscGroupByRefType } from 'react-icons/vsc';
 
-import { GroupByOption, GroupByValue } from '@/lib/types';
-import { NextRouterWithQueries, updateQueryParams } from '@/lib/utils';
+import {
+  GroupByOption,
+  GroupByValue,
+  NextRouterWithQueries,
+} from '@/lib/types';
+import { updateQueryParams } from '@/lib/utils';
 import { groupByOptions } from '@/lib/vmUtils';
 
 type SelectedItem = GroupByOption;

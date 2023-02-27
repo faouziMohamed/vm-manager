@@ -12,7 +12,7 @@ import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { BiLoaderCircle } from 'react-icons/bi';
 import { MdAddTask } from 'react-icons/md';
 
-import { NewVmValues } from '@/lib/utils';
+import { NewVmValues } from '@/lib/types';
 
 import AppFormControl from '@/Components/form/AppFormControl';
 import { useAvailableRegions } from '@/Services/client/vm.service';

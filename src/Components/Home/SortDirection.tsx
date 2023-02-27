@@ -2,8 +2,8 @@ import { Radio, RadioGroup, Stack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 
-import { SortOrderOption } from '@/lib/types';
-import { NextRouterWithQueries, updateQueryParams } from '@/lib/utils';
+import { NextRouterWithQueries, SortOrderOption } from '@/lib/types';
+import { updateQueryParams } from '@/lib/utils';
 
 export default function SortDirection({
   onChange = () => {},

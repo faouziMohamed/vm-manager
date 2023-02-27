@@ -5,8 +5,7 @@ import nc from 'next-connect';
 
 import { saveNewVirtualMachine } from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
-import { ErrorResponse } from '@/lib/types';
-import { NewVmValues } from '@/lib/utils';
+import { ErrorResponse, NewVmValues } from '@/lib/types';
 
 import { nextAuthOptions } from '@/pages/api/auth/[...nextauth]';
 import { createVirtualMachine } from '@/Services/server/azureService/azure.service';

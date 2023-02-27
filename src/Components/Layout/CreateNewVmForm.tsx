@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react';
 import { useCallback, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { NewVmValues } from '@/lib/utils';
+import { NewVmValues } from '@/lib/types';
 
 import {
   FormControlButton,

@@ -1,12 +1,8 @@
 import { useRouter } from 'next/router';
 
 import { sortOptionsValues } from '@/lib/constants';
-import {
-  NextRouterWithQueries,
-  regroupData,
-  sortData,
-  sortGroupedData,
-} from '@/lib/utils';
+import { NextRouterWithQueries } from '@/lib/types';
+import { regroupData, sortData, sortGroupedData } from '@/lib/utils';
 
 import GroupedVmInstances from '@/Components/Home/GroupedVmInstances';
 import NoInstanceFound from '@/Components/Home/NoInstanceFound';

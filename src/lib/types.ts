@@ -1,3 +1,5 @@
+import { NextRouter } from 'next/router';
+
 import {
   availableRegions,
   groupByOptionsNames,
@@ -77,4 +79,24 @@ export type AppUserWithEmailVerification = Omit<AppUser, 'emailVerified'> & {
 };
 export type ErrorResponse = {
   message: string;
+};
+export type NextRouterWithQueries = NextRouter & {
+  query: {
+    filter?: PowerStateValue;
+    group_by?: GroupByValue;
+    sort: SortValue;
+    sort_order?: SortOrderValue;
+  };
+};
+export type VmDetails = {
+  name: string;
+  title?: string;
+  value: string;
+};
+export type NewVmValues = {
+  serverName: string;
+  machineName: string;
+  region: Region;
+  password: string;
+  vmUsername: string;
 };

@@ -11,8 +11,8 @@ import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import { MdFilterList } from 'react-icons/md';
 
-import { VmPowerState } from '@/lib/types';
-import { NextRouterWithQueries, updateQueryParams } from '@/lib/utils';
+import { NextRouterWithQueries, VmPowerState } from '@/lib/types';
+import { updateQueryParams } from '@/lib/utils';
 import { powerStates } from '@/lib/vmUtils';
 
 export type MenuProps = {

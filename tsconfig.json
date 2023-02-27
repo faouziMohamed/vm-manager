@@ -15,7 +15,6 @@
     "baseUrl": ".",
     "module": "esnext",
     "typeRoots": [
-      "./src/@types",
       "./node_modules/@types"
     ],
     "paths": {

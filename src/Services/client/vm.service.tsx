@@ -1,7 +1,6 @@
 import useSWR, { mutate } from 'swr';
 
-import { AvailableRegions } from '@/lib/types';
-import { NewVmValues } from '@/lib/utils';
+import { AvailableRegions, NewVmValues } from '@/lib/types';
 
 import {
   getMultipleVmInstances,
