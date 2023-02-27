@@ -11,7 +11,7 @@ import {
 
 const handler = nc().use(corsMiddleware());
 
-handler.put(async (req, res: NextApiResponse) => {
+handler.post(async (req, res: NextApiResponse) => {
   console.log(
     'Cleaning up expired verification tokens and unverified users...',
   );
