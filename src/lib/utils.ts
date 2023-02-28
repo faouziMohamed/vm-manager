@@ -2,6 +2,7 @@ import clsx, { ClassValue } from 'clsx';
 import { NextRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 
+import { HOME_PAGE } from '@/lib/client-route';
 import {
   AppAuthAction,
   AppAuthSignInUser,
@@ -258,7 +259,7 @@ export async function handleFormSubmit({
   const resSubmission = await signIn('credentials', {
     redirect: false,
     ...values,
-    callbackUrl: callbackUrl || '/',
+    callbackUrl: callbackUrl || HOME_PAGE,
   });
   setIsSubmitting(false);
   if (resSubmission?.error) {
@@ -270,7 +271,7 @@ export async function handleFormSubmit({
 
   const { query } = router;
   const { next } = query;
-  const redirectUrl = next ? (next as string) : resSubmission?.url || '/';
+  const redirectUrl = next ? (next as string) : resSubmission?.url || HOME_PAGE;
   onRedirecting?.();
   await router.push(redirectUrl);
 }

@@ -1,7 +1,11 @@
 // import router from 'next/router';
 import { useRouter } from 'next/router';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
+
+import { LOGIN_PAGE } from '@/lib/client-route';
+
+import FuturaSpinner from '@/Components/Loaders/FuturaSpinner';
 
 type WithAuthProps = {
   children: JSX.Element;
@@ -10,7 +14,7 @@ type WithAuthProps = {
 
 function WithAuth(props: WithAuthProps) {
   const { children, options } = props;
-  const { data: session, status } = useSession({ required: true });
+  const { data: session, status } = useSession();
   const isUser = !!session?.user;
   const router = useRouter();
   useEffect(() => {
@@ -23,12 +27,10 @@ function WithAuth(props: WithAuthProps) {
     // If not authenticated, redirect to provided url or
     if (!isUser) {
       if (options?.redirectTo) {
-        void router.push({
-          pathname: '/signin',
-          query: { next: options?.redirectTo || currentPath },
-        });
+        void router.push(options?.redirectTo);
       } else {
-        void signIn();
+        const next = new URLSearchParams({ next: currentPath });
+        void router.push(LOGIN_PAGE, { query: next.toString() });
       }
     }
   }, [isUser, options?.redirectTo, router, status]);
@@ -36,9 +38,7 @@ function WithAuth(props: WithAuthProps) {
     return children;
   }
 
-  // Session is being fetched, or no user.
-  // If no user, useEffect() will redirect.
-  return <div>Loading...</div>;
+  return <FuturaSpinner />;
 }
 
 export default WithAuth;

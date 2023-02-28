@@ -74,6 +74,7 @@ export type AppUser = Omit<AppAuthRegisterUser, 'password'> & {
   emailVerified?: false;
   avatar?: string;
 };
+
 export type AppUserWithEmailVerification = Omit<AppUser, 'emailVerified'> & {
   emailVerified: Date | string | null;
 };

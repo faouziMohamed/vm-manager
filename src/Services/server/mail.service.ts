@@ -2,6 +2,7 @@
 // ttyuid@protonmail.com
 import nodemailer from 'nodemailer';
 
+import { VERIFY_EMAIL_PAGE } from '@/lib/client-route';
 import { createVerificationToken } from '@/lib/db/queries';
 import { AuthError } from '@/lib/Exceptions/auth.exceptions';
 import { jwtSignData } from '@/lib/server.utils';
@@ -28,7 +29,7 @@ const transporter = createMailTransporter();
 async function sendVerificationLink(user: AppUser, token: string) {
   // eslint-disable-next-line no-console
   console.log('Sending email to', user.email, 'using ', process.env.EMAIL_FROM);
-  const link = `${process.env.NEXTAUTH_URL}/api/auth/verify-email?token=${token}`;
+  const link = `${process.env.NEXTAUTH_URL}${VERIFY_EMAIL_PAGE}?token=${token}`;
   return transporter.sendMail({
     from: process.env.EMAIL_FROM,
     to: user.email,

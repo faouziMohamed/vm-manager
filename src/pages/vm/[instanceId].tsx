@@ -57,6 +57,4 @@ export default function VmPage() {
   );
 }
 
-VmPage.auth = {
-  redirectTo: '/signin',
-};
+VmPage.auth = {};

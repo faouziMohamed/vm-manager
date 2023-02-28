@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { LOGIN_PAGE, VERIFICATION_LINK_SENT_PAGE } from '@/lib/client-route';
 import { AppAuthRegisterUser, AppAuthSignInUser } from '@/lib/types';
 import { handleFormSubmit } from '@/lib/utils';
 
@@ -24,7 +25,7 @@ export default function Register() {
       await handleFormSubmit({
         setIsSubmitting,
         values: { ...values, action: 'register' },
-        callbackUrl: '/verify-email',
+        callbackUrl: VERIFICATION_LINK_SENT_PAGE,
         setAnyErrors,
         router,
       });
@@ -40,7 +41,7 @@ export default function Register() {
       errors={anyErrors}
       formAltAction={{
         text: 'having an account?',
-        link: '/signin',
+        link: LOGIN_PAGE,
         linkText: 'Log In',
       }}
     >

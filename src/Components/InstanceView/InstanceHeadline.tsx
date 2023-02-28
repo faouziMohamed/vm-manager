@@ -6,6 +6,7 @@ import { GrClose } from 'react-icons/gr';
 import { IoIosRefresh } from 'react-icons/io';
 import { MdContentCopy } from 'react-icons/md';
 
+import { HOME_PAGE } from '@/lib/client-route';
 import { PowerStateValue } from '@/lib/types';
 import { adjustColor, copyToClipboard } from '@/lib/utils';
 import { powerStateColors } from '@/lib/vmUtils';
@@ -53,7 +54,7 @@ export default function InstanceHeadline(props: { instance: CreateVmResult }) {
         title='Close the vm instance page back to the previous page'
         icon={<GrClose />}
         onClick={() => {
-          void router.push('/');
+          void router.push(HOME_PAGE);
         }}
       />
     </HStack>

@@ -1,6 +1,8 @@
 import { Box, Button, Stack } from '@chakra-ui/react';
 import { MdRefresh } from 'react-icons/md';
 
+import { HOME_PAGE, LOGIN_PAGE } from '@/lib/client-route';
+
 import GroupByMenu from '@/Components/Home/GroupByMenu';
 import PowerStateFilterMenu from '@/Components/Home/PowerStateFilterMenu';
 import SortDirection from '@/Components/Home/SortDirection';
@@ -54,5 +56,7 @@ function UserVmInstancesSection() {
 }
 
 Home.auth = {
-  redirectTo: '/signin',
+  redirectTo: `${LOGIN_PAGE}?${new URLSearchParams({
+    next: HOME_PAGE,
+  }).toString()}`,
 };

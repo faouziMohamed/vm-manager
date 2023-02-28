@@ -1,8 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading,@typescript-eslint/no-misused-promises */
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { HOME_PAGE, SIGNUP_PAGE } from '@/lib/client-route';
 import { AppAuthSignInUser } from '@/lib/types';
 import { handleFormSubmit } from '@/lib/utils';
 
@@ -22,7 +24,7 @@ export default function SignIn() {
   const router = useRouter();
   const onSubmit = useCallback(
     async (values: AppAuthSignInUser) => {
-      let callbackUrl = '/';
+      let callbackUrl = HOME_PAGE;
       const { query } = router;
       if (query?.next) {
         callbackUrl = query.next as string;
@@ -39,6 +41,16 @@ export default function SignIn() {
     },
     [router],
   );
+  const session = useSession();
+  if (session.status === 'authenticated') {
+    const next = router.query.next as string;
+    if (next) {
+      void router.push(next);
+      return <FuturaSpinner semiTransparent />;
+    }
+    void router.push(HOME_PAGE);
+    return <FuturaSpinner semiTransparent />;
+  }
   return (
     <AuthLayout
       onSubmit={handleSubmit(onSubmit)}
@@ -47,11 +59,12 @@ export default function SignIn() {
       formTitle='Sign In'
       formAltAction={{
         text: "Don't have an account?",
-        link: '/register',
+        link: SIGNUP_PAGE,
         linkText: 'Sign Up',
       }}
       errors={anyErrors}
     >
+      {session.status === 'loading' && <FuturaSpinner semiTransparent />}
       {redirecting && <FuturaSpinner semiTransparent />}
       <AppFormControl
         isRequired
@@ -65,7 +78,6 @@ export default function SignIn() {
         })}
         displayError={{ heading: 'The email address is invalid.' }}
       />
-
       <AppFormControl
         isRequired
         label='Password'

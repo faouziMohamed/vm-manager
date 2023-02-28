@@ -46,3 +46,7 @@ export default verifySignature(handler, {
   nextSigningKey: process.env.UPSTASH_SIGNING_KEY!,
   url: process.env.NEXT_PUBLIC_SITE_URL!,
 });
+
+export const config = {
+  api: { bodyParser: false },
+};

@@ -146,3 +146,7 @@ export async function existsVm(instanceId: string) {
 export async function deleteVirtualMachine(instanceId: string) {
   await prisma!.vmInstances.delete({ where: { instanceId } });
 }
+
+export async function findUserByEmailAllData(email: string) {
+  return prisma?.user.findUnique({ where: { email } });
+}
