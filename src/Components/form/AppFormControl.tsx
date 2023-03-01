@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
+import { ChangeEventHandler } from 'react';
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 
 import CustomFormControlErrorMessage, {
@@ -18,12 +19,13 @@ type AppFormControlProps = {
   type?: string;
   disabled?: boolean;
   value?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 };
 export default function AppFormControl(props: AppFormControlProps) {
   const { error, label, placeholder, displayError } = props;
   const { register = {} as UseFormRegisterReturn } = props;
   const { isRequired = false, type: typ = 'text', disabled } = props;
-  const { value } = props;
+  const { value, onChange } = props;
   const inputColor = error
     ? Theme.colors.danger.main
     : Theme.colors.primary.main;
@@ -36,11 +38,12 @@ export default function AppFormControl(props: AppFormControlProps) {
           placeholder={placeholder}
           register={register}
           value={value}
+          onChange={onChange}
           disabled={disabled}
         />
       ) : (
         <Input
-          disabled={disabled}
+          isDisabled={disabled}
           _focusVisible={{
             borderColor: inputColor,
             boxShadow: `0 0 0 1px ${inputColor}`,
@@ -49,6 +52,7 @@ export default function AppFormControl(props: AppFormControlProps) {
           placeholder={placeholder}
           value={value}
           {...register}
+          onChange={onChange}
           sx={{
             '&:disabled': {
               backgroundColor: 'gray.100',

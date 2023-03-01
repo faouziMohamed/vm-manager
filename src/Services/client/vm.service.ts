@@ -1,5 +1,12 @@
 import useSWR, { mutate } from 'swr';
 
+import {
+  ALL_INSTANCES_ROUTE,
+  getInstanceActionRoute,
+  getInstanceRoute,
+  NEW_INSTANCE_ROUTE,
+  REGIONS_ROUTE,
+} from '@/lib/api-route';
 import { AvailableRegions, NewVmValues } from '@/lib/types';
 
 import {
@@ -12,7 +19,8 @@ import {
   ManageVmAction,
 } from '@/Services/server/azureService/azure.types';
 
-const fetchInstancesKey = '/api/v1/instances';
+const fetchInstancesKey = ALL_INSTANCES_ROUTE;
+
 export function useCurrentUserVmInstances() {
   const { data, error, isLoading } = useSWR<CreateVmResult[], Error>(
     fetchInstancesKey,
@@ -26,19 +34,19 @@ export function refreshVmInstances() {
 }
 
 export function refreshVmInstance(vmId: string) {
-  return mutate(`/api/v1/instances/${vmId}`, getVmInstance(vmId));
+  return mutate(getInstanceRoute(vmId), getVmInstance(vmId));
 }
 
 export function mutateVmInstance(
   vmId: string,
   data: CreateVmResult | undefined = undefined,
 ) {
-  return mutate(`/api/v1/instances/${vmId}`, data);
+  return mutate(getInstanceRoute(vmId), data);
 }
 
 export function useAvailableRegions() {
   const { data, error, isLoading } = useSWR<AvailableRegions, Error>(
-    '/api/v1/regions',
+    REGIONS_ROUTE,
     getRegions,
   );
   return { data, error, isLoading };
@@ -59,7 +67,7 @@ async function addNewVmInstance(props: { url: string; body: NewVmValues }) {
 }
 
 export async function saveNewVm(body: NewVmValues) {
-  const url = '/api/v1/instances/new';
+  const url = NEW_INSTANCE_ROUTE;
   const instances = await addNewVmInstance({ url, body });
   await mutate(fetchInstancesKey, instances, false);
 }
@@ -67,7 +75,7 @@ export async function saveNewVm(body: NewVmValues) {
 export function useVmInstance(vmId: string | undefined) {
   const fetcher = () => getVmInstance(vmId!);
   return useSWR<CreateVmResult, Error>(
-    vmId ? `/api/v1/instances/${vmId}` : null,
+    vmId ? getInstanceRoute(vmId) : null,
     fetcher,
     { refreshInterval: 10000, refreshWhenHidden: false },
   );
@@ -77,7 +85,7 @@ export async function manageVmInstance(
   instance: CreateVmResult,
   action: ManageVmAction,
 ) {
-  const url = `/api/v1/instances/${instance.instanceId}/${action}`;
+  const url = getInstanceActionRoute(instance.instanceId, action);
   const response = await fetch(url, { method: 'PUT' });
 
   if (!response.ok) {
@@ -91,7 +99,7 @@ export async function updateInstanceFavoriteStatus(
   vmId: string,
   instance: CreateVmResult,
 ) {
-  const url = `/api/v1/instances/${vmId}/favorite`;
+  const url = getInstanceActionRoute(vmId, 'favorite');
   const response = await fetch(url, { method: 'PUT' });
 
   if (!response.ok) {

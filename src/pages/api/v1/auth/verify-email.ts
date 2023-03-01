@@ -1,47 +1,21 @@
+// noinspection ExceptionCaughtLocallyJS
+
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import prisma from '@/lib/db/prisma';
+import {
+  deleteToken,
+  existsUser,
+  findTokenFromDb,
+  setUserEmailVerified,
+} from '@/lib/db/queries';
 import { AppUser, ErrorResponse } from '@/lib/types';
 
-type NextRequestWithToken = NextApiRequest & { token: string };
+interface NextRequestWithToken extends NextApiRequest {
+  body: { token: string };
+}
+
 const handler = nc();
-
-async function setUserEmailVerified(userId: string) {
-  const now = new Date();
-  await prisma!.user.update({
-    where: { userId },
-    data: { emailVerified: now },
-    select: {
-      userId: true,
-      email: true,
-      firstname: true,
-      lastname: true,
-    },
-  });
-}
-
-async function deleteToken(token: string) {
-  await prisma!.verificationToken.delete({
-    where: { token },
-  });
-}
-
-function findTokenFromDb(token: string) {
-  return prisma!.verificationToken.findUnique({
-    where: { token },
-    include: {
-      user: {
-        select: {
-          userId: true,
-          email: true,
-          firstname: true,
-          lastname: true,
-        },
-      },
-    },
-  });
-}
 
 handler.post(
   async (
@@ -49,7 +23,7 @@ handler.post(
     res: NextApiResponse<AppUser | ErrorResponse>,
   ) => {
     try {
-      const { token } = req.body as { token: string };
+      const { token } = req.body;
       const payload = await findTokenFromDb(token);
       if (!payload) {
         throw new Error('Invalid token');
@@ -61,6 +35,11 @@ handler.post(
       const now = new Date();
       if (now > payload.expires) {
         throw new Error('Token expired');
+      }
+      const userExists = await existsUser(user.userId);
+      if (!userExists) {
+        res.status(401).json({ message: 'User does not exist' });
+        return;
       }
       const { userId } = user;
       await setUserEmailVerified(userId);

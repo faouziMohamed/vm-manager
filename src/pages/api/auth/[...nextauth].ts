@@ -92,6 +92,7 @@ async function authorize<C>(credentials: Record<keyof C, string> | undefined) {
     );
   }
   const maybeUser = await findUserByEmailAllData(cred.email);
+  console.log(maybeUser);
   if (cred.action === 'register') {
     if (maybeUser) {
       throw new AuthError([

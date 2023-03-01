@@ -29,13 +29,14 @@ model User {
 }
 
 model VerificationToken {
-  userId     String
-  token      String   @unique
-  expires    DateTime
-  createdAt  DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
-  
-  @@unique([userId, token]) 
+  userId    String
+  token     String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
+  kind      String   @default("email")
+  user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([userId, token])
   @@index([token])
   @@map("verification_tokens")
 }

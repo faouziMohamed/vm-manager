@@ -4,7 +4,7 @@ import {
   InputGroup,
   InputRightElement,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
@@ -18,8 +18,10 @@ export default function PasswordInput(props: {
   hasError?: boolean;
   value?: string;
   disabled?: boolean;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }) {
   const { placeholder, register, hasError, value, disabled } = props;
+
   const [show, setShow] = useState(false);
   const inputColor = hasError
     ? Theme.colors.danger.main
@@ -34,7 +36,7 @@ export default function PasswordInput(props: {
           boxShadow: `0 0 0 1px ${inputColor}`,
         }}
         value={value}
-        disabled={disabled}
+        isDisabled={disabled}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register}
       />

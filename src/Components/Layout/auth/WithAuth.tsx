@@ -3,7 +3,8 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 
-import { LOGIN_PAGE } from '@/lib/client-route';
+import { LOGIN_PAGE, VERIFICATION_LINK_SENT_PAGE } from '@/lib/client-route';
+import { AppUser } from '@/lib/types';
 
 import FuturaSpinner from '@/Components/Loaders/FuturaSpinner';
 
@@ -35,6 +36,15 @@ function WithAuth(props: WithAuthProps) {
     }
   }, [isUser, options?.redirectTo, router, status]);
   if (isUser) {
+    const user = session?.user as AppUser;
+    if (
+      user.emailVerified === false &&
+      router.asPath !== VERIFICATION_LINK_SENT_PAGE
+    ) {
+      void router.push(VERIFICATION_LINK_SENT_PAGE);
+      return <FuturaSpinner semiTransparent />;
+    }
+
     return children;
   }
 

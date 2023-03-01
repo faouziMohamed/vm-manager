@@ -56,7 +56,7 @@ export async function sendVerificationEmail(user: AppUser) {
   try {
     const ack = await sendVerificationLink(user, tk);
     // eslint-disable-next-line no-console
-    console.log('Email sent', ack);
+    console.log('Email sent', ack.messageId);
   } catch (err) {
     const e = err as Error;
     // eslint-disable-next-line no-console

@@ -59,6 +59,7 @@ export async function removeUnverifiedUsers(thresholdDate: Date) {
     where: {
       emailVerified: null,
       createdAt: { lt: thresholdDate },
+      updatedAt: { lt: thresholdDate },
     },
     select: { email: true },
   });
@@ -149,4 +150,48 @@ export async function deleteVirtualMachine(instanceId: string) {
 
 export async function findUserByEmailAllData(email: string) {
   return prisma?.user.findUnique({ where: { email } });
+}
+
+export async function setUserEmailVerified(userId: string) {
+  const now = new Date();
+  await prisma!.user.update({
+    where: { userId },
+    data: { emailVerified: now },
+    select: {
+      userId: true,
+      email: true,
+      firstname: true,
+      lastname: true,
+    },
+  });
+}
+
+export async function existsUser(userId: string) {
+  const user = await prisma!.user.findUnique({
+    where: { userId },
+    select: { userId: true },
+  });
+  return !!user;
+}
+
+export async function deleteToken(token: string) {
+  await prisma!.verificationToken.delete({
+    where: { token },
+  });
+}
+
+export function findTokenFromDb(token: string) {
+  return prisma!.verificationToken.findUnique({
+    where: { token },
+    include: {
+      user: {
+        select: {
+          userId: true,
+          email: true,
+          firstname: true,
+          lastname: true,
+        },
+      },
+    },
+  });
 }

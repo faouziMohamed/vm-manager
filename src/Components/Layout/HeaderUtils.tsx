@@ -14,12 +14,17 @@ import { useEffect, useState } from 'react';
 import { BiLogInCircle } from 'react-icons/bi';
 import { MdAddCircle } from 'react-icons/md';
 
+import {
+  LOGIN_PAGE,
+  SIGNUP_PAGE,
+  VERIFICATION_LINK_SENT_PAGE,
+} from '@/lib/client-route';
 import { adjustColor } from '@/lib/utils';
 
 import CreateNewVm from '@/Components/Layout/CreateNewVm';
 import UnStyledLink from '@/Components/Links/UnStyledLink';
 
-const pagesToShowLogOutButton = ['/verify-email'];
+const pagesToShowLogOutButton = [VERIFICATION_LINK_SENT_PAGE];
 
 export function HeaderActionButton() {
   const { status } = useSession();
@@ -30,11 +35,11 @@ export function HeaderActionButton() {
   const actionLink = {
     signIn: {
       text: 'Sign In',
-      link: '/signin',
+      link: LOGIN_PAGE,
     },
     signUp: {
       text: 'Sign Up',
-      link: '/register',
+      link: SIGNUP_PAGE,
     },
   };
   const isSignInPage = router.asPath === actionLink.signIn.link;
@@ -45,7 +50,7 @@ export function HeaderActionButton() {
         _hover={{ bg: '#008f70' }}
         _focus={{ boxShadow: 'outline' }}
         leftIcon={<BiLogInCircle />}
-        onClick={() => void signOut({ callbackUrl: '/signin' })}
+        onClick={() => void signOut({ callbackUrl: LOGIN_PAGE })}
         flexShrink={1}
       >
         <Text>Log Out</Text>

@@ -81,6 +81,9 @@ export type AppUserWithEmailVerification = Omit<AppUser, 'emailVerified'> & {
 export type ErrorResponse = {
   message: string;
 };
+export type SuccessResponse = {
+  message: string;
+};
 export type NextRouterWithQueries = NextRouter & {
   query: {
     filter?: PowerStateValue;

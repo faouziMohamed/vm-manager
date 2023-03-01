@@ -13,6 +13,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { GoSignOut } from 'react-icons/go';
 import { MdManageAccounts, MdSettings } from 'react-icons/md';
 
+import { LOGIN_PAGE } from '@/lib/client-route';
 import { AppUser } from '@/lib/types';
 import { adjustColor, formatName } from '@/lib/utils';
 
@@ -85,7 +86,7 @@ export default function UserOptionsAvatar() {
             leftIcon={<GoSignOut size='1.2rem' />}
             fontFamily='var(--font-secondary)'
             fontSize='1rem'
-            onClick={() => void signOut({ callbackUrl: '/signin' })}
+            onClick={() => void signOut({ callbackUrl: LOGIN_PAGE })}
           >
             <Box mt='-1'>Log Out</Box>
           </Button>
