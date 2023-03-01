@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Button } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';

@@ -1,7 +1,7 @@
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import nc from 'next-connect';
-import { PrismaClientKnownRequestError } from 'prisma/prisma-client/runtime';
 
 import prisma from '@/lib/db/prisma';
 import { authMiddleware } from '@/lib/middleware';

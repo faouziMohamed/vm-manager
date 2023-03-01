@@ -49,6 +49,7 @@ export default function ResendLinkPrompt() {
             color: Theme.colors.secondary['500'],
             textDecoration: 'underline',
           }}
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={onClick}
         >
           Resend the link
