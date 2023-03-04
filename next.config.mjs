@@ -23,16 +23,16 @@ const nextConfig = {
 
   experimental: {
     fontLoaders: [
-      { loader: '@next/font/google', options: { subsets: ['latin'] } },
+      {loader: 'next/font/google', options: {subsets: ['latin']}},
     ],
   },
   async headers() {
-    return [{ source: '/(.*)', headers: createSecureHeaders() }];
+    return [{source: '/(.*)', headers: createSecureHeaders()}];
   },
-  images: { domains: ['avatars.githubusercontent.com'] },
+  images: {domains: ['res.cloudinary.com', 'avatars.githubusercontent.com']},
   output: 'standalone',
   poweredByHeader: false,
-  publicRuntimeConfig: { lastBuild, lastBuildIso },
+  publicRuntimeConfig: {lastBuild, lastBuildIso},
   reactStrictMode: true,
   swcMinify: true,
   // SVGR
@@ -46,11 +46,11 @@ const nextConfig = {
       {
         test: /\.svg$/i,
         issuer: /\.[jt]sx?$/,
-        resourceQuery: { not: [/url/] }, // exclude react component if *.svg?url
+        resourceQuery: {not: [/url/]}, // exclude react component if *.svg?url
         use: [
           {
             loader: '@svgr/webpack',
-            options: { typescript: true, icon: true, },
+            options: {typescript: true, icon: true,},
           },
         ],
       },

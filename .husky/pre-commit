@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-#npm test
-echo "Test will be set up later"
-
+yarn lint-staged
+yarn test

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="42cd4c7b-92af-496e-b5ff-02cd1422ab44" name="Changes" comment="chore(config): update config files">
+      <change afterPath="$PROJECT_DIR$/.husky/post-merge" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jsLinters/eslint.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jest.setup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.husky/commit-msg" beforeDir="false" afterPath="$PROJECT_DIR$/.husky/commit-msg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.husky/pre-commit" beforeDir="false" afterPath="$PROJECT_DIR$/.husky/pre-commit" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jest.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/jest.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/InstanceView/InstanceDetails.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/InstanceView/InstanceHeadline.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/InstanceView/PageBreadcrumb.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/InstanceView/VmInstanceControlButtons.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Layout/AuthLayout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Layout/CreateNewVm.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Layout/CreateNewVmForm.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Layout/HeaderUtils.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Layout/Layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Layout/UserAvatarMenu.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Layout/auth/WithAuth.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Layout/header.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Links/UnStyledLink.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Links/UnderlineLink.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Loaders/FuturaSpinner.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Modals/AppBlurredModal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Paragraph.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Resend-link-prompt.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Seo/PageTitle.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Update-email-prompt.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/form/AppFormControl.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/form/CustomFormControlErrorMessage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/form/NewVmFormUtils.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/form/PasswordInput.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/images/ConsoleIcon.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/images/VmInstanceIcon.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/images/VmMonitorIcon.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/client/auth.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/client/fetchers.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/client/vm.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/server/auth.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/server/azureService/azure.constants.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/server/azureService/azure.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/server/azureService/azure.types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/server/azureService/azure.utils.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/server/mail.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useAppToast.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/Exceptions/app.exceptions.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/Exceptions/auth.exceptions.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/Exceptions/azure.exceptions.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api-route.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/client-auth.utils.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/client-route.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/constants.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/db/prisma.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/db/queries.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/middleware.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/seo/default-metadata.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/server.utils.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/auth/[...nextauth].ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/auth/[...nextauth].ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/verify-email.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/verify-email.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/theme.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="5" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="ProjectId" id="2MSxif9K5RpOCDpeLoWss55T68F" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.14.2&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.14.2&quot;,
+    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;C:\\Users\\mfaou\\WebstormProjects\\Projects\\vm-manager\\node_modules\\eslint&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Shell Script&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\mfaou\\WebstormProjects\\Projects\\vm-manager\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="es6.move.members.recent.items">
+      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\Services\server\auth.service.ts" />
+      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\lib\types.ts" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.dev" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="42cd4c7b-92af-496e-b5ff-02cd1422ab44" name="Changes" comment="" />
+      <created>1677774920197</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1677774920197</updated>
+      <workItem from="1677774921735" duration="874000" />
+      <workItem from="1677798261806" duration="587000" />
+      <workItem from="1677798871302" duration="1322000" />
+      <workItem from="1677801678109" duration="4294000" />
+      <workItem from="1677838389261" duration="3150000" />
+      <workItem from="1677889909887" duration="361000" />
+      <workItem from="1677890294423" duration="1574000" />
+      <workItem from="1677926473547" duration="7982000" />
+      <workItem from="1677943829429" duration="12000" />
+      <workItem from="1677943855329" duration="211000" />
+      <workItem from="1677944805576" duration="3080000" />
+      <workItem from="1677948943874" duration="1376000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="chore(config): update config files" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore(config): update config files" />
+  </component>
+</project>

@@ -1,8 +1,8 @@
 module.exports = {
-  env: { browser: true, es2021: true, node: true, 'cypress/globals': true },
+  env: { browser: true, es2021: true, node: true, },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['./tsconfig.json' /*'./cypress/tsconfig.json'*/],
+    project: ['./tsconfig.json' ],
     ecmaVersion: 2022,
     tsconfigRootDir: __dirname,
   },
@@ -14,7 +14,6 @@ module.exports = {
     'unicorn',
     'unused-imports',
     'import',
-    'cypress',
   ],
   extends: [
     'eslint:recommended',
@@ -27,11 +26,9 @@ module.exports = {
     'next/core-web-vitals',
     'plugin:promise/recommended',
     'plugin:prettier/recommended',
-    'plugin:cypress/recommended',
     'prettier',
   ],
   rules: {
-    // 'no-unused-vars': 'off',
     'no-console': 'warn',
     'no-alert': 'error',
     'no-empty': 'error',
@@ -111,16 +108,11 @@ module.exports = {
             '^\\.\\./\\.\\./\\.\\.(?!/?$)',
           ],
           ['^@/types'],
-          // other that didnt fit in
+          // other that didn't fit in
           ['^'],
         ],
       },
     ],
-    // cypress
-    'cypress/no-pause': 'error',
-    'cypress/no-force': 'warn',
-    'cypress/no-assigning-return-values': 'error',
-    'cypress/no-unnecessary-waiting': 'error',
 
     // #endregion  //*======== Import Sort ===========
     'react-hooks/exhaustive-deps': 'warn',
@@ -143,22 +135,9 @@ module.exports = {
     '*config.js',
     '.eslintrc.js',
     'next-env.d.ts',
-    // '**/*.cy.*',
   ],
   globals: {
     React: true,
     JSX: true,
   },
-  overrides: [
-    {
-      // disable some rules for cypress tests files
-      files: ['**/*.cy.*'],
-      rules: {
-        'promise/always-return': 'off',
-        'promise/catch-or-return': 'off',
-        'promise/no-nesting': 'off',
-        '@typescript-eslint/no-namespace': 'off',
-      },
-    },
-  ],
 };
