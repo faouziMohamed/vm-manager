@@ -1,13 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth';
 import nc from 'next-connect';
 
 import prisma from '@/lib/db/prisma';
 import { existsUser } from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
-import { AppUser, ErrorResponse, SuccessResponse } from '@/lib/types';
+import { getUserFromRequest } from '@/lib/server.utils';
+import { ErrorResponse, SuccessResponse } from '@/lib/types';
 
-import { nextAuthOptions } from '@/pages/api/auth/[...nextauth]';
 import { sendVerificationEmail } from '@/Services/server/mail.service';
 
 const handler = nc().use(authMiddleware);
@@ -17,10 +16,8 @@ handler.post(
     req: NextApiRequest,
     res: NextApiResponse<SuccessResponse | ErrorResponse>,
   ) => {
-    const session = await getServerSession(req, res, nextAuthOptions);
-
     try {
-      const user = session!.user as AppUser & { userId: string };
+      const user = await getUserFromRequest(req);
       const { id: userId } = user;
       const userExists = await existsUser(user.id);
       if (!userExists) {

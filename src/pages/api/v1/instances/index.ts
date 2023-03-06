@@ -1,13 +1,12 @@
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth';
 import nc from 'next-connect';
 
 import { getUserSavedVirtualMachines } from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
+import { getUserFromRequest } from '@/lib/server.utils';
 import { ErrorResponse } from '@/lib/types';
 
-import { nextAuthOptions } from '@/pages/api/auth/[...nextauth]';
 import { getVirtualMachine } from '@/Services/server/azureService/azure.service';
 import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
@@ -18,10 +17,10 @@ handler.get(
     req: NextApiRequest,
     res: NextApiResponse<CreateVmResult[] | ErrorResponse>,
   ) => {
-    const session = await getServerSession(req, res, nextAuthOptions);
     try {
+      const user = await getUserFromRequest(req);
       // get all instances data, for the current user, from the database
-      const userId = session!.user!.id;
+      const userId = user.id;
       const userInstances = await getUserSavedVirtualMachines(userId);
       // get all instances from azure
       const azureInstances = userInstances.map((instance) => {

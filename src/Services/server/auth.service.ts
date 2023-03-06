@@ -1,14 +1,20 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { User } from '@prisma/client';
+import { JWT } from 'next-auth/jwt';
 
 import {
   createNewUser,
+  findUserByEmailAllData,
   removeExpiredVerificationTokens,
   removeUnverifiedUsers,
 } from '@/lib/db/queries';
 import { AuthError } from '@/lib/Exceptions/auth.exceptions';
 import { verifyPassword } from '@/lib/server.utils';
-import { AppAuthorize, AppUserWithEmailVerification } from '@/lib/types';
+import {
+  AppAuthorize,
+  AppUserWithEmailVerification,
+  PayloadToken,
+} from '@/lib/types';
 
 import {
   sendAccountDeletedEmail,
@@ -67,4 +73,58 @@ export async function deleteExpiredVerificationTokens() {
   console.log(
     `Deleted ${count} expired verification tokens and unverified users`,
   );
+}
+
+export async function authorize<C>(
+  credentials: Record<keyof C, string> | undefined,
+) {
+  const cred = credentials as AppAuthorize;
+  if (!cred || !cred.email || !cred.password) {
+    throw new AuthError('Email and password are required');
+  }
+  if (cred.action !== 'register' && cred.action !== 'signin') {
+    throw new AuthError(
+      'Invalid action, the correct values are "register" or "signin"',
+    );
+  }
+  const maybeUser = await findUserByEmailAllData(cred.email);
+  if (cred.action === 'register') {
+    if (maybeUser) {
+      throw new AuthError([
+        'The Email address is already taken',
+        'Use another one or sign in',
+      ]);
+    }
+    return addNewUser(cred);
+  }
+  if (cred.action === 'signin') {
+    if (!maybeUser) {
+      throw new AuthError(['User not found', 'Please register first']);
+    }
+    return trySignInUser(maybeUser, cred);
+  }
+  return null;
+}
+
+export function createPayloadWithNewlySignedUser(
+  appUser: AppUserWithEmailVerification,
+  token: JWT,
+) {
+  const isEmailVerified = !!appUser.emailVerified;
+  const id = Math.floor(Math.random() * 1000000);
+  const tk: PayloadToken = {
+    ...token,
+    user: {
+      id: appUser.id,
+      emailVerified: isEmailVerified,
+      avatar: `https://avatars.githubusercontent.com/u/${id}?v=4`,
+    },
+  };
+
+  if (appUser.emailVerified) {
+    tk.user.firstname = appUser.firstname;
+    tk.user.lastname = appUser.lastname;
+    tk.user.email = appUser.email;
+  }
+  return tk;
 }

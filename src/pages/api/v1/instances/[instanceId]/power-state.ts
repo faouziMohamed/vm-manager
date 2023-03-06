@@ -1,20 +1,19 @@
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth';
 import nc from 'next-connect';
 
 import { getOneUserSavedVirtualMachine } from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
+import { getUserFromRequest } from '@/lib/server.utils';
 import { ErrorResponse } from '@/lib/types';
 
-import { nextAuthOptions } from '@/pages/api/auth/[...nextauth]';
 import { getVmPowerState } from '@/Services/server/azureService/azure.service';
 
 const handler = nc().use(authMiddleware);
 
-type NextApiRequestWithParams = NextApiRequest & {
+interface NextApiRequestWithParams extends NextApiRequest {
   query: { instanceId: string };
-};
+}
 
 handler.get(
   async (
@@ -28,8 +27,8 @@ handler.get(
         .json({ message: 'No Virtual Machine instance ID provided' });
       return;
     }
-    const session = await getServerSession(req, res, nextAuthOptions);
-    const userId = session!.user!.id;
+    const user = await getUserFromRequest(req);
+    const userId = user.id;
 
     try {
       const instance = await getOneUserSavedVirtualMachine(userId, instanceId);

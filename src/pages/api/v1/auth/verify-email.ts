@@ -16,11 +16,11 @@ interface NextRequestWithToken extends NextApiRequest {
 }
 
 const handler = nc();
-
+type AppUserWithUserId = Omit<AppUser, 'id'> & { userId: string };
 handler.post(
   async (
     req: NextRequestWithToken,
-    res: NextApiResponse<AppUser | ErrorResponse>,
+    res: NextApiResponse<AppUserWithUserId | ErrorResponse>,
   ) => {
     try {
       const { token } = req.body;
@@ -28,9 +28,7 @@ handler.post(
       if (!payload) {
         throw new Error('Invalid token');
       }
-      const { user } = payload as unknown as {
-        user: AppUser & { userId: string };
-      };
+      const { user } = payload as unknown as { user: AppUserWithUserId };
       // check if token is expired
       const now = new Date();
       if (now > payload.expires) {
@@ -44,7 +42,7 @@ handler.post(
       const { userId } = user;
       await setUserEmailVerified(userId);
       await deleteToken(token);
-      res.json(user);
+      res.status(200).json(user);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);

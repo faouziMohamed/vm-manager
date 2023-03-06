@@ -1,35 +1,14 @@
 import { Box, ChakraProvider, extendTheme } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { SessionProvider, useSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { SessionProvider } from 'next-auth/react';
 
 import '@/styles/globals.scss';
-
-import { VERIFICATION_LINK_SENT_PAGE } from '@/lib/client-route';
-import { AppUser } from '@/lib/types';
 
 import WithAuth from '@/Components/Layout/auth/WithAuth';
 import Theme from '@/styles/theme';
 
 const theme = extendTheme(Theme);
-
-function RenderComponents({ children }: { children: JSX.Element }) {
-  const router = useRouter();
-  const { data: session } = useSession();
-  useEffect(() => {
-    const user = session?.user as AppUser;
-    if (
-      user?.emailVerified === false &&
-      router.asPath !== VERIFICATION_LINK_SENT_PAGE
-    ) {
-      void router.push(VERIFICATION_LINK_SENT_PAGE);
-    }
-  }, [router, session?.user]);
-  return children;
-}
-
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
@@ -37,7 +16,7 @@ export default function App({
   const CustomComponent = Component as typeof Component & { auth?: object };
   return (
     <SessionProvider
-      refetchInterval={60}
+      refetchInterval={15}
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       session={session}
       refetchOnWindowFocus
@@ -50,17 +29,16 @@ export default function App({
           />
           <title>Android Server Manager</title>
         </Head>
+
         <Box
           className={Theme.fonts.variables.join(' ')}
           fontFamily={`var(${Theme.fonts.ubuntu.variable})`}
         >
           {CustomComponent.auth ? (
-            <RenderComponents>
-              <WithAuth>
-                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                <CustomComponent {...pageProps} />
-              </WithAuth>
-            </RenderComponents>
+            <WithAuth>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <CustomComponent {...pageProps} />
+            </WithAuth>
           ) : (
             // eslint-disable-next-line react/jsx-props-no-spreading
             <CustomComponent {...pageProps} />

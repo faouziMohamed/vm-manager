@@ -1,13 +1,15 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth';
 import nc from 'next-connect';
 
-import prisma from '@/lib/db/prisma';
+import {
+  deleteAllEmailVerificationTokensForUser,
+  updateUserEmail,
+} from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
-import { AppUser, ErrorResponse, SuccessResponse } from '@/lib/types';
+import { getUserFromRequest } from '@/lib/server.utils';
+import { ErrorResponse, SuccessResponse } from '@/lib/types';
 
-import { nextAuthOptions } from '@/pages/api/auth/[...nextauth]';
 import { sendVerificationEmail } from '@/Services/server/mail.service';
 
 const handler = nc().use(authMiddleware);
@@ -21,27 +23,20 @@ handler.put(
     req: RequestWithBodyEmail,
     res: NextApiResponse<SuccessResponse | ErrorResponse>,
   ) => {
-    const session = await getServerSession(req, res, nextAuthOptions);
+    const user = await getUserFromRequest(req);
     const { email } = req.body;
     if (!email) {
       res.status(400).json({ message: 'Email is required' });
       return;
     }
-    if (email === session!.user!.email) {
+    if (email === user.email) {
       res.status(400).json({ message: 'Email is already in use' });
       return;
     }
-    const user = session!.user as AppUser;
     try {
       const { id: userId } = user;
-      await prisma!.user.update({
-        where: { userId },
-        data: { email },
-      });
-
-      await prisma!.verificationToken.deleteMany({
-        where: { userId, kind: 'email' },
-      });
+      await updateUserEmail(userId, email);
+      await deleteAllEmailVerificationTokensForUser(userId);
     } catch (error) {
       const e = error as PrismaClientKnownRequestError;
       if ('code' in e && e.code === 'P2025') {

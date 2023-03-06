@@ -1,19 +1,20 @@
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth';
 import nc from 'next-connect';
 
 import { saveNewVirtualMachine } from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
+import { getUserFromRequest } from '@/lib/server.utils';
 import { ErrorResponse, NewVmValues } from '@/lib/types';
 
-import { nextAuthOptions } from '@/pages/api/auth/[...nextauth]';
 import { createVirtualMachine } from '@/Services/server/azureService/azure.service';
 import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
 const handler = nc().use(authMiddleware);
 
-type NextAPiRequestWithBody = NextApiResponse & { body: NewVmValues };
+interface NextAPiRequestWithBody extends NextApiRequest {
+  body: NewVmValues;
+}
 
 handler.post(
   async (
@@ -27,17 +28,16 @@ handler.post(
       res.status(400).json({ message: 'Missing required fields' });
       return;
     }
-    const tempReq = req as unknown as NextApiRequest;
     try {
       // arriving here means the user is authenticated see authMiddleware
-      const session = await getServerSession(tempReq, res, nextAuthOptions);
+      const user = await getUserFromRequest(req);
       const instance = await createVirtualMachine(
         machineName,
         region,
         adminUsername,
         password,
       );
-      const userId = session!.user!.id;
+      const userId = user.id;
       await saveNewVirtualMachine(userId, instance, serverName);
       res.status(201).json(instance);
     } catch (error) {

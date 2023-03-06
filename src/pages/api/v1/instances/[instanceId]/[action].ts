@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth';
 import nc from 'next-connect';
 
 import {
@@ -9,9 +8,9 @@ import {
   updateVmInstanceFavoriteStatus,
 } from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
+import { getUserFromRequest } from '@/lib/server.utils';
 import { ErrorResponse } from '@/lib/types';
 
-import { nextAuthOptions } from '@/pages/api/auth/[...nextauth]';
 import { MANAGE_VM_ACTIONS } from '@/Services/server/azureService/azure.constants';
 import { manageVirtualMachine } from '@/Services/server/azureService/azure.service';
 import {
@@ -21,9 +20,9 @@ import {
 
 const handler = nc().use(authMiddleware);
 
-type NextApiRequestWithParams = NextApiRequest & {
+interface NextApiRequestWithParams extends NextApiRequest {
   query: { instanceId: string; action: string };
-};
+}
 
 type ActionSuccessResponse = {
   message: string;
@@ -43,8 +42,8 @@ handler.put(
         .json({ message: 'No Virtual Machine instance ID provided' });
       return;
     }
-    const session = await getServerSession(req, res, nextAuthOptions);
-    const userId = session!.user!.id;
+    const user = await getUserFromRequest(req);
+    const userId = user.id;
     // Get the action to be performed on the instance
     const { action: a } = req.query;
     const action = a.toLowerCase() as ManageVmAction;

@@ -9,7 +9,7 @@ import { capitalize } from '@/lib/utils';
 import AppBlurredModal from '@/Components/Modals/AppBlurredModal';
 import Paragraph from '@/Components/Paragraph';
 import PageTitle from '@/Components/Seo/PageTitle';
-import { tryVerifyUser } from '@/Services/client/auth.service';
+import { tryVerifyUser } from '@/Services/client/client-auth.service';
 
 function TokenVerifyError(props: { error: string }) {
   const router = useRouter();

@@ -1,10 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading,@typescript-eslint/no-misused-promises */
 import { Stack } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
+import { HOME_PAGE } from '@/lib/client-route';
 import { AppUser } from '@/lib/types';
 
 import AuthLayout from '@/Components/Layout/AuthLayout';
+import FuturaSpinner from '@/Components/Loaders/FuturaSpinner';
 import Paragraph from '@/Components/Paragraph';
 import ResendLinkPrompt from '@/Components/Resend-link-prompt';
 import UpdateEmailPrompt from '@/Components/Update-email-prompt';
@@ -12,8 +15,13 @@ import Theme from '@/styles/theme';
 
 export default function VerifyEmail() {
   const { data } = useSession();
-  const { email } = data!.user as AppUser;
-
+  const user = data?.user as AppUser;
+  const router = useRouter();
+  if (user?.emailVerified) {
+    void router.push(HOME_PAGE);
+    return <FuturaSpinner semiTransparent />;
+  }
+  const { email } = user;
   return (
     <AuthLayout
       submitButtonTitle='Verify'

@@ -4,18 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="42cd4c7b-92af-496e-b5ff-02cd1422ab44" name="Changes" comment="chore(config): update config files">
-      <change afterPath="$PROJECT_DIR$/.husky/post-merge" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jsLinters/eslint.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jest.setup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.husky/commit-msg" beforeDir="false" afterPath="$PROJECT_DIR$/.husky/commit-msg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.husky/pre-commit" beforeDir="false" afterPath="$PROJECT_DIR$/.husky/pre-commit" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jest.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/jest.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.mjs" afterDir="false" />
+    <list default="true" id="42cd4c7b-92af-496e-b5ff-02cd1422ab44" name="Changes" comment="feat(avatar): handle update user avatar">
+      <change afterPath="$PROJECT_DIR$/.idea/vm-manager.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Services/client/users.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Services/server/upload.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/api/v1/upload/user-avatar.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/complete-registration.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/ChakraImage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/ChakraImage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/InstanceView/InstanceDetails.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/InstanceView/InstanceHeadline.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/InstanceView/PageBreadcrumb.tsx" beforeDir="false" />
@@ -43,31 +40,29 @@
       <change beforePath="$PROJECT_DIR$/src/Components/images/ConsoleIcon.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/images/VmInstanceIcon.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/images/VmMonitorIcon.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/client/auth.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/client/fetchers.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/client/vm.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/server/auth.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/server/azureService/azure.constants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/server/azureService/azure.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/server/azureService/azure.types.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/server/azureService/azure.utils.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/server/mail.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/client/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/client/client-auth.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/client/fetchers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/client/fetchers.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/server/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/server/auth.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/useAppToast.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/Exceptions/app.exceptions.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/Exceptions/auth.exceptions.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/Exceptions/azure.exceptions.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/api-route.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api-route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api-route.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/lib/client-auth.utils.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/client-route.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/constants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/db/prisma.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/db/queries.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/middleware.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/seo/default-metadata.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/server.utils.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/db/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/db/queries.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/middleware.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/middleware.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/server.utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/server.utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/_app.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/api/auth/[...nextauth].ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/auth/[...nextauth].ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/auth/resend-verification.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/auth/resend-verification.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/auth/update-email.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/auth/update-email.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/auth/verify-email.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/auth/verify-email.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/instances/[instanceId]/[action].ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/instances/[instanceId]/[action].ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/instances/[instanceId]/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/instances/[instanceId]/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/instances/[instanceId]/power-state.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/instances/[instanceId]/power-state.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/instances/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/instances/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/instances/new.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/instances/new.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/verify-email.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/verify-email.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/verify/email.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/verify/email.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/globals.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/globals.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/styles/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/theme.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
@@ -129,8 +124,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="es6.move.members.recent.items">
+      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\lib\db\queries.ts" />
+      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\lib\server.utils.ts" />
+      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\Services\server\upload.service.ts" />
+      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\Services\client\fetchers.ts" />
       <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\Services\server\auth.service.ts" />
-      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\lib\types.ts" />
     </key>
   </component>
   <component name="RunManager">
@@ -176,7 +174,26 @@
       <workItem from="1677943855329" duration="211000" />
       <workItem from="1677944805576" duration="3080000" />
       <workItem from="1677948943874" duration="1376000" />
+      <workItem from="1677968493358" duration="157000" />
+      <workItem from="1677968671086" duration="296000" />
+      <workItem from="1677968988251" duration="1119000" />
+      <workItem from="1678023918296" duration="23352000" />
     </task>
+    <task id="LOCAL-00001" summary="chore(config): update config files">
+      <created>1677951624313</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1677951624313</updated>
+    </task>
+    <task id="LOCAL-00002" summary="chore: update packages">
+      <created>1677951725878</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1677951725878</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,6 +212,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="chore(config): update config files" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore(config): update config files" />
+    <MESSAGE value="chore: update packages" />
+    <MESSAGE value="feat(avatar): handle update user avatar" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(avatar): handle update user avatar" />
   </component>
 </project>

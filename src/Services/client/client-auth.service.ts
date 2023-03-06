@@ -3,11 +3,10 @@ import {
   UPDATE_USER_EMAIL_ROUTE,
   VERIFY_EMAIL_ROUTE,
 } from '@/lib/api-route';
-import {
-  AppException,
-  AppUserDoesNotExistException,
-} from '@/lib/Exceptions/app.exceptions';
+import { AppException } from '@/lib/Exceptions/app.exceptions';
 import { ErrorResponse, SuccessResponse } from '@/lib/types';
+
+import { catchHttpErrors } from '@/Services/client/fetchers';
 
 export async function tryVerifyUser(token: string) {
   const response = await fetch(VERIFY_EMAIL_ROUTE, {
@@ -38,15 +37,4 @@ export async function updateUserEmail(email: string) {
   });
   await catchHttpErrors(response);
   return (await response.json()) as SuccessResponse;
-}
-
-async function catchHttpErrors(response: Response) {
-  if (response.status === 401) {
-    const error = (await response.json()) as ErrorResponse;
-    throw new AppUserDoesNotExistException(error.message);
-  }
-  if (!response.ok) {
-    const error = (await response.json()) as ErrorResponse;
-    throw new AppException(error.message);
-  }
 }

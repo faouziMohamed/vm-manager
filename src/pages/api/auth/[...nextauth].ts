@@ -1,24 +1,46 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth, { AuthOptions } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import { LOGIN_PAGE, VERIFICATION_LINK_SENT_PAGE } from '@/lib/client-route';
-import { findUserByEmailAllData } from '@/lib/db/queries';
-import { AuthError } from '@/lib/Exceptions/auth.exceptions';
+import prisma from '@/lib/db/prisma';
 import {
-  AppAuthorize,
   AppUser,
   AppUserWithEmailVerification,
+  PayloadToken,
 } from '@/lib/types';
 
-import { addNewUser, trySignInUser } from '@/Services/server/auth.service';
+import {
+  authorize,
+  createPayloadWithNewlySignedUser,
+} from '@/Services/server/auth.service';
 
-type PayloadToken = Partial<JWT> & {
-  user: Partial<Omit<AppUserWithEmailVerification, 'emailVerified' | 'id'>> & {
-    emailVerified?: boolean;
-    id: string;
-  };
-};
+function getUserByUserId(userId: string) {
+  return prisma!.user.findUnique({
+    where: { userId },
+    select: {
+      emailVerified: true,
+      firstname: true,
+      lastname: true,
+      image: true,
+    },
+  });
+}
+
+async function updatePayloadWithDataFromDb(connectedUser: AppUser, token: JWT) {
+  const userFromDb = await getUserByUserId(connectedUser.id);
+  if (!userFromDb || !userFromDb.emailVerified) {
+    return token;
+  }
+  const tk = token as PayloadToken;
+  tk.user = tk.user || { id: connectedUser.id };
+  tk.user.emailVerified = true;
+  tk.user.firstname = userFromDb.firstname;
+  tk.user.lastname = userFromDb.lastname;
+  tk.user.avatar = userFromDb.image!; // mqy be null though but not undefined
+  return tk;
+}
 
 export const nextAuthOptions: AuthOptions = {
   // Configure one or more authentication providers
@@ -45,67 +67,38 @@ export const nextAuthOptions: AuthOptions = {
     // eslint-disable-next-line @typescript-eslint/require-await
     async session({ session, token }) {
       const tk: PayloadToken = token as PayloadToken; // data from jwt callback when user is signed in, see below
-      const id = Math.floor(Math.random() * 1000000);
+
       session.user = {
         ...session.user,
         ...tk.user,
-        avatar: `https://avatars.githubusercontent.com/u/${id}?v=4`,
+        avatar: tk.user.avatar,
       } as AppUser;
       return session;
     },
     // eslint-disable-next-line @typescript-eslint/require-await
     async jwt({ token, user }) {
       // const appUser = user as AppUser;
-      const appUser = user as AppUserWithEmailVerification;
-
+      // user is defined when user just signed in
       if (user) {
-        const tk: PayloadToken = {
-          ...token,
-          user: {
-            id: appUser.id,
-            emailVerified: !!appUser.emailVerified,
-            avatar: 'https://avatars.githubusercontent.com/u/649761?v=4',
-          },
-        };
-        // TODO: add this if back in when email verification is implemented
-        if (appUser.emailVerified) {
-          tk.user.firstname = appUser.firstname;
-          tk.user.lastname = appUser.lastname;
-          tk.user.email = appUser.email;
-        }
-        return tk;
+        const appUser = user as AppUserWithEmailVerification;
+        return createPayloadWithNewlySignedUser(appUser, token);
+      }
+
+      // the user is already signed in, so we just return the token
+      // we also update the token if the user has just verified his email
+      const connectedUser = token.user as AppUser;
+      if (!connectedUser.emailVerified) {
+        return updatePayloadWithDataFromDb(connectedUser, token);
       }
       return token;
     },
   },
 };
-export default NextAuth(nextAuthOptions);
 
-async function authorize<C>(credentials: Record<keyof C, string> | undefined) {
-  const cred = credentials as AppAuthorize;
-  if (!cred || !cred.email || !cred.password) {
-    throw new AuthError('Email and password are required');
-  }
-  if (cred.action !== 'register' && cred.action !== 'signin') {
-    throw new AuthError(
-      'Invalid action, the correct values are "register" or "signin"',
-    );
-  }
-  const maybeUser = await findUserByEmailAllData(cred.email);
-  if (cred.action === 'register') {
-    if (maybeUser) {
-      throw new AuthError([
-        'The Email address is already taken',
-        'Use another one or sign in',
-      ]);
-    }
-    return addNewUser(cred);
-  }
-  if (cred.action === 'signin') {
-    if (!maybeUser) {
-      throw new AuthError(['User not found', 'Please register first']);
-    }
-    return trySignInUser(maybeUser, cred);
-  }
-  return null;
-}
+const handler = (req: NextApiRequest, res: NextApiResponse) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return NextAuth(req, res, nextAuthOptions);
+};
+
+export default handler;
+// export default NextAuth(nextAuthOptions);

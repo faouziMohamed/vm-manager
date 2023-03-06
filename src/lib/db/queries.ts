@@ -195,3 +195,16 @@ export function findTokenFromDb(token: string) {
     },
   });
 }
+
+export async function updateUserEmail(userId: string, email: string) {
+  return prisma!.user.update({
+    where: { userId },
+    data: { email },
+  });
+}
+
+export async function deleteAllEmailVerificationTokensForUser(userId: string) {
+  return prisma!.verificationToken.deleteMany({
+    where: { userId, kind: 'email' },
+  });
+}

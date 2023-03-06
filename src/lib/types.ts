@@ -1,4 +1,5 @@
 import { NextRouter } from 'next/router';
+import { JWT } from 'next-auth/jwt';
 
 import {
   availableRegions,
@@ -77,6 +78,12 @@ export type AppUser = Omit<AppAuthRegisterUser, 'password'> & {
 
 export type AppUserWithEmailVerification = Omit<AppUser, 'emailVerified'> & {
   emailVerified: Date | string | null;
+};
+export type PayloadToken = Partial<JWT> & {
+  user: Partial<Omit<AppUserWithEmailVerification, 'emailVerified' | 'id'>> & {
+    emailVerified?: boolean;
+    id: string;
+  };
 };
 export type ErrorResponse = {
   message: string;
