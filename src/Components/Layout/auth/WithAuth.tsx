@@ -1,4 +1,3 @@
-// import router from 'next/router';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -27,28 +26,24 @@ function WithAuth(props: WithAuthProps) {
           router.query as Record<string, string>,
         );
         params.set('next', currentPath);
-
         const url = `${LOGIN_PAGE}?${params.toString()}`;
         void router.push(url);
       }
     },
   });
-  const isUser = !!session?.user;
-
-  if (isUser) {
-    const user = session?.user as AppUser;
-    if (
-      user.emailVerified === false &&
-      router.asPath !== VERIFICATION_LINK_SENT_PAGE
-    ) {
-      void router.push(VERIFICATION_LINK_SENT_PAGE);
-      return <FuturaSpinner semiTransparent />;
-    }
-
-    return children;
+  if (!session?.user) {
+    return <FuturaSpinner />;
   }
 
-  return <FuturaSpinner />;
+  const user = session.user as AppUser;
+  const isUserEmailNotVerified = user.emailVerified === false;
+  const isNotVerificationPage = router.asPath !== VERIFICATION_LINK_SENT_PAGE;
+  if (isUserEmailNotVerified && isNotVerificationPage) {
+    void router.push(VERIFICATION_LINK_SENT_PAGE);
+    return <FuturaSpinner semiTransparent />;
+  }
+
+  return children;
 }
 
 export default WithAuth;
