@@ -34,6 +34,7 @@ export async function createNewUser(credentials: AppAuthorize) {
         firstname: true,
         lastname: true,
         email: true,
+        avatar: true,
       },
     });
 
@@ -42,6 +43,7 @@ export async function createNewUser(credentials: AppAuthorize) {
       firstname: newUser.firstname,
       lastname: newUser.lastname,
       email: newUser.email,
+      avatar: newUser.avatar,
     };
     return user;
   } catch (error) {
@@ -162,6 +164,7 @@ export async function setUserEmailVerified(userId: string) {
       email: true,
       firstname: true,
       lastname: true,
+      avatar: true,
     },
   });
 }
@@ -190,6 +193,7 @@ export function findTokenFromDb(token: string) {
           email: true,
           firstname: true,
           lastname: true,
+          avatar: true,
         },
       },
     },

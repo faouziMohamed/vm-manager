@@ -73,7 +73,7 @@ export type AppAuthorize = Partial<
 export type AppUser = Omit<AppAuthRegisterUser, 'password'> & {
   id: string;
   emailVerified?: false;
-  avatar?: string;
+  avatar?: string | null;
 };
 
 export type AppUserWithEmailVerification = Omit<AppUser, 'emailVerified'> & {
