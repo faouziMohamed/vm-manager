@@ -13,10 +13,10 @@ const LinkUnderlined = forwardRef<HTMLAnchorElement, UnStyledLinkProps>(
     return (
       <UnStyledLink
         ref={ref}
-        {...rest}
         className='underlined-link animated-underline '
         color={Theme.colors.primary['400']}
         _hover={{ color: Theme.colors.primary['500'] }}
+        {...rest}
       >
         {children}
       </UnStyledLink>
@@ -28,7 +28,13 @@ LinkUnderlined.displayName = 'LinkUnderlined';
 
 const UnderlineLink = chakra(LinkUnderlined, {
   shouldForwardProp(prop: string): boolean {
-    return ['href', 'children', 'className'].includes(prop);
+    return [
+      'href',
+      'children',
+      'className',
+      'fontFamily',
+      'fontWeight',
+    ].includes(prop);
   },
 });
 export default UnderlineLink;

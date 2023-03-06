@@ -9,6 +9,7 @@ import UserOptionsAvatar from '@/Components/Layout/UserAvatarMenu';
 import UnStyledLink from '@/Components/Links/UnStyledLink';
 import Theme from '@/styles/theme';
 
+// const pathToIgnore = [VERIFICATION_LINK_SENT_PAGE, LOGIN_PAGE, SIGNUP_PAGE];
 function DisplayUserAvatar() {
   const { status } = useSession();
   const router = useRouter();

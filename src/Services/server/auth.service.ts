@@ -2,9 +2,10 @@
 import { User } from '@prisma/client';
 import { JWT } from 'next-auth/jwt';
 
+import { DEFAULT_USER_AVATAR } from '@/lib/constants';
 import {
   createNewUser,
-  findUserByEmailAllData,
+  getUserByEmailAllData,
   removeExpiredVerificationTokens,
   removeUnverifiedUsers,
 } from '@/lib/db/queries';
@@ -88,7 +89,7 @@ export async function authorize<C>(
       'Invalid action, the correct values are "register" or "signin"',
     );
   }
-  const maybeUser = await findUserByEmailAllData(cred.email);
+  const maybeUser = await getUserByEmailAllData(cred.email);
   if (cred.action === 'register') {
     if (maybeUser) {
       throw new AuthError([
@@ -111,13 +112,14 @@ export function createPayloadWithNewlySignedUser(
   appUser: AppUserWithEmailVerification,
   token: JWT,
 ) {
-  const isEmailVerified = !!appUser.emailVerified;
+  const isEmailVerified = appUser.emailVerified !== null;
   const tk: PayloadToken = {
     ...token,
     user: {
       id: appUser.id,
       emailVerified: isEmailVerified,
-      avatar: appUser.avatar || `/images/avatars/default-avatar.png`,
+      avatar: appUser.avatar || DEFAULT_USER_AVATAR,
+      email: appUser.email,
     },
   };
 

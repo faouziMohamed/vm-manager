@@ -3,6 +3,8 @@ import formidable from 'formidable';
 import { NextApiRequest } from 'next';
 import process from 'process';
 
+import { USER_AVATAR_ALLOWED_MIME_TYPES } from '@/lib/constants';
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -27,7 +29,7 @@ export async function uploadUserAvatar(img: formidable.File) {
   return uploadImage(img, 'avatar');
 }
 
-const allowedMimeTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+const allowedMimeTypes = USER_AVATAR_ALLOWED_MIME_TYPES as unknown as string[];
 
 export function handleUploadedFile(
   req: NextApiRequest,

@@ -2,7 +2,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import prisma from '@/lib/db/prisma';
+import { updateUserAvatar } from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
 import { getUserFromRequest } from '@/lib/server.utils';
 import { ErrorResponse, SuccessResponse } from '@/lib/types';
@@ -33,10 +33,7 @@ handler.put(
         }
         // eslint-disable-next-line promise/always-return
         void uploadUserAvatar(file!).then(async (uploadedImage) => {
-          await prisma!.user.update({
-            where: { userId },
-            data: { image: uploadedImage.url },
-          });
+          await updateUserAvatar(userId, uploadedImage.url);
           res.status(200).json({ message: 'Image uploaded' });
         });
       });

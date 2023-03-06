@@ -13,3 +13,7 @@ export async function uploadUserImage(file: File) {
   await catchHttpErrors(response);
   return (await response.json()) as SuccessResponse;
 }
+
+export async function requestUserSessionUpdate() {
+  await fetch('/api/auth/session?update=true');
+}

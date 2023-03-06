@@ -1,8 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import prisma from '@/lib/db/prisma';
-import { existsUser } from '@/lib/db/queries';
+import {
+  deleteAllEmailVerificationTokensForUser,
+  existsUser,
+} from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
 import { getUserFromRequest } from '@/lib/server.utils';
 import { ErrorResponse, SuccessResponse } from '@/lib/types';
@@ -24,9 +26,7 @@ handler.post(
         res.status(401).json({ message: 'User does not exist' });
         return;
       }
-      await prisma!.verificationToken.deleteMany({
-        where: { userId, kind: 'email' },
-      });
+      await deleteAllEmailVerificationTokensForUser(userId);
       await sendVerificationEmail(user);
       res.status(200).json({ message: 'Verification email sent' });
     } catch (error) {

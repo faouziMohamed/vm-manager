@@ -150,8 +150,19 @@ export async function deleteVirtualMachine(instanceId: string) {
   await prisma!.vmInstances.delete({ where: { instanceId } });
 }
 
-export async function findUserByEmailAllData(email: string) {
+export async function getUserByEmailAllData(email: string) {
   return prisma?.user.findUnique({ where: { email } });
+}
+export function getUserByUserId(userId: string) {
+  return prisma!.user.findUnique({
+    where: { userId },
+    select: {
+      emailVerified: true,
+      firstname: true,
+      lastname: true,
+      avatar: true,
+    },
+  });
 }
 
 export async function setUserEmailVerified(userId: string) {
@@ -204,6 +215,12 @@ export async function updateUserEmail(userId: string, email: string) {
   return prisma!.user.update({
     where: { userId },
     data: { email },
+  });
+}
+export async function updateUserAvatar(userId: string, avatarUrl: string) {
+  await prisma!.user.update({
+    where: { userId },
+    data: { avatar: avatarUrl },
   });
 }
 

@@ -53,3 +53,12 @@ export const groupByOptionsValues = [
   'region',
   'powerState',
 ] as const;
+
+export const DEFAULT_USER_AVATAR = '/images/avatars/default-avatar.png';
+// const allowedFileTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+export const USER_AVATAR_ALLOWED_MIME_TYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+] as const;

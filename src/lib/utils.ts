@@ -18,7 +18,19 @@ import {
 
 import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
-export function adjustColor(hex: string, percent: number): string {
+export function adjustColor(
+  hex: string,
+  percent: number | null | undefined,
+  opacityPercent?: number,
+): string {
+  if (
+    (percent === null || percent === undefined) &&
+    opacityPercent === undefined
+  ) {
+    throw new Error(
+      'The percent parameter is required if opacityPercent is not provided.',
+    );
+  }
   const regex = /^#[0-9A-Fa-f]{6}$/;
   if (!regex.test(hex)) {
     throw new Error('Invalid hexadecimal color string.');
@@ -40,13 +52,23 @@ export function adjustColor(hex: string, percent: number): string {
 
   const newHexWithoutHash =
     componentToHex(newRed) + componentToHex(newGreen) + componentToHex(newBlue);
-  return (hasHash ? '#' : '') + newHexWithoutHash;
+
+  let opacityHex = '';
+  if (opacityPercent !== undefined) {
+    const opacityValue = Math.round((255 * opacityPercent) / 100);
+    opacityHex = componentToHex(opacityValue);
+  }
+
+  return (hasHash ? '#' : '') + newHexWithoutHash + opacityHex;
 }
 
 export function adjustComponent(
   colorComponent: number,
-  percent: number,
+  percent?: number | null,
 ): number {
+  if (undefined === percent || percent === null) {
+    return colorComponent;
+  }
   const adjustedColor = colorComponent + Math.round((255 * percent) / 100);
   return Math.max(0, Math.min(255, adjustedColor));
 }

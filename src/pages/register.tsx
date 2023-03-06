@@ -1,14 +1,20 @@
 /* eslint-disable react/jsx-props-no-spreading,@typescript-eslint/no-misused-promises */
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { LOGIN_PAGE, VERIFICATION_LINK_SENT_PAGE } from '@/lib/client-route';
+import {
+  HOME_PAGE,
+  LOGIN_PAGE,
+  VERIFICATION_LINK_SENT_PAGE,
+} from '@/lib/client-route';
 import { AppAuthRegisterUser, AppAuthSignInUser } from '@/lib/types';
 import { handleFormSubmit } from '@/lib/utils';
 
 import AppFormControl from '@/Components/form/AppFormControl';
 import AuthLayout from '@/Components/Layout/AuthLayout';
+import FuturaSpinner from '@/Components/Loaders/FuturaSpinner';
 
 export default function Register() {
   const {
@@ -32,6 +38,16 @@ export default function Register() {
     },
     [router],
   );
+  const session = useSession();
+  if (session.status === 'authenticated') {
+    const next = router.query.next as string;
+    if (next) {
+      void router.push(next);
+      return <FuturaSpinner semiTransparent />;
+    }
+    void router.push(HOME_PAGE);
+    return <FuturaSpinner semiTransparent />;
+  }
   return (
     <AuthLayout
       onSubmit={handleSubmit(onSubmit)}

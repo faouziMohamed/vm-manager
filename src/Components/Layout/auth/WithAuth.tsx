@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
 
 import { LOGIN_PAGE, VERIFICATION_LINK_SENT_PAGE } from '@/lib/client-route';
 import { AppUser } from '@/lib/types';
@@ -14,23 +15,26 @@ type WithAuthProps = {
 function WithAuth(props: WithAuthProps) {
   const { children, options } = props;
   const router = useRouter();
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      const currentPath = router.asPath;
-      // If not authenticated, redirect to provided url or
+  const { data: session, status } = useSession();
+  useEffect(() => {
+    // Do nothing while loading
+    if (status === 'loading') {
+      return;
+    }
+
+    const currentPath = router.asPath;
+    // console.log('currentPath', currentPath, router);
+    // If not authenticated, redirect to provided url or
+    if (!session?.user) {
       if (options?.redirectTo) {
         void router.push(options?.redirectTo);
       } else {
-        const params = new URLSearchParams(
-          router.query as Record<string, string>,
-        );
-        params.set('next', currentPath);
-        const url = `${LOGIN_PAGE}?${params.toString()}`;
-        void router.push(url);
+        const next = new URLSearchParams({ next: currentPath });
+        void router.push(LOGIN_PAGE, { query: next.toString() });
       }
-    },
-  });
+    }
+  }, [options?.redirectTo, router, session?.user, status]);
+
   if (!session?.user) {
     return <FuturaSpinner />;
   }

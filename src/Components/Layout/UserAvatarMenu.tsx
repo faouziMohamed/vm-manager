@@ -14,6 +14,7 @@ import { GoSignOut } from 'react-icons/go';
 import { MdManageAccounts, MdSettings } from 'react-icons/md';
 
 import { LOGIN_PAGE } from '@/lib/client-route';
+import { DEFAULT_USER_AVATAR } from '@/lib/constants';
 import { AppUser } from '@/lib/types';
 import { adjustColor, formatName } from '@/lib/utils';
 
@@ -22,15 +23,14 @@ import Paragraph from '@/Components/Paragraph';
 import Theme from '@/styles/theme';
 
 export default function UserOptionsAvatar() {
-  const id = 643761;
-  const githubUrlAvatar = `https://avatars.githubusercontent.com/u/${id}?v=4`;
   const { data: session } = useSession();
   const user = session?.user as AppUser;
+  const avatarUrl = user.avatar || DEFAULT_USER_AVATAR;
   return (
     <Menu>
       <MenuButton flexShrink={0.1} aria-label='Options' pos='relative'>
         <ChakraImage
-          src={githubUrlAvatar}
+          src={avatarUrl}
           alt='User Avatar'
           width={70}
           height={70}
@@ -44,7 +44,7 @@ export default function UserOptionsAvatar() {
         <MenuItem pointerEvents='none' borderRadius='0.5rem'>
           <HStack gap='0.5rem' alignItems='center' py='0.2rem'>
             <ChakraImage
-              src={user.avatar ?? githubUrlAvatar}
+              src={avatarUrl}
               alt='User Avatar'
               width={70}
               height={70}
