@@ -46,6 +46,7 @@ export async function trySignInUser(
     lastname: maybeUser.lastname,
     email: maybeUser.email,
     emailVerified: maybeUser.emailVerified,
+    avatar: maybeUser.avatar,
   };
   return user;
 }
@@ -111,13 +112,12 @@ export function createPayloadWithNewlySignedUser(
   token: JWT,
 ) {
   const isEmailVerified = !!appUser.emailVerified;
-  const id = Math.floor(Math.random() * 1000000);
   const tk: PayloadToken = {
     ...token,
     user: {
       id: appUser.id,
       emailVerified: isEmailVerified,
-      avatar: `https://avatars.githubusercontent.com/u/${id}?v=4`,
+      avatar: appUser.avatar || `/images/avatars/default-avatar.png`,
     },
   };
 
