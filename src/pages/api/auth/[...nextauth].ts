@@ -23,7 +23,7 @@ function getUserByUserId(userId: string) {
       emailVerified: true,
       firstname: true,
       lastname: true,
-      image: true,
+      avatar: true,
     },
   });
 }
@@ -38,7 +38,7 @@ async function updatePayloadWithDataFromDb(connectedUser: AppUser, token: JWT) {
   tk.user.emailVerified = true;
   tk.user.firstname = userFromDb.firstname;
   tk.user.lastname = userFromDb.lastname;
-  tk.user.avatar = userFromDb.image!; // mqy be null though but not undefined
+  tk.user.avatar = userFromDb.avatar!; // mqy be null though but not undefined
   return tk;
 }
 
