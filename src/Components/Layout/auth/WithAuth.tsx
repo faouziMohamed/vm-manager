@@ -35,28 +35,6 @@ function WithAuth(props: WithAuthProps) {
   });
   const isUser = !!session?.user;
 
-  // useEffect(() => {
-  //   // Do nothing while loading
-  //   if (status === 'loading') {
-  //     return;
-  //   }
-  //
-  //   // const currentPath = router.asPath;
-  //   // // If not authenticated, redirect to provided url or
-  //   // if (!isUser) {
-  //   //   if (options?.redirectTo) {
-  //   //     void router.push(options?.redirectTo);
-  //   //   } else {
-  //   //     const params = new URLSearchParams(
-  //   //       router.query as Record<string, string>,
-  //   //     );
-  //   //     params.set('next', currentPath);
-  //   //
-  //   //     const url = `${LOGIN_PAGE}?${params.toString()}`;
-  //   //     void router.push(url);
-  //   //   }
-  //   // }
-  // }, [isUser, options?.redirectTo, router, status]);
   if (isUser) {
     const user = session?.user as AppUser;
     if (
