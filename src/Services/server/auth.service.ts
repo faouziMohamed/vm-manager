@@ -3,12 +3,6 @@ import { User } from '@prisma/client';
 import { JWT } from 'next-auth/jwt';
 
 import { DEFAULT_USER_AVATAR } from '@/lib/constants';
-import {
-  createNewUser,
-  getUserByEmailAllData,
-  removeExpiredVerificationTokens,
-  removeUnverifiedUsers,
-} from '@/lib/db/queries';
 import { AuthError } from '@/lib/Exceptions/auth.exceptions';
 import { verifyPassword } from '@/lib/server.utils';
 import {
@@ -18,15 +12,19 @@ import {
 } from '@/lib/types';
 
 import {
+  createNewUser,
+  getUserByEmailAllData,
+  removeExpiredVerificationTokens,
+  removeUnverifiedUsers,
+} from '@/Repository/queries';
+import {
   sendAccountDeletedEmail,
-  sendVerificationEmail,
+  sendVerificationMail,
 } from '@/Services/server/mail.service';
 
 export async function addNewUser(credentials: AppAuthorize) {
   const user = await createNewUser(credentials);
-  // eslint-disable-next-line no-console
-  console.log(user);
-  await sendVerificationEmail(user);
+  await sendVerificationMail(user);
   return user;
 }
 

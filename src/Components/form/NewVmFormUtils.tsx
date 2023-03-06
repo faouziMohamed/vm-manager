@@ -15,6 +15,10 @@ import { MdAddTask } from 'react-icons/md';
 import { NewVmValues } from '@/lib/types';
 
 import AppFormControl from '@/Components/form/AppFormControl';
+import {
+  passwordInputError,
+  passwordRegex,
+} from '@/Components/form/PasswordInput';
 import { useAvailableRegions } from '@/Services/client/vm.service';
 import Theme from '@/styles/theme';
 
@@ -57,19 +61,10 @@ export function PasswordFormControl(props: FormControlFieldProps) {
       register={{
         ...register('password', {
           required: true,
-          pattern:
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[\w\W\s]{6,}$/,
+          pattern: passwordRegex,
         }),
       }}
-      displayError={{
-        heading: 'Password must contain at least 6 characters including:',
-        rules: [
-          '1 uppercase letter',
-          '1 lowercase letter',
-          '1 number',
-          '1 special character (@$!%*?&)',
-        ],
-      }}
+      displayError={passwordInputError}
       isRequired
     />
   );

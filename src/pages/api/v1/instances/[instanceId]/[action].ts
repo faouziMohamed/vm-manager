@@ -2,15 +2,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import {
-  deleteVirtualMachine,
-  getOneUserSavedVirtualMachine,
-  updateVmInstanceFavoriteStatus,
-} from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
 import { getUserFromRequest } from '@/lib/server.utils';
 import { ErrorResponse } from '@/lib/types';
 
+import {
+  deleteVirtualMachine,
+  getOneUserSavedVirtualMachine,
+  updateVmInstanceFavoriteStatus,
+} from '@/Repository/queries';
 import { MANAGE_VM_ACTIONS } from '@/Services/server/azureService/azure.constants';
 import { manageVirtualMachine } from '@/Services/server/azureService/azure.service';
 import {

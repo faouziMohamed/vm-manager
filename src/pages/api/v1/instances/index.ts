@@ -2,11 +2,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { getUserSavedVirtualMachines } from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
 import { getUserFromRequest } from '@/lib/server.utils';
 import { ErrorResponse } from '@/lib/types';
 
+import { getUserSavedVirtualMachines } from '@/Repository/queries';
 import { getVirtualMachine } from '@/Services/server/azureService/azure.service';
 import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 

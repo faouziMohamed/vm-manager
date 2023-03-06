@@ -9,8 +9,13 @@ import { AppAuthSignInUser } from '@/lib/types';
 import { handleFormSubmit } from '@/lib/utils';
 
 import AppFormControl from '@/Components/form/AppFormControl';
+import {
+  passwordInputError,
+  passwordRegex,
+} from '@/Components/form/PasswordInput';
 import AuthLayout from '@/Components/Layout/AuthLayout';
 import FuturaSpinner from '@/Components/Loaders/FuturaSpinner';
+import PageTitle from '@/Components/Seo/PageTitle';
 
 export default function SignIn() {
   const {
@@ -62,8 +67,14 @@ export default function SignIn() {
         link: SIGNUP_PAGE,
         linkText: 'Sign Up',
       }}
+      formAltAction2={{
+        text: 'Forgot your password?',
+        link: '/forgot-password',
+        linkText: 'Reset it',
+      }}
       errors={anyErrors}
     >
+      <PageTitle title='Sign In' />
       {session.status === 'loading' && <FuturaSpinner semiTransparent />}
       {redirecting && <FuturaSpinner semiTransparent />}
       <AppFormControl
@@ -86,18 +97,9 @@ export default function SignIn() {
         error={errors.password}
         register={register('password', {
           required: true,
-          pattern:
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[\w\W\s]{6,}$/,
+          pattern: passwordRegex,
         })}
-        displayError={{
-          heading: 'The username must follow the following rules:',
-          rules: [
-            '1 uppercase letter',
-            '1 lowercase letter',
-            '1 number',
-            '1 special character (@$!%*?&)',
-          ],
-        }}
+        displayError={passwordInputError}
       />
     </AuthLayout>
   );

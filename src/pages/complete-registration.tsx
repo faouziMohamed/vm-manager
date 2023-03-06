@@ -9,6 +9,7 @@ import { adjustColor, capitalize } from '@/lib/utils';
 import AuthLayout from '@/Components/Layout/AuthLayout';
 import UnderlineLink from '@/Components/Links/UnderlineLink';
 import Paragraph from '@/Components/Paragraph';
+import PageTitle from '@/Components/Seo/PageTitle';
 import UpdatableUserAvatar from '@/Components/UpdatableUserAvatar';
 import Theme from '@/styles/theme';
 
@@ -23,6 +24,7 @@ export default function CompleteRegistration() {
       formTitle='Complete Registration'
       submitButtonTitle='Next (Billing Information)'
     >
+      <PageTitle title={`Complete Registration - ${user.email}`} />
       <Stack spacing={4} alignItems='center'>
         <Heading as='h3' fontWeight={500} fontSize='1rem' color='secondary.500'>
           Upload a profile picture

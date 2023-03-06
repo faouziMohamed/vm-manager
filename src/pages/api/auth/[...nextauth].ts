@@ -4,13 +4,13 @@ import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import { LOGIN_PAGE, VERIFICATION_LINK_SENT_PAGE } from '@/lib/client-route';
-import { getUserByUserId } from '@/lib/db/queries';
 import {
   AppUser,
   AppUserWithEmailVerification,
   PayloadToken,
 } from '@/lib/types';
 
+import { getUserByUserId } from '@/Repository/queries';
 import {
   authorize,
   createPayloadWithNewlySignedUser,

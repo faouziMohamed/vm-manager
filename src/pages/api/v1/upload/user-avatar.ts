@@ -2,11 +2,11 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { updateUserAvatar } from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
 import { getUserFromRequest } from '@/lib/server.utils';
 import { ErrorResponse, SuccessResponse } from '@/lib/types';
 
+import { updateUserAvatar } from '@/Repository/queries';
 import {
   handleUploadedFile,
   uploadUserAvatar,

@@ -2,11 +2,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { getOneUserSavedVirtualMachine } from '@/lib/db/queries';
 import { authMiddleware } from '@/lib/middleware';
 import { getUserFromRequest } from '@/lib/server.utils';
 import { ErrorResponse } from '@/lib/types';
 
+import { getOneUserSavedVirtualMachine } from '@/Repository/queries';
 import { getVmPowerState } from '@/Services/server/azureService/azure.service';
 
 const handler = nc().use(authMiddleware);

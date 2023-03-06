@@ -4,27 +4,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="42cd4c7b-92af-496e-b5ff-02cd1422ab44" name="Changes" comment="refactor(refactor,update): remove snippet and applied some refactor">
-      <change afterPath="$PROJECT_DIR$/src/Components/UpdatableUserAvatar.tsx" afterDir="false" />
+    <list default="true" id="42cd4c7b-92af-496e-b5ff-02cd1422ab44" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/pages/api/v1/auth/reset-password.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/forgot-password.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/reset-password.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Layout/UserAvatarMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Layout/UserAvatarMenu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Layout/auth/WithAuth.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Layout/auth/WithAuth.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Layout/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Layout/header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Layout/AuthLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Layout/AuthLayout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/Links/UnderlineLink.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Links/UnderlineLink.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Seo/PageTitle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Seo/PageTitle.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/client/users.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/client/users.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/form/NewVmFormUtils.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/form/NewVmFormUtils.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/form/PasswordInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/form/PasswordInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/client/client-auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/client/client-auth.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Services/server/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/server/auth.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/server/upload.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/server/upload.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/constants.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/db/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/db/queries.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/server/mail.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/server/mail.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api-route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api-route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/client-route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/client-route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/db/prisma.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/prisma.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/db/queries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/queries.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/server.utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/server.utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/types.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/api/auth/[...nextauth].ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/auth/[...nextauth].ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/api/v1/auth/resend-verification.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/auth/resend-verification.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/auth/update-email.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/auth/update-email.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/auth/verify-email.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/auth/verify-email.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/instances/[instanceId]/[action].ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/instances/[instanceId]/[action].ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/instances/[instanceId]/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/instances/[instanceId]/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/instances/[instanceId]/power-state.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/instances/[instanceId]/power-state.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/instances/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/instances/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/v1/instances/new.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/instances/new.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/api/v1/upload/user-avatar.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/api/v1/upload/user-avatar.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/complete-registration.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/complete-registration.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/register.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/signin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/signin.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/verify/email.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/verify/email.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/verify-email.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/verify-email.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/vm/[instanceId].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vm/[instanceId].tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +83,7 @@
     &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.14.2&quot;,
     &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.14.2&quot;,
     &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/mfaou/WebstormProjects/Projects/vm-manager/src/pages&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -83,12 +98,18 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\pages" />
+    </key>
     <key name="es6.move.members.recent.items">
+      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\lib\utils.ts" />
+      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\Components\ComponentUtils.tsx" />
+      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\lib\types.ts" />
       <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\lib\db\queries.ts" />
-      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\lib\server.utils.ts" />
-      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\Services\server\upload.service.ts" />
-      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\Services\client\fetchers.ts" />
-      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\Services\server\auth.service.ts" />
+      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src\Components\form\PasswordInput.tsx" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mfaou\WebstormProjects\Projects\vm-manager\src" />
     </key>
   </component>
   <component name="RunManager">
@@ -138,7 +159,9 @@
       <workItem from="1677968671086" duration="296000" />
       <workItem from="1677968988251" duration="1119000" />
       <workItem from="1678023918296" duration="26465000" />
-      <workItem from="1678107332312" duration="596000" />
+      <workItem from="1678107332312" duration="12090000" />
+      <workItem from="1678123738270" duration="231000" />
+      <workItem from="1678123984528" duration="13222000" />
     </task>
     <task id="LOCAL-00001" summary="chore(config): update config files">
       <created>1677951624313</created>
@@ -168,7 +191,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678064247427</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="feat(avatar,db): react when user avatar change, refactor code">
+      <created>1678111504659</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1678111504659</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,6 +220,7 @@
     <MESSAGE value="chore: update packages" />
     <MESSAGE value="feat(avatar): handle update user avatar" />
     <MESSAGE value="refactor(refactor,update): remove snippet and applied some refactor" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(refactor,update): remove snippet and applied some refactor" />
+    <MESSAGE value="feat(avatar,db): react when user avatar change, refactor code" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(avatar,db): react when user avatar change, refactor code" />
   </component>
 </project>

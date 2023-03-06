@@ -19,17 +19,19 @@ import UnderlineLink from '@/Components/Links/UnderlineLink';
 import Paragraph from '@/Components/Paragraph';
 import Theme from '@/styles/theme';
 
+type FormAltAction = {
+  text?: string;
+  link: string;
+  linkText: string;
+};
 type AuthLayoutParams = FlexProps & {
   onSubmit?: () => void;
   formTitle: string;
   submitButtonTitle: string;
   isSubmitting?: boolean;
   errors?: string[] | undefined;
-  formAltAction?: {
-    text?: string;
-    link: string;
-    linkText: string;
-  };
+  formAltAction?: FormAltAction;
+  formAltAction2?: FormAltAction;
   hasForm?: boolean;
 };
 
@@ -42,6 +44,7 @@ export default function AuthLayout(props: AuthLayoutParams) {
     isSubmitting = false,
     onSubmit = () => {},
     formAltAction,
+    formAltAction2,
     hasForm = true,
     ...others
   } = props;
@@ -98,22 +101,43 @@ export default function AuthLayout(props: AuthLayoutParams) {
               </Button>
             )}
           </Stack>
-
-          {!!formAltAction && (
-            <>
-              <Divider />
+          {!!formAltAction || (!!formAltAction2 && <Divider />)}
+          <Stack spacing={0} alignItems='center'>
+            {!!formAltAction && (
               <Paragraph
                 fontFamily='var(--font-secondary)'
                 fontSize='0.87rem'
                 textAlign='end'
+                color='gray.600'
               >
                 {formAltAction?.text}
-                <UnderlineLink href={formAltAction.link}>
+                <UnderlineLink
+                  href={formAltAction.link}
+                  fontWeight='500'
+                  color={adjustColor(Theme.colors.primary.main, null, 80)}
+                >
                   {formAltAction.linkText}
                 </UnderlineLink>
               </Paragraph>
-            </>
-          )}
+            )}
+            {!!formAltAction2 && (
+              <Paragraph
+                fontFamily='var(--font-secondary)'
+                fontSize='0.87rem'
+                textAlign='end'
+                color='gray.600'
+              >
+                {formAltAction2?.text}
+                <UnderlineLink
+                  href={formAltAction2.link}
+                  color='warning.main'
+                  fontWeight='400'
+                >
+                  {formAltAction2.linkText}
+                </UnderlineLink>
+              </Paragraph>
+            )}
+          </Stack>
         </Stack>
       </Flex>
     </Layout>

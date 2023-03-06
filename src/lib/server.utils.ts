@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import { NextApiRequest } from 'next';
 import { getToken } from 'next-auth/jwt';
 
@@ -24,7 +24,17 @@ export function jwtSignData(payload: Record<string, unknown>) {
   const expires = '2h';
   return sign(payload, key, { expiresIn: expires });
 }
-
+export function jwtDecode<TJwtDecode extends Record<string, unknown>>(
+  token: string,
+): TJwtDecode | null {
+  try {
+    const key = process.env.NEXTAUTH_SECRET!;
+    const payload = verify(token, key);
+    return payload as TJwtDecode;
+  } catch (err) {
+    return null;
+  }
+}
 export async function getUserFromRequest(req: NextApiRequest) {
   const token = (await getToken({ req }))!;
   return token.user as AppUser;

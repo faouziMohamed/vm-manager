@@ -1,17 +1,23 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
-import prisma from '@/lib/db/prisma';
 import { AuthError } from '@/lib/Exceptions/auth.exceptions';
 import { hashPassword } from '@/lib/server.utils';
-import { AppAuthorize, AppUser } from '@/lib/types';
+import { AppAuthorize, AppUser, VerificationTokenKind } from '@/lib/types';
 
+import prisma from '@/Repository/prisma';
 import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 
-export async function createVerificationToken(userId: string, token: string) {
+const VERIFICATION_TOKEN_KINDS: VerificationTokenKind[] = ['email', 'password'];
+export async function createVerificationToken(
+  userId: string,
+  token: string,
+  kind = 'email',
+) {
   return prisma!.verificationToken.create({
     data: {
       token,
       userId,
+      kind,
       expires: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours
     },
   });
@@ -153,10 +159,24 @@ export async function deleteVirtualMachine(instanceId: string) {
 export async function getUserByEmailAllData(email: string) {
   return prisma?.user.findUnique({ where: { email } });
 }
+
+export async function getUserByEmail(email: string) {
+  return prisma!.user.findUnique({
+    where: { email },
+    select: {
+      userId: true,
+      firstname: true,
+      lastname: true,
+      avatar: true,
+      email: true,
+    },
+  });
+}
 export function getUserByUserId(userId: string) {
   return prisma!.user.findUnique({
     where: { userId },
     select: {
+      userId: true,
       emailVerified: true,
       firstname: true,
       lastname: true,
@@ -224,8 +244,47 @@ export async function updateUserAvatar(userId: string, avatarUrl: string) {
   });
 }
 
-export async function deleteAllEmailVerificationTokensForUser(userId: string) {
+export async function deleteVerificationTokenOfKind(
+  userId: string,
+  kind: VerificationTokenKind = 'email',
+) {
+  if (!VERIFICATION_TOKEN_KINDS.includes(kind)) {
+    const msg =
+      `Invalid token kind. The token kind must be one of: ` +
+      `${VERIFICATION_TOKEN_KINDS.join(', ')} `;
+    throw new Error(msg);
+  }
   return prisma!.verificationToken.deleteMany({
-    where: { userId, kind: 'email' },
+    where: { userId, kind },
+  });
+}
+
+export async function isVerificationTokenValid(
+  userId: string,
+  token: string,
+  kind: VerificationTokenKind = 'email',
+) {
+  if (!VERIFICATION_TOKEN_KINDS.includes(kind)) {
+    const msg =
+      `Invalid token kind. The token kind must be one of: ` +
+      `${VERIFICATION_TOKEN_KINDS.join(', ')} `;
+    throw new Error(msg);
+  }
+  const now = new Date();
+
+  const verificationToken = await prisma!.verificationToken.findUnique({
+    where: { userId_token_kind: { userId, token, kind } },
+    select: { expires: true },
+  });
+  if (!verificationToken) {
+    return false;
+  }
+  return verificationToken.expires > now;
+}
+
+export async function updateUserPassword(userId: string, password: string) {
+  return prisma!.user.update({
+    where: { userId },
+    data: { password: await hashPassword(password) },
   });
 }

@@ -13,6 +13,10 @@ import { AppAuthRegisterUser, AppAuthSignInUser } from '@/lib/types';
 import { handleFormSubmit } from '@/lib/utils';
 
 import AppFormControl from '@/Components/form/AppFormControl';
+import {
+  passwordInputError,
+  passwordRegex,
+} from '@/Components/form/PasswordInput';
 import AuthLayout from '@/Components/Layout/AuthLayout';
 import FuturaSpinner from '@/Components/Loaders/FuturaSpinner';
 
@@ -81,18 +85,9 @@ export default function Register() {
         error={errors.password}
         register={register('password', {
           required: true,
-          pattern:
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[\w\W\s]{6,}$/,
+          pattern: passwordRegex,
         })}
-        displayError={{
-          heading: 'The username must follow the following rules:',
-          rules: [
-            '1 uppercase letter',
-            '1 lowercase letter',
-            '1 number',
-            '1 special character (@$!%*?&)',
-          ],
-        }}
+        displayError={passwordInputError}
       />
       <AppFormControl
         isRequired

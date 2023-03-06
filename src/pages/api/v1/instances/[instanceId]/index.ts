@@ -2,12 +2,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { getOneUserSavedVirtualMachine } from '@/lib/db/queries';
 import { ResourceNotFoundError } from '@/lib/Exceptions/azure.exceptions';
 import { authMiddleware } from '@/lib/middleware';
 import { getUserFromRequest } from '@/lib/server.utils';
 import { ErrorResponse } from '@/lib/types';
 
+import { getOneUserSavedVirtualMachine } from '@/Repository/queries';
 import { getVirtualMachine } from '@/Services/server/azureService/azure.service';
 import { CreateVmResult } from '@/Services/server/azureService/azure.types';
 

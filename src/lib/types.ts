@@ -111,3 +111,4 @@ export type NewVmValues = {
   password: string;
   vmUsername: string;
 };
+export type VerificationTokenKind = 'email' | 'password';

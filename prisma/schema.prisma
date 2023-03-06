@@ -30,13 +30,13 @@ model User {
 
 model VerificationToken {
   userId    String
-  token     String   @unique
+  token     String   @unique @db.VarChar(255)
+  kind      String   @default("email")
   expires   DateTime
   createdAt DateTime @default(now())
-  kind      String   @default("email")
   user      User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 
-  @@unique([userId, token])
+  @@unique([userId, token, kind])
   @@index([token])
   @@map("verification_tokens")
 }

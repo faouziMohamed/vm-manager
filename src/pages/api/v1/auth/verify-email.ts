@@ -3,13 +3,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
+import { AppUser, ErrorResponse } from '@/lib/types';
+
 import {
   deleteToken,
   existsUser,
   findTokenFromDb,
   setUserEmailVerified,
-} from '@/lib/db/queries';
-import { AppUser, ErrorResponse } from '@/lib/types';
+} from '@/Repository/queries';
 
 interface NextRequestWithToken extends NextApiRequest {
   body: { token: string };

@@ -8,6 +8,7 @@ import PageBreadcrumb from '@/Components/InstanceView/PageBreadcrumb';
 import VmInstanceControlButtons from '@/Components/InstanceView/VmInstanceControlButtons';
 import Layout from '@/Components/Layout/Layout';
 import Paragraph from '@/Components/Paragraph';
+import PageTitle from '@/Components/Seo/PageTitle';
 import { useVmInstance } from '@/Services/client/vm.service';
 
 export default function VmPage() {
@@ -18,6 +19,7 @@ export default function VmPage() {
   if (instance && error) {
     return (
       <Layout>
+        <PageTitle title={`Instance not found - ${instance.serverName}`} />
         <Stack spacing={5} fontFamily='var(--font-primary)' h='100%'>
           <PageBreadcrumb
             shouldRenderName={!!instanceId}
@@ -43,6 +45,7 @@ export default function VmPage() {
   }
   return (
     <Layout>
+      <PageTitle title={`Instance - ${instance.serverName}`} />
       <Stack spacing={5} fontFamily='var(--font-primary)'>
         <PageBreadcrumb
           shouldRenderName={!!instanceId}

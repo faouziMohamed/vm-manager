@@ -1,5 +1,6 @@
 import {
   RESEND_EMAIL_VERIFICATION_LINK_ROUTE,
+  RESET_PASSWORD_ROUTE,
   UPDATE_USER_EMAIL_ROUTE,
   VERIFY_EMAIL_ROUTE,
 } from '@/lib/api-route';
@@ -35,6 +36,25 @@ export async function updateUserEmail(email: string) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email }),
   });
+  await catchHttpErrors(response);
+  return (await response.json()) as SuccessResponse;
+}
+
+export async function resetPassword(password: string, token: string) {
+  const response = await fetch(RESET_PASSWORD_ROUTE, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password, token }),
+  });
+  await catchHttpErrors(response);
+  return (await response.json()) as SuccessResponse;
+}
+
+export async function requestPasswordReset(email: string) {
+  const emailQuery = new URLSearchParams({ email });
+  const response = await fetch(
+    `${RESET_PASSWORD_ROUTE}?${emailQuery.toString()}`,
+  );
   await catchHttpErrors(response);
   return (await response.json()) as SuccessResponse;
 }

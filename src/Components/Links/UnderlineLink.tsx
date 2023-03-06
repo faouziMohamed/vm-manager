@@ -9,11 +9,11 @@ import UnStyledLink, {
 import Theme from '@/styles/theme';
 
 const LinkUnderlined = forwardRef<HTMLAnchorElement, UnStyledLinkProps>(
-  ({ children, className, ...rest }, ref) => {
+  ({ children, className = '', ...rest }, ref) => {
     return (
       <UnStyledLink
         ref={ref}
-        className='underlined-link animated-underline '
+        className={`underlined-link animated-underline ${className}`}
         color={Theme.colors.primary['400']}
         _hover={{ color: Theme.colors.primary['500'] }}
         {...rest}
@@ -28,13 +28,7 @@ LinkUnderlined.displayName = 'LinkUnderlined';
 
 const UnderlineLink = chakra(LinkUnderlined, {
   shouldForwardProp(prop: string): boolean {
-    return [
-      'href',
-      'children',
-      'className',
-      'fontFamily',
-      'fontWeight',
-    ].includes(prop);
+    return ['href', 'children', 'className'].includes(prop);
   },
 });
 export default UnderlineLink;

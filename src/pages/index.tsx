@@ -9,11 +9,13 @@ import SortDirection from '@/Components/Home/SortDirection';
 import SortMenu from '@/Components/Home/sortMenu';
 import UserInstances from '@/Components/Home/UserInstances';
 import Layout from '@/Components/Layout/Layout';
+import PageTitle from '@/Components/Seo/PageTitle';
 import { refreshVmInstances } from '@/Services/client/vm.service';
 
 export default function Home() {
   return (
     <Layout>
+      <PageTitle title='Dashboard' />
       <QueriesComponentSection />
       <UserVmInstancesSection />
     </Layout>

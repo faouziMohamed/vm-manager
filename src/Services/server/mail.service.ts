@@ -3,11 +3,16 @@
 import nodemailer from 'nodemailer';
 
 import { VERIFY_EMAIL_PAGE } from '@/lib/client-route';
-import { createVerificationToken } from '@/lib/db/queries';
 import { AuthError } from '@/lib/Exceptions/auth.exceptions';
 import { jwtSignData } from '@/lib/server.utils';
 import { AppUser } from '@/lib/types';
 
+import { createVerificationToken } from '@/Repository/queries';
+
+export type PasswordResetPayload = {
+  email: string;
+  userId: string;
+};
 function createMailTransporter() {
   const host = process.env.EMAIL_SERVER_HOST!;
   const port = Number(process.env.EMAIL_SERVER_PORT!);
@@ -26,7 +31,7 @@ function createMailTransporter() {
 
 const transporter = createMailTransporter();
 
-async function sendVerificationLink(user: AppUser, token: string) {
+async function generateAndSendVerificationMail(user: AppUser, token: string) {
   // eslint-disable-next-line no-console
   console.log('Sending email to', user.email, 'using ', process.env.EMAIL_FROM);
   const link = `${process.env.NEXTAUTH_URL}${VERIFY_EMAIL_PAGE}?token=${token}`;
@@ -42,7 +47,7 @@ async function sendVerificationLink(user: AppUser, token: string) {
   });
 }
 
-export async function sendVerificationEmail(user: AppUser) {
+export async function sendVerificationMail(user: AppUser) {
   let tk: string;
   try {
     tk = jwtSignData({ email: user.email });
@@ -54,7 +59,7 @@ export async function sendVerificationEmail(user: AppUser) {
     throw new AuthError(e.message);
   }
   try {
-    const ack = await sendVerificationLink(user, tk);
+    const ack = await generateAndSendVerificationMail(user, tk);
     // eslint-disable-next-line no-console
     console.log('Email sent', ack.messageId);
   } catch (err) {
@@ -72,5 +77,22 @@ export async function sendAccountDeletedEmail(email: string) {
     subject: 'Your account has been deleted',
     text: `Your account has been deleted because you did not verify your email address within 4 hours`,
     html: `<p>Your account has been deleted because you did not verify your email address within 4 hours</p>`,
+  });
+}
+
+export async function sendPasswordResetEmail(email: string, userId: string) {
+  const token = jwtSignData({ email, userId });
+  await createVerificationToken(userId, token, 'password');
+  const link = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`;
+  await transporter.sendMail({
+    from: process.env.EMAIL_FROM,
+    to: email,
+    subject: 'Password reset requested',
+    text: `Click on the following link to reset your password: ${link}\n\nIf you did not request a password reset, please ignore this email`,
+    html: ` <p>Click on the following link to reset your password:</p>
+              <p>
+                <a href="${link}">${link}</a>
+              </p>
+              <p>If you did not request a password reset, please ignore this email</p>`,
   });
 }

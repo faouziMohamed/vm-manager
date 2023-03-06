@@ -10,6 +10,7 @@ import AuthLayout from '@/Components/Layout/AuthLayout';
 import FuturaSpinner from '@/Components/Loaders/FuturaSpinner';
 import Paragraph from '@/Components/Paragraph';
 import ResendLinkPrompt from '@/Components/Resend-link-prompt';
+import PageTitle from '@/Components/Seo/PageTitle';
 import UpdateEmailPrompt from '@/Components/Update-email-prompt';
 import Theme from '@/styles/theme';
 
@@ -28,6 +29,7 @@ export default function VerifyEmail() {
       hasForm={false}
       formTitle='Email verification'
     >
+      <PageTitle title={`Verify email - ${email}`} />
       <Stack
         color={Theme.colors.secondary.main}
         spacing={0}

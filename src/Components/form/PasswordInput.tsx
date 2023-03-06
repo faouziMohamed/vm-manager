@@ -12,6 +12,18 @@ import { adjustColor } from '@/lib/utils';
 
 import Theme from '@/styles/theme';
 
+export const passwordInputError = {
+  heading: 'The password must follow the following rules:',
+  rules: [
+    '1 uppercase letter',
+    '1 lowercase letter',
+    '1 number',
+    '1 special character (@$!%*?&)',
+  ],
+};
+export const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[\w\W\s]{6,}$/;
+
 export default function PasswordInput(props: {
   placeholder: string;
   register: UseFormRegisterReturn;
