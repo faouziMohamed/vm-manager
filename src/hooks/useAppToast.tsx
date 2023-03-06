@@ -11,12 +11,14 @@ export type AppToastProps = {
   position: ToastPosition;
   status?: UseToastOptions['status'];
   description?: string;
+  duration?: UseToastOptions['duration'];
 };
 export default function useAppToast({
   title,
   status,
   position,
   description,
+  duration = null,
 }: AppToastProps) {
   const toastRef = useRef<ToastId>();
   const toast = useToast();
@@ -29,11 +31,11 @@ export default function useAppToast({
         isClosable: true,
         description,
         status: status || 'info',
-        duration: null,
+        duration: duration || null,
         ...opt,
       });
       return toastRef.current;
     },
-    [description, position, status, title, toast],
+    [description, duration, position, status, title, toast],
   );
 }

@@ -9,11 +9,19 @@ import UserOptionsAvatar from '@/Components/Layout/UserAvatarMenu';
 import UnStyledLink from '@/Components/Links/UnStyledLink';
 import Theme from '@/styles/theme';
 
-export default function Header() {
+function DisplayUserAvatar() {
   const { status } = useSession();
   const router = useRouter();
-  const shouldDisplayAvatar =
-    status === 'authenticated' && router.asPath !== VERIFICATION_LINK_SENT_PAGE;
+  if (
+    status !== 'authenticated' ||
+    router.asPath === VERIFICATION_LINK_SENT_PAGE
+  ) {
+    return null;
+  }
+  return <UserOptionsAvatar />;
+}
+
+export default function Header() {
   return (
     <Box as='nav' w='100%'>
       <Flex
@@ -29,7 +37,7 @@ export default function Header() {
         <UnStyledLink href={HOME_PAGE} fontSize={['0.9rem', '1.2rem']}>
           Manage Servers
         </UnStyledLink>
-        {shouldDisplayAvatar && <UserOptionsAvatar />}
+        <DisplayUserAvatar />
         <HeaderActionButton />
       </Flex>
     </Box>

@@ -1,4 +1,4 @@
-import { Inter, Roboto, Ubuntu } from '@next/font/google';
+import { Inter, Roboto, Ubuntu } from 'next/font/google';
 
 export type ThemeColor = {
   main: string;
@@ -117,8 +117,20 @@ const Theme = {
     roboto,
     variables: [inter.variable, ubuntu.variable, roboto.variable],
   },
+  styles: {
+    global: {
+      'body,h1,h2,h3,h4': {
+        fontFamily: `var(--font-secondary, var(--font-primary)) !important`,
+      },
+      label: {
+        fontWeight: 'normal !important',
+        fontSize: '0.95rem !important',
+      },
+    },
+  },
 };
 
 export type AppTheme = typeof Theme;
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default Theme;

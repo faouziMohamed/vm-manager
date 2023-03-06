@@ -2,10 +2,8 @@
 
 import Cors from 'cors';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth';
+import { getToken } from 'next-auth/jwt';
 import nc, { NextHandler } from 'next-connect';
-
-import { nextAuthOptions } from '@/pages/api/auth/[...nextauth]';
 
 export const authMiddleware = nc() //
   .use(corsMiddleware())
@@ -24,8 +22,9 @@ async function nextAuthSession(
   res: NextApiResponse,
   next: NextHandler,
 ) {
-  const session = await getServerSession(req, res, nextAuthOptions);
-  if (!session) {
+  // const session = await getServerSession(req, res, nextAuthOptions);
+  const token = await getToken({ req });
+  if (!token || !token.user) {
     const message =
       'You need to be authenticated in order to access this endpoint.';
     res.status(401).json({ message });

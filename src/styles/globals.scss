@@ -2,12 +2,21 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-family: var(--font-secondary, 'Ubuntu', 'Roboto', 'Inter', sans-serif);
+  font-style: normal;
 }
 
 html,
 body {
   width: 100%;
   height: 100%;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-secondary, 'Ubuntu', 'Roboto', 'Inter', sans-serif);
 }
 

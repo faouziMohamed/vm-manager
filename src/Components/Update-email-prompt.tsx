@@ -8,7 +8,7 @@ import useAppToast from '@/hooks/useAppToast';
 import AppFormControl from '@/Components/form/AppFormControl';
 import FuturaSpinner from '@/Components/Loaders/FuturaSpinner';
 import Paragraph from '@/Components/Paragraph';
-import { updateUserEmail } from '@/Services/client/auth.service';
+import { updateUserEmail } from '@/Services/client/client-auth.service';
 import Theme from '@/styles/theme';
 
 type VerifyEmailFormValues = {

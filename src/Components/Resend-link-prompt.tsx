@@ -7,7 +7,7 @@ import useAppToast from '@/hooks/useAppToast';
 
 import FuturaSpinner from '@/Components/Loaders/FuturaSpinner';
 import Paragraph from '@/Components/Paragraph';
-import { resendEmailVerification } from '@/Services/client/auth.service';
+import { resendEmailVerification } from '@/Services/client/client-auth.service';
 import Theme from '@/styles/theme';
 
 export default function ResendLinkPrompt() {
